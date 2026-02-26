@@ -30,9 +30,14 @@ export default function Home() {
             No complexity, no fuss - just clean, efficient appointment scheduling.
           </p>
           <div className="mt-10 flex justify-center gap-4">
-            <Link href="/login">
+            <Link href="/register">
               <Button size="lg" className="text-lg px-8 py-6">
                 Get Started
+              </Button>
+            </Link>
+            <Link href="/login">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+                Sign In
               </Button>
             </Link>
           </div>

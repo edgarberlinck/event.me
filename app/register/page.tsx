@@ -1,4 +1,4 @@
-import { signIn } from "@/auth";
+import { prisma } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,36 +10,61 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { redirect } from "next/navigation";
+import bcrypt from "bcryptjs";
 
-export default function LoginPage() {
-  async function handleLogin(formData: FormData) {
+export default function RegisterPage() {
+  async function handleRegister(formData: FormData) {
     "use server";
-    
+
+    const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    try {
-      await signIn("credentials", {
-        email,
-        password,
-        redirectTo: "/dashboard",
-      });
-    } catch (error) {
-      redirect("/login?error=Invalid credentials");
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      redirect("/register?error=User already exists");
     }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+
+    redirect("/login?success=Account created successfully");
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Event.me</CardTitle>
+          <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
           <CardDescription>
-            Sign in to manage your scheduling and bookings
+            Get started with Event.me
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={handleLogin} className="space-y-4">
+          <form action={handleRegister} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="John Doe"
+                required
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -57,11 +82,12 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 placeholder="••••••••"
+                minLength={6}
                 required
               />
             </div>
             <Button type="submit" className="w-full" size="lg">
-              Sign In
+              Create Account
             </Button>
           </form>
 
@@ -71,17 +97,17 @@ export default function LoginPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                New to Event.me?
+                Already have an account?
               </span>
             </div>
           </div>
 
           <div className="text-center">
             <a
-              href="/register"
+              href="/login"
               className="text-sm text-indigo-600 hover:text-indigo-500"
             >
-              Create an account
+              Sign in instead
             </a>
           </div>
         </CardContent>
