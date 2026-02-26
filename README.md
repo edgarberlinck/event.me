@@ -13,6 +13,7 @@ Event.me is a straightforward scheduling tool that allows people to book meeting
 - **Styling:** Tailwind CSS + shadcn/ui
 - **Database:** PostgreSQL
 - **ORM:** Prisma 7
+- **Authentication:** NextAuth.js v5
 - **Validation:** Zod
 - **Date Handling:** date-fns
 
@@ -24,13 +25,16 @@ Event.me is a straightforward scheduling tool that allows people to book meeting
 - [x] Initialize Next.js project with TypeScript
 - [x] Configure Tailwind CSS and shadcn/ui
 - [x] Initialize Prisma with PostgreSQL
-- [ ] Design and implement database schema:
+- [x] Integrate NextAuth.js for authentication
+- [x] Design and implement database schema:
   - User model (name, email, timezone)
   - Availability model (day of week, start time, end time)
   - Event Type model (title, duration, description)
   - Booking model (date, time, guest info, status)
+  - NextAuth models (Account, Session, VerificationToken)
 - [ ] Create Prisma migrations
 - [ ] Set up database connection and seed data
+- [ ] Configure OAuth providers (Google, GitHub)
 
 ### Phase 2: Availability Management
 **Goal:** Allow the host to configure their available time slots
@@ -110,72 +114,41 @@ Event.me is a straightforward scheduling tool that allows people to book meeting
 - [ ] Webhook support
 - [ ] API endpoints for integrations
 
-## 🗄️ Database Schema (Draft)
+## 🗄️ Database Schema
 
-```prisma
-model User {
-  id            String          @id @default(cuid())
-  name          String
-  email         String          @unique
-  timezone      String          @default("UTC")
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  availability  Availability[]
-  eventTypes    EventType[]
-  bookings      Booking[]
-}
+The complete schema is implemented with NextAuth.js integration. See `prisma/schema.prisma` for the full definition.
 
-model Availability {
-  id        String   @id @default(cuid())
-  userId    String
-  dayOfWeek Int      // 0-6 (Sunday to Saturday)
-  startTime String   // "09:00"
-  endTime   String   // "17:00"
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  @@index([userId])
-}
+**Key Models:**
+- **User** - User accounts with OAuth support
+- **Account** - OAuth provider accounts (NextAuth)
+- **Session** - User sessions (NextAuth)
+- **VerificationToken** - Email verification (NextAuth)
+- **Availability** - Weekly time slot availability
+- **EventType** - Different types of meetings
+- **Booking** - Scheduled appointments
 
-model EventType {
-  id          String    @id @default(cuid())
-  userId      String
-  title       String
-  slug        String    @unique
-  description String?
-  duration    Int       // minutes
-  color       String?
-  active      Boolean   @default(true)
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookings    Booking[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  @@index([userId])
-  @@index([slug])
-}
+## 🔐 Authentication
 
-model Booking {
-  id            String    @id @default(cuid())
-  eventTypeId   String
-  userId        String
-  guestName     String
-  guestEmail    String
-  guestNotes    String?
-  startTime     DateTime
-  endTime       DateTime
-  status        String    @default("confirmed") // confirmed, cancelled, completed
-  eventType     EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  @@index([userId])
-  @@index([eventTypeId])
-  @@index([startTime])
-}
-```
+NextAuth.js v5 is configured with:
+- **Google OAuth** - Sign in with Google
+- **GitHub OAuth** - Sign in with GitHub
+- **JWT Sessions** - Stateless authentication
+- **Prisma Adapter** - Database session management
+
+To set up OAuth providers:
+
+**Google OAuth:**
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials
+5. Add authorized redirect URI: `http://localhost:3000/api/auth/callback/google`
+
+**GitHub OAuth:**
+1. Go to [GitHub Settings > Developer settings](https://github.com/settings/developers)
+2. Create a new OAuth App
+3. Set Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
+
 
 ## 🏃 Getting Started
 
@@ -200,11 +173,14 @@ npm install
 
 3. Set up environment variables:
 ```bash
-# Copy .env.example to .env and configure your database
-cp .env .env.local
+cp .env.example .env
 ```
 
-Update `prisma.config.ts` with your database URL.
+Edit `.env` and configure:
+- `DATABASE_URL` - Your PostgreSQL connection string
+- `NEXTAUTH_SECRET` - Generate with `openssl rand -base64 32`
+- `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` - From [Google Cloud Console](https://console.cloud.google.com/)
+- `GITHUB_CLIENT_ID` & `GITHUB_CLIENT_SECRET` - From [GitHub OAuth Apps](https://github.com/settings/applications/new)
 
 4. Run database migrations:
 ```bash
