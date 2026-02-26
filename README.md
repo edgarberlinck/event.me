@@ -155,7 +155,7 @@ To set up OAuth providers:
 ### Prerequisites
 
 - Node.js 18+ 
-- PostgreSQL database
+- Docker & Docker Compose
 - npm or yarn
 
 ### Installation
@@ -171,28 +171,38 @@ cd event.me
 npm install
 ```
 
-3. Set up environment variables:
+3. Start the database with Docker:
+```bash
+docker compose up -d
+```
+
+4. Set up environment variables:
 ```bash
 cp .env.example .env
 ```
 
 Edit `.env` and configure:
-- `DATABASE_URL` - Your PostgreSQL connection string
+- `DATABASE_URL` - Already configured for Docker (port 55002)
 - `NEXTAUTH_SECRET` - Generate with `openssl rand -base64 32`
 - `GOOGLE_CLIENT_ID` & `GOOGLE_CLIENT_SECRET` - From [Google Cloud Console](https://console.cloud.google.com/)
 - `GITHUB_CLIENT_ID` & `GITHUB_CLIENT_SECRET` - From [GitHub OAuth Apps](https://github.com/settings/applications/new)
 
-4. Run database migrations:
+5. Run database migrations:
 ```bash
-npx prisma migrate dev
+npm run db:migrate
 ```
 
-5. Start the development server:
+6. (Optional) Seed the database:
+```bash
+npm run db:seed
+```
+
+7. Start the development server:
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser.
+8. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📁 Project Structure
 
@@ -238,12 +248,22 @@ npx shadcn@latest add calendar button input form card dialog select badge tabs d
 ## 🔧 Development Commands
 
 ```bash
+# Development
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run start        # Start production server
 npm run lint         # Run ESLint
-npx prisma studio    # Open Prisma Studio
-npx prisma migrate dev  # Run migrations
+
+# Database
+npm run db:migrate   # Run database migrations
+npm run db:seed      # Seed database with initial data
+npm run db:push      # Push schema changes without migration
+npm run db:studio    # Open Prisma Studio
+
+# Docker
+docker compose up -d        # Start services
+docker compose down         # Stop services
+docker compose logs -f      # View logs
 ```
 
 ## 📝 License
