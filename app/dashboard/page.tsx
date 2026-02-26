@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Clock, LogOut, Settings, Users } from "lucide-react";
+import { Calendar, Clock, LogOut, Users } from "lucide-react";
 import { redirect } from "next/navigation";
 
 async function handleSignOut() {
@@ -117,7 +117,7 @@ export default async function DashboardPage() {
                 <div className="flex-1">
                   <h3 className="font-semibold">Set Your Availability</h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    Define when you're available for meetings
+                    Define when you&apos;re available for meetings
                   </p>
                   <Button variant="link" className="px-0">
                     Configure now →
