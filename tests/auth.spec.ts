@@ -26,7 +26,8 @@ test.describe('Authentication Flow', () => {
     await page.getByRole('link', { name: 'Get Started' }).click();
     
     await expect(page).toHaveURL('/register');
-    await expect(page.getByRole('heading', { name: 'Create Account' })).toBeVisible();
+    // CardTitle is a div, not a heading - use text locator
+    await expect(page.locator('[data-slot="card-title"]', { hasText: 'Create Account' })).toBeVisible();
   });
 
   test('should register a new user and redirect to login', async ({ page }) => {

@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 
 async function handleSignOut() {
   "use server";
-  await signOut();
+  await signOut({ redirectTo: "/" });
 }
 
 export default async function DashboardPage() {
