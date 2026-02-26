@@ -26,15 +26,19 @@ async function handleLogin(formData: FormData) {
     });
   } catch (error) {
     if (error instanceof AuthError) {
-      redirect("/login?error=Invalid credentials");
+      redirect("/login?error=invalid");
     }
     throw error;
   }
-  
+
   redirect("/dashboard");
 }
 
-export default function LoginPage() {
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams: { error?: string; success?: string };
+}) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
       <Card className="w-full max-w-md">
@@ -45,6 +49,18 @@ export default function LoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {searchParams.error === "invalid" && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded-md text-sm">
+              Invalid email or password. Please try again.
+            </div>
+          )}
+          {searchParams.success && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded-md text-sm">
+              {searchParams.success === "registered"
+                ? "Account created successfully! Please sign in."
+                : searchParams.success}
+            </div>
+          )}
           <form action={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
