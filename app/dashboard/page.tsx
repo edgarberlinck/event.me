@@ -10,6 +10,11 @@ import {
 import { Calendar, Clock, LogOut, Settings, Users } from "lucide-react";
 import { redirect } from "next/navigation";
 
+async function handleSignOut() {
+  "use server";
+  await signOut();
+}
+
 export default async function DashboardPage() {
   const session = await auth();
 
@@ -31,12 +36,7 @@ export default async function DashboardPage() {
                 <p className="font-medium">{session.user.name}</p>
                 <p className="text-gray-500">{session.user.email}</p>
               </div>
-              <form
-                action={async () => {
-                  "use server";
-                  await signOut({ redirectTo: "/" });
-                }}
-              >
+              <form action={handleSignOut}>
                 <Button variant="ghost" size="icon" type="submit">
                   <LogOut className="h-5 w-5" />
                 </Button>
