@@ -9,8 +9,8 @@ test.describe('Authentication Flow', () => {
     await page.goto('/');
     
     await expect(page.locator('h1')).toContainText('Simple Scheduling');
-    await expect(page.getByText('Get Started')).toBeVisible();
-    await expect(page.getByText('Sign In')).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Get Started' })).toBeVisible();
+    await expect(page.getByRole('navigation').getByRole('button', { name: 'Sign In' })).toBeVisible();
   });
 
   test('should navigate to register page', async ({ page }) => {
