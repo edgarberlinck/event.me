@@ -1,40 +1,80 @@
 # Testing Guide
 
-## Current Status
+## E2E Testing with Playwright
 
-The project has a basic testing setup configured with Vitest, but due to dependency resolution issues, tests are not yet fully operational.
+The project uses **Playwright** for end-to-end testing. This provides reliable, browser-based tests that cover the full user flow.
 
-## Test Structure
+### Test Structure
 
 ```
-__tests__/
-├── components/
-│   └── auth-toast.test.tsx    # Tests for toast notifications
-└── lib/
-    └── password.test.ts       # Tests for password hashing with bcrypt
+tests/
+└── auth.spec.ts    # Complete authentication flow tests
 ```
 
-## What's Covered
+### What's Covered
 
-### Password Hashing (`__tests__/lib/password.test.ts`)
-- ✅ Password hashing with bcryptjs
-- ✅ Password verification
-- ✅ Rejecting incorrect passwords
-- ✅ Generating unique hashes
+#### Authentication Flow (`tests/auth.spec.ts`)
+- ✅ Landing page displays correctly
+- ✅ Navigation to register page
+- ✅ User registration with valid data
+- ✅ Duplicate email rejection
+- ✅ Login with valid credentials
+- ✅ Login rejection with invalid password
+- ✅ Login rejection with non-existent email
+- ✅ Successful logout
+- ✅ Protected routes (dashboard requires auth)
+- ✅ Redirect logged-in users from login page
 
-### Authentication Toast (`__tests__/components/auth-toast.test.tsx`)
-- ✅ Showing error toasts for invalid credentials
-- ✅ Showing success toasts after registration
+### Running Tests
 
-## Running Tests
-
-Once dependencies are properly installed:
+Make sure the database is running:
 
 ```bash
-npm test              # Run tests in watch mode
-npm run test:run      # Run tests once
-npm run test:coverage # Run with coverage report
+docker compose up -d
 ```
+
+Run all tests (Playwright will start the dev server automatically):
+
+```bash
+npm test                    # Run all tests headlessly
+npm run test:ui             # Run with Playwright UI (recommended)
+npm run test:headed         # Run with browser visible
+npm run test:debug          # Run in debug mode
+npm run test:codegen        # Generate tests with Codegen
+```
+
+### Test Reports
+
+After running tests, view the HTML report:
+
+```bash
+npx playwright show-report
+```
+
+### Browsers
+
+Tests run on:
+- Chromium (Chrome/Edge)
+- Firefox
+- WebKit (Safari)
+
+### Writing New Tests
+
+Use the Playwright test generator:
+
+```bash
+npm run test:codegen
+```
+
+This opens a browser where you can interact with your app, and Playwright will generate the test code.
+
+## Unit Tests (Vitest)
+
+Basic unit test structure exists for:
+- Password hashing (`__tests__/lib/password.test.ts`)
+- Toast notifications (`__tests__/components/auth-toast.test.tsx`)
+
+**Note:** Vitest has dependency conflicts. Use Playwright for comprehensive testing.
 
 ## Manual Testing Checklist
 
