@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AuthToast } from "@/components/auth-toast";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
+import { Suspense } from "react";
 
 async function handleRegister(formData: FormData) {
   "use server";
@@ -43,28 +45,18 @@ async function handleRegister(formData: FormData) {
   redirect("/login?success=registered");
 }
 
-export default function RegisterPage({
-  searchParams,
-}: {
-  searchParams: { error?: string };
-}) {
+export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <Suspense>
+        <AuthToast />
+      </Suspense>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">Create Account</CardTitle>
           <CardDescription>Get started with Event.me</CardDescription>
         </CardHeader>
         <CardContent>
-          {searchParams.error === "exists" && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded-md text-sm">
-              An account with this email already exists. Please{" "}
-              <a href="/login" className="underline font-medium">
-                sign in
-              </a>{" "}
-              instead.
-            </div>
-          )}
           <form action={handleRegister} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name">Name</Label>
