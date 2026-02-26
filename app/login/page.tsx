@@ -10,25 +10,31 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { redirect } from "next/navigation";
+import { AuthError } from "next-auth";
 
-export default function LoginPage() {
-  async function handleLogin(formData: FormData) {
-    "use server";
-    
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+async function handleLogin(formData: FormData) {
+  "use server";
 
-    try {
-      await signIn("credentials", {
-        email,
-        password,
-        redirectTo: "/dashboard",
-      });
-    } catch (error) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
       redirect("/login?error=Invalid credentials");
     }
+    throw error;
   }
+  
+  redirect("/dashboard");
+}
 
+export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 p-4">
       <Card className="w-full max-w-md">
