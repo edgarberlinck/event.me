@@ -8,14 +8,15 @@ function generateTestUser() {
     email: `test-${timestamp}-${random}@example.com`,
     username: `testuser${timestamp}${random}`,
     password: "Test123456!",
+    slug: `test-${timestamp}-${random}`,
   };
 }
 
-test.describe("Event Types Management", () => {
-  test("should create and view event type", async ({ page }) => {
+test.describe("Booking Flow", () => {
+  test("should display booking page for event type", async ({ page, context }) => {
     const testUser = generateTestUser();
 
-    // Register
+    // 1. Register
     await page.goto("/register");
     await page.getByRole("textbox", { name: "Name", exact: true }).fill(testUser.name);
     await page.getByRole("textbox", { name: "Email" }).fill(testUser.email);
@@ -25,7 +26,7 @@ test.describe("Event Types Management", () => {
 
     await page.waitForTimeout(2000);
 
-    // Login
+    // 2. Login
     await page.goto("/login");
     await page.getByLabel("Email").fill(testUser.email);
     await page.getByLabel("Password").fill(testUser.password);
@@ -33,25 +34,26 @@ test.describe("Event Types Management", () => {
 
     await page.waitForTimeout(2000);
 
-    // Go to event types (will redirect if not logged in)
-    await page.goto("/dashboard/event-types");
-    await expect(page.locator("h1")).toContainText("Event Types");
-
-    // Create event type
+    // 3. Create event type
     await page.goto("/dashboard/event-types/new");
-    await expect(page.locator("h1")).toContainText("Create Event Type");
-
-    await page.fill("#title", "30 Minute Meeting");
-    await page.fill("#slug", "30min");
-    await page.fill("#description", "A quick 30-minute meeting");
+    
+    await page.fill("#title", "Test Consultation");
+    await page.fill("#slug", testUser.slug);
+    await page.fill("#description", "A test consultation meeting");
     await page.fill("#duration", "30");
 
     await page.getByRole("button", { name: "Create Event Type" }).click();
     
     await page.waitForTimeout(2000);
 
-    // Verify event type was created
-    await expect(page.getByText("30 Minute Meeting")).toBeVisible();
-    await expect(page.getByText("30 minutes")).toBeVisible();
+    // 4. Open booking page in new context (incognito-like)
+    const bookingPage = await context.newPage();
+    await bookingPage.goto(`/${testUser.username}/${testUser.slug}`);
+    
+    // 5. Verify booking page content
+    await expect(bookingPage.getByText("Test Consultation").first()).toBeVisible();
+    await expect(bookingPage.getByText("30 minutes")).toBeVisible();
+
+    await bookingPage.close();
   });
 });
