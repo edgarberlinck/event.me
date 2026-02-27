@@ -1,3 +1,5 @@
+import { Calendar, Clock, LogOut, Users } from "lucide-react";
+import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,8 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, Clock, LogOut, Users } from "lucide-react";
-import { redirect } from "next/navigation";
 
 async function handleSignOut() {
   "use server";
@@ -64,17 +64,13 @@ export default async function DashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">
-                No bookings yet
-              </p>
+              <p className="text-xs text-muted-foreground">No bookings yet</p>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Event Types
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">Event Types</CardTitle>
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -160,7 +156,9 @@ export default async function DashboardPage() {
           <Card>
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
-              <CardDescription>Your latest bookings and updates</CardDescription>
+              <CardDescription>
+                Your latest bookings and updates
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="text-center py-8 text-gray-500">

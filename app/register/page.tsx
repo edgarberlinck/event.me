@@ -1,4 +1,7 @@
-import { prisma } from "@/lib/prisma.server";
+import bcrypt from "bcryptjs";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { AuthToast } from "@/components/auth-toast";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,10 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthToast } from "@/components/auth-toast";
-import { redirect } from "next/navigation";
-import bcrypt from "bcryptjs";
-import { Suspense } from "react";
+import { prisma } from "@/lib/prisma.server";
 
 async function handleRegister(formData: FormData) {
   "use server";

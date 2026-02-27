@@ -1,4 +1,8 @@
+import { redirect } from "next/navigation";
+import { AuthError } from "next-auth";
+import { Suspense } from "react";
 import { signIn } from "@/auth";
+import { AuthToast } from "@/components/auth-toast";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,10 +13,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { AuthToast } from "@/components/auth-toast";
-import { redirect } from "next/navigation";
-import { AuthError } from "next-auth";
-import { Suspense } from "react";
 
 async function handleLogin(formData: FormData) {
   "use server";

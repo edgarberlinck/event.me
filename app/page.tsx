@@ -1,6 +1,6 @@
+import { Calendar, Clock, Users } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Users } from "lucide-react";
 
 export default function Home() {
   return (
@@ -26,8 +26,9 @@ export default function Home() {
             <span className="block text-indigo-600">Made Easy</span>
           </h1>
           <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-300">
-            Let people book meetings with you based on your available time slots.
-            No complexity, no fuss - just clean, efficient appointment scheduling.
+            Let people book meetings with you based on your available time
+            slots. No complexity, no fuss - just clean, efficient appointment
+            scheduling.
           </p>
           <div className="mt-10 flex justify-center gap-4">
             <Link href="/register">
@@ -48,9 +49,12 @@ export default function Home() {
             <div className="flex justify-center">
               <Calendar className="h-12 w-12 text-indigo-600" />
             </div>
-            <h3 className="mt-4 text-xl font-semibold">Set Your Availability</h3>
+            <h3 className="mt-4 text-xl font-semibold">
+              Set Your Availability
+            </h3>
             <p className="mt-2 text-gray-600 dark:text-gray-300">
-              Define your working hours and available time slots for each day of the week.
+              Define your working hours and available time slots for each day of
+              the week.
             </p>
           </div>
 
@@ -60,7 +64,8 @@ export default function Home() {
             </div>
             <h3 className="mt-4 text-xl font-semibold">Create Event Types</h3>
             <p className="mt-2 text-gray-600 dark:text-gray-300">
-              Set up different meeting types with custom durations and descriptions.
+              Set up different meeting types with custom durations and
+              descriptions.
             </p>
           </div>
 
@@ -70,7 +75,8 @@ export default function Home() {
             </div>
             <h3 className="mt-4 text-xl font-semibold">Share & Book</h3>
             <p className="mt-2 text-gray-600 dark:text-gray-300">
-              Share your booking link and let people schedule meetings with you instantly.
+              Share your booking link and let people schedule meetings with you
+              instantly.
             </p>
           </div>
         </div>

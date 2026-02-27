@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "npx --yes @biomejs/biome@2.4.4 check .",
+    "format": "npx --yes @biomejs/biome@2.4.4 format --write .",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
@@ -46,6 +47,7 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
@@ -57,8 +59,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^5.1.4",
-    "eslint": "^9",
-    "eslint-config-next": "16.1.6",
     "happy-dom": "^20.7.0",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",

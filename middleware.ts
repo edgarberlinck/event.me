@@ -5,7 +5,9 @@ export const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth;
-  const isAuthRoute = req.nextUrl.pathname.startsWith("/login") || req.nextUrl.pathname.startsWith("/register");
+  const isAuthRoute =
+    req.nextUrl.pathname.startsWith("/login") ||
+    req.nextUrl.pathname.startsWith("/register");
   const isDashboardRoute = req.nextUrl.pathname.startsWith("/dashboard");
 
   if (isDashboardRoute && !isLoggedIn) {
