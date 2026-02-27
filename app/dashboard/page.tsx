@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma.server";
 
 async function handleSignOut() {
   "use server";
@@ -21,6 +22,29 @@ export default async function DashboardPage() {
   if (!session?.user) {
     redirect("/login");
   }
+
+  const [availability, eventTypesCount, bookingsCount] = await Promise.all([
+    prisma.availability.findMany({
+      where: { userId: session.user.id },
+      orderBy: { dayOfWeek: "asc" },
+    }),
+    prisma.eventType.count({
+      where: { userId: session.user.id },
+    }),
+    prisma.booking.count({
+      where: { userId: session.user.id },
+    }),
+  ]);
+
+  const DAYS_OF_WEEK = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -63,8 +87,10 @@ export default async function DashboardPage() {
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
-              <p className="text-xs text-muted-foreground">No bookings yet</p>
+              <div className="text-2xl font-bold">{bookingsCount}</div>
+              <p className="text-xs text-muted-foreground">
+                {bookingsCount === 0 ? "No bookings yet" : "Total bookings"}
+              </p>
             </CardContent>
           </Card>
 
@@ -74,9 +100,9 @@ export default async function DashboardPage() {
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">0</div>
+              <div className="text-2xl font-bold">{eventTypesCount}</div>
               <p className="text-xs text-muted-foreground">
-                Create your first event type
+                {eventTypesCount === 0 ? "Create your first event type" : "Active event types"}
               </p>
             </CardContent>
           </Card>
@@ -89,10 +115,27 @@ export default async function DashboardPage() {
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">Not Set</div>
-              <p className="text-xs text-muted-foreground">
-                Configure your hours
-              </p>
+              {availability.length === 0 ? (
+                <>
+                  <div className="text-2xl font-bold">Not Set</div>
+                  <p className="text-xs text-muted-foreground">
+                    Configure your hours
+                  </p>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  {availability.map((slot) => (
+                    <div key={slot.id} className="text-sm">
+                      <span className="font-medium">
+                        {DAYS_OF_WEEK[slot.dayOfWeek]}:
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        {slot.startTime} - {slot.endTime}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -115,8 +158,8 @@ export default async function DashboardPage() {
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Define when you&apos;re available for meetings
                   </p>
-                  <Button variant="link" className="px-0">
-                    Configure now →
+                  <Button variant="link" className="px-0" asChild>
+                    <a href="/availability">Configure now →</a>
                   </Button>
                 </div>
               </div>
@@ -130,8 +173,8 @@ export default async function DashboardPage() {
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Set up different types of meetings you offer
                   </p>
-                  <Button variant="link" className="px-0">
-                    Create event type →
+                  <Button variant="link" className="px-0" asChild>
+                    <a href="/dashboard/event-types">Create event type →</a>
                   </Button>
                 </div>
               </div>

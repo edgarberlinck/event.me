@@ -21,6 +21,10 @@ export function AuthToast() {
           onClick: () => (window.location.href = "/login"),
         },
       });
+    } else if (error === "username") {
+      toast.error("This username is already taken.", {
+        description: "Please choose a different username.",
+      });
     }
 
     if (success === "registered") {

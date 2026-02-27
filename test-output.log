@@ -1,0 +1,514 @@
+
+> event.me@0.1.0 test
+> playwright test tests/availability.spec.ts
+
+
+Running 30 tests using 4 workers
+
+[1A[2K[1/30] [chromium] › tests/availability.spec.ts:28:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K[2/30] [chromium] › tests/availability.spec.ts:39:7 › Availability Management › should show empty state when no availability is set
+[1A[2K[3/30] [chromium] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot
+[1A[2K[4/30] [chromium] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots
+[1A[2K  1) [chromium] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Monday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Monday') resolved to 2 elements:
+        1) <option value="1">Monday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Monday</p> aka getByRole('paragraph').filter({ hasText: 'Monday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Monday')[22m
+    [2m    2 × locator resolved to <option value="1">Monday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      83 |
+      84 |     // Verify both slots exist
+    > 85 |     await expect(page.locator("text=Monday")).toBeVisible();
+         |                                               ^
+      86 |     await expect(page.locator("text=09:00 - 12:00")).toBeVisible();
+      87 |     await expect(page.locator("text=Wednesday")).toBeVisible();
+      88 |     await expect(page.locator("text=14:00 - 18:00")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:85:47
+
+    Error Context: test-results/availability-Availability--90c2f-multiple-availability-slots-chromium/error-context.md
+
+
+[1A[2K[5/30] [chromium] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot
+[1A[2K  2) [chromium] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Tuesday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Tuesday') resolved to 2 elements:
+        1) <option value="2">Tuesday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Tuesday</p> aka getByRole('paragraph').filter({ hasText: 'Tuesday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Tuesday')[22m
+    [2m    2 × locator resolved to <option value="2">Tuesday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      100 |
+      101 |     // Verify it was added
+    > 102 |     await expect(page.locator("text=Tuesday")).toBeVisible();
+          |                                                ^
+      103 |
+      104 |     // Delete it
+      105 |     await page.click('button:has-text("Delete")');
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:102:48
+
+    Error Context: test-results/availability-Availability--523b1-ld-delete-availability-slot-chromium/error-context.md
+
+
+[1A[2K[6/30] [chromium] › tests/availability.spec.ts:114:7 › Availability Management › should navigate back to dashboard
+[1A[2K[7/30] [chromium] › tests/availability.spec.ts:124:7 › Availability Management › should require authentication to access availability page
+[1A[2K[8/30] [chromium] › tests/availability.spec.ts:138:7 › Availability Management › should validate time inputs are required
+[1A[2K[9/30] [chromium] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K  3) [chromium] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')[22m
+    [2m    9 × locator resolved to <option value="0">Sunday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      177 |
+      178 |     for (const day of days) {
+    > 179 |       await expect(select.locator(`option:has-text("${day}")`)).toBeVisible();
+          |                                                                 ^
+      180 |     }
+      181 |   });
+      182 |
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:179:65
+
+    Error Context: test-results/availability-Availability--84a36-ays-of-the-week-in-dropdown-chromium/error-context.md
+
+
+[1A[2K[10/30] [chromium] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions
+[1A[2K  4) [chromium] › tests/availability.spec.ts:28:7 › Availability Management › should navigate to availability page from dashboard 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      15 |
+      16 |     // Wait for redirect to login
+    > 17 |     await page.waitForURL(/\/login/);
+         |                ^
+      18 |
+      19 |     // Now login
+      20 |     await page.fill('input[name="email"]', email);
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:17:16
+
+    Error Context: test-results/availability-Availability--e231f-ability-page-from-dashboard-chromium/error-context.md
+
+
+[1A[2K  5) [chromium] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      15 |
+      16 |     // Wait for redirect to login
+    > 17 |     await page.waitForURL(/\/login/);
+         |                ^
+      18 |
+      19 |     // Now login
+      20 |     await page.fill('input[name="email"]', email);
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:17:16
+
+    Error Context: test-results/availability-Availability--2c2a4-d-add-new-availability-slot-chromium/error-context.md
+
+
+[1A[2K  6) [chromium] › tests/availability.spec.ts:39:7 › Availability Management › should show empty state when no availability is set 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      15 |
+      16 |     // Wait for redirect to login
+    > 17 |     await page.waitForURL(/\/login/);
+         |                ^
+      18 |
+      19 |     // Now login
+      20 |     await page.fill('input[name="email"]', email);
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:17:16
+
+    Error Context: test-results/availability-Availability--10520-when-no-availability-is-set-chromium/error-context.md
+
+
+[1A[2K[11/30] [firefox] › tests/availability.spec.ts:28:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K[12/30] [firefox] › tests/availability.spec.ts:39:7 › Availability Management › should show empty state when no availability is set
+[1A[2K[13/30] [firefox] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot
+[1A[2K  7) [chromium] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Friday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Friday') resolved to 2 elements:
+        1) <option value="5">Friday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Friday</p> aka getByRole('paragraph').filter({ hasText: 'Friday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Friday')[22m
+
+
+      202 |     // For this test, we'll just verify the availability still exists after a page reload
+      203 |     await page.goto("/availability");
+    > 204 |     await expect(page.locator("text=Friday")).toBeVisible();
+          |                                               ^
+      205 |     await expect(page.locator("text=08:00 - 12:00")).toBeVisible();
+      206 |   });
+      207 | });
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:204:47
+
+    Error Context: test-results/availability-Availability--133f0-vailability-across-sessions-chromium/error-context.md
+
+
+[1A[2K[14/30] [firefox] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots
+[1A[2K[15/30] [firefox] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot
+[1A[2K[16/30] [firefox] › tests/availability.spec.ts:114:7 › Availability Management › should navigate back to dashboard
+[1A[2K  8) [firefox] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Monday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Monday') resolved to 2 elements:
+        1) <option value="1">Monday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Monday</p> aka getByRole('paragraph').filter({ hasText: 'Monday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Monday')[22m
+    [2m    3 × locator resolved to <option value="1">Monday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      61 |
+      62 |     // Verify the availability was added
+    > 63 |     await expect(page.locator("text=Monday")).toBeVisible();
+         |                                               ^
+      64 |     await expect(page.locator("text=09:00 - 17:00")).toBeVisible();
+      65 |   });
+      66 |
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:63:47
+
+    Error Context: test-results/availability-Availability--2c2a4-d-add-new-availability-slot-firefox/error-context.md
+
+
+[1A[2K[17/30] [firefox] › tests/availability.spec.ts:124:7 › Availability Management › should require authentication to access availability page
+[1A[2K  9) [firefox] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Tuesday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Tuesday') resolved to 2 elements:
+        1) <option value="2">Tuesday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Tuesday</p> aka getByRole('paragraph').filter({ hasText: 'Tuesday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Tuesday')[22m
+    [2m    2 × locator resolved to <option value="2">Tuesday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      100 |
+      101 |     // Verify it was added
+    > 102 |     await expect(page.locator("text=Tuesday")).toBeVisible();
+          |                                                ^
+      103 |
+      104 |     // Delete it
+      105 |     await page.click('button:has-text("Delete")');
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:102:48
+
+    Error Context: test-results/availability-Availability--523b1-ld-delete-availability-slot-firefox/error-context.md
+
+
+[1A[2K  10) [firefox] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Monday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Monday') resolved to 2 elements:
+        1) <option value="1">Monday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Monday</p> aka getByRole('paragraph').filter({ hasText: 'Monday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Monday')[22m
+    [2m    2 × locator resolved to <option value="1">Monday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      83 |
+      84 |     // Verify both slots exist
+    > 85 |     await expect(page.locator("text=Monday")).toBeVisible();
+         |                                               ^
+      86 |     await expect(page.locator("text=09:00 - 12:00")).toBeVisible();
+      87 |     await expect(page.locator("text=Wednesday")).toBeVisible();
+      88 |     await expect(page.locator("text=14:00 - 18:00")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:85:47
+
+    Error Context: test-results/availability-Availability--90c2f-multiple-availability-slots-firefox/error-context.md
+
+
+[1A[2K[18/30] [firefox] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions
+[1A[2K[19/30] [firefox] › tests/availability.spec.ts:138:7 › Availability Management › should validate time inputs are required
+[1A[2K[20/30] [firefox] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K[21/30] [webkit] › tests/availability.spec.ts:28:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K[22/30] [webkit] › tests/availability.spec.ts:39:7 › Availability Management › should show empty state when no availability is set
+[1A[2K[23/30] [webkit] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot
+[1A[2K[24/30] [webkit] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots
+[1A[2K  11) [webkit] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Monday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Monday') resolved to 2 elements:
+        1) <option value="1">Monday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Monday</p> aka getByRole('paragraph').filter({ hasText: 'Monday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Monday')[22m
+    [2m    2 × locator resolved to <option value="1">Monday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      61 |
+      62 |     // Verify the availability was added
+    > 63 |     await expect(page.locator("text=Monday")).toBeVisible();
+         |                                               ^
+      64 |     await expect(page.locator("text=09:00 - 17:00")).toBeVisible();
+      65 |   });
+      66 |
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:63:47
+
+    Error Context: test-results/availability-Availability--2c2a4-d-add-new-availability-slot-webkit/error-context.md
+
+
+[1A[2K[25/30] [webkit] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot
+[1A[2K  12) [webkit] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Monday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Monday') resolved to 2 elements:
+        1) <option value="1">Monday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Monday</p> aka getByRole('paragraph').filter({ hasText: 'Monday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Monday')[22m
+    [2m    2 × locator resolved to <option value="1">Monday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      83 |
+      84 |     // Verify both slots exist
+    > 85 |     await expect(page.locator("text=Monday")).toBeVisible();
+         |                                               ^
+      86 |     await expect(page.locator("text=09:00 - 12:00")).toBeVisible();
+      87 |     await expect(page.locator("text=Wednesday")).toBeVisible();
+      88 |     await expect(page.locator("text=14:00 - 18:00")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:85:47
+
+    Error Context: test-results/availability-Availability--90c2f-multiple-availability-slots-webkit/error-context.md
+
+
+[1A[2K  13) [firefox] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('text=Friday')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Friday')[22m
+    [2m    9 × locator resolved to <option value="5">Friday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      202 |     // For this test, we'll just verify the availability still exists after a page reload
+      203 |     await page.goto("/availability");
+    > 204 |     await expect(page.locator("text=Friday")).toBeVisible();
+          |                                               ^
+      205 |     await expect(page.locator("text=08:00 - 12:00")).toBeVisible();
+      206 |   });
+      207 | });
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:204:47
+
+    Error Context: test-results/availability-Availability--133f0-vailability-across-sessions-firefox/error-context.md
+
+
+[1A[2K[26/30] [webkit] › tests/availability.spec.ts:114:7 › Availability Management › should navigate back to dashboard
+[1A[2K[27/30] [webkit] › tests/availability.spec.ts:124:7 › Availability Management › should require authentication to access availability page
+[1A[2K  14) [webkit] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Tuesday')
+    Expected: visible
+    Error: strict mode violation: locator('text=Tuesday') resolved to 2 elements:
+        1) <option value="2">Tuesday</option> aka getByLabel('Day of Week')
+        2) <p class="font-medium">Tuesday</p> aka getByRole('paragraph').filter({ hasText: 'Tuesday' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Tuesday')[22m
+    [2m    2 × locator resolved to <option value="2">Tuesday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      100 |
+      101 |     // Verify it was added
+    > 102 |     await expect(page.locator("text=Tuesday")).toBeVisible();
+          |                                                ^
+      103 |
+      104 |     // Delete it
+      105 |     await page.click('button:has-text("Delete")');
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:102:48
+
+    Error Context: test-results/availability-Availability--523b1-ld-delete-availability-slot-webkit/error-context.md
+
+
+[1A[2K  15) [firefox] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')[22m
+    [2m    9 × locator resolved to <option value="0">Sunday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      177 |
+      178 |     for (const day of days) {
+    > 179 |       await expect(select.locator(`option:has-text("${day}")`)).toBeVisible();
+          |                                                                 ^
+      180 |     }
+      181 |   });
+      182 |
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:179:65
+
+    Error Context: test-results/availability-Availability--84a36-ays-of-the-week-in-dropdown-firefox/error-context.md
+
+
+[1A[2K[28/30] [webkit] › tests/availability.spec.ts:138:7 › Availability Management › should validate time inputs are required
+[1A[2K[29/30] [webkit] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions
+[1A[2K[30/30] [webkit] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K  16) [webkit] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('text=Friday')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Friday')[22m
+    [2m    9 × locator resolved to <option value="5">Friday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      202 |     // For this test, we'll just verify the availability still exists after a page reload
+      203 |     await page.goto("/availability");
+    > 204 |     await expect(page.locator("text=Friday")).toBeVisible();
+          |                                               ^
+      205 |     await expect(page.locator("text=08:00 - 12:00")).toBeVisible();
+      206 |   });
+      207 | });
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:204:47
+
+    Error Context: test-results/availability-Availability--133f0-vailability-across-sessions-webkit/error-context.md
+
+
+[1A[2K  17) [webkit] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('select[name="dayOfWeek"]').locator('option:has-text("Sunday")')[22m
+    [2m    9 × locator resolved to <option value="0">Sunday</option>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      177 |
+      178 |     for (const day of days) {
+    > 179 |       await expect(select.locator(`option:has-text("${day}")`)).toBeVisible();
+          |                                                                 ^
+      180 |     }
+      181 |   });
+      182 |
+        at /Users/edgarberlinck/code/event.me/tests/availability.spec.ts:179:65
+
+    Error Context: test-results/availability-Availability--84a36-ays-of-the-week-in-dropdown-webkit/error-context.md
+
+
+[1A[2K  17 failed
+    [chromium] › tests/availability.spec.ts:28:7 › Availability Management › should navigate to availability page from dashboard 
+    [chromium] › tests/availability.spec.ts:39:7 › Availability Management › should show empty state when no availability is set 
+    [chromium] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+    [chromium] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+    [chromium] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+    [chromium] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+    [chromium] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+    [firefox] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+    [firefox] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+    [firefox] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+    [firefox] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+    [firefox] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+    [webkit] › tests/availability.spec.ts:48:7 › Availability Management › should add new availability slot 
+    [webkit] › tests/availability.spec.ts:67:7 › Availability Management › should add multiple availability slots 
+    [webkit] › tests/availability.spec.ts:91:7 › Availability Management › should delete availability slot 
+    [webkit] › tests/availability.spec.ts:162:7 › Availability Management › should show all days of the week in dropdown 
+    [webkit] › tests/availability.spec.ts:183:7 › Availability Management › should persist availability across sessions 
+  13 passed (40.9s)
+
+[36m  Serving HTML report at http://localhost:57513. Press Ctrl+C to quit.[39m

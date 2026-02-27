@@ -42,6 +42,7 @@ test.describe("Authentication Flow", () => {
     // Fill registration form
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(`user${Date.now()}`);
     await page.getByLabel("Password").fill(user.password);
 
     // Submit form
@@ -53,11 +54,13 @@ test.describe("Authentication Flow", () => {
 
   test("should not allow duplicate email registration", async ({ page }) => {
     const user = generateTestUser();
+    const username = `user${Date.now()}`;
 
     // Register first time
     await page.goto("/register");
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(username);
     await page.getByLabel("Password").fill(user.password);
     await page.getByRole("button", { name: "Create Account" }).click();
 
@@ -68,6 +71,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
     await page.getByLabel("Name").fill("Another User");
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(`other${Date.now()}`);
     await page.getByLabel("Password").fill("AnotherPass123");
     await page.getByRole("button", { name: "Create Account" }).click();
 

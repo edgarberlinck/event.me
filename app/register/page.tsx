@@ -19,15 +19,26 @@ async function handleRegister(formData: FormData) {
 
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
+  const username = formData.get("username") as string;
   const password = formData.get("password") as string;
 
   // Check if user already exists
-  const existingUser = await prisma.user.findUnique({
-    where: { email },
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email },
+        { username },
+      ],
+    },
   });
 
   if (existingUser) {
-    redirect("/register?error=exists");
+    if (existingUser.email === email) {
+      redirect("/register?error=exists");
+    }
+    if (existingUser.username === username) {
+      redirect("/register?error=username");
+    }
   }
 
   // Hash password
@@ -38,6 +49,7 @@ async function handleRegister(formData: FormData) {
     data: {
       name,
       email,
+      username,
       password: hashedPassword,
     },
   });
@@ -77,6 +89,21 @@ export default function RegisterPage() {
                 placeholder="you@example.com"
                 required
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="johndoe"
+                pattern="[a-z0-9-]+"
+                title="Only lowercase letters, numbers, and hyphens"
+                required
+              />
+              <p className="text-xs text-gray-500">
+                This will be part of your booking URL
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
