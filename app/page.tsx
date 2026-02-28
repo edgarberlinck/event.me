@@ -1,4 +1,5 @@
-import { Calendar, Clock, Users } from "lucide-react";
+import { Clock, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -8,10 +9,10 @@ export default function Home() {
       <nav className="border-b bg-white/80 backdrop-blur-sm dark:bg-gray-900/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold">Event.me</span>
-            </div>
+            <Link href="/" className="flex items-center space-x-2">
+              <Image src="/logo.png" alt="Event.me" width={32} height={32} />
+              <span className="text-xl font-bold">Event.me</span>
+            </Link>
             <Link href="/login">
               <Button>Sign In</Button>
             </Link>
@@ -47,7 +48,13 @@ export default function Home() {
         <div className="mt-24 grid grid-cols-1 gap-8 sm:grid-cols-3">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg text-center">
             <div className="flex justify-center">
-              <Calendar className="h-12 w-12 text-indigo-600" />
+              <Image
+                src="/logo.png"
+                alt="Set Availability"
+                width={48}
+                height={48}
+                className="text-indigo-600"
+              />
             </div>
             <h3 className="mt-4 text-xl font-semibold">
               Set Your Availability
@@ -84,9 +91,25 @@ export default function Home() {
 
       <footer className="border-t mt-24 bg-white/80 backdrop-blur-sm dark:bg-gray-900/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-gray-600 dark:text-gray-400">
-            © 2026 Event.me - Simple scheduling for everyone
-          </p>
+          <div className="text-center space-y-2">
+            <div className="space-x-4 text-sm">
+              <Link
+                href="/privacy-policy"
+                className="text-gray-600 dark:text-gray-400 hover:underline"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms-of-use"
+                className="text-gray-600 dark:text-gray-400 hover:underline"
+              >
+                Terms of Use
+              </Link>
+            </div>
+            <p className="text-gray-600 dark:text-gray-400">
+              © 2026 Event.me - Simple scheduling for everyone
+            </p>
+          </div>
         </div>
       </footer>
     </div>
