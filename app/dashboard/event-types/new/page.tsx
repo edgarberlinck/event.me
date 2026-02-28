@@ -27,6 +27,15 @@ async function createEventType(formData: FormData) {
   const slug = formData.get("slug") as string;
   const description = formData.get("description") as string;
   const duration = Number.parseInt(formData.get("duration") as string);
+  const maxBookingsPerWeek = formData.get("maxBookingsPerWeek")
+    ? Number.parseInt(formData.get("maxBookingsPerWeek") as string)
+    : null;
+  const minimumNoticeHours = formData.get("minimumNoticeHours")
+    ? Number.parseInt(formData.get("minimumNoticeHours") as string)
+    : 24;
+  const maximumNoticeDays = formData.get("maximumNoticeDays")
+    ? Number.parseInt(formData.get("maximumNoticeDays") as string)
+    : 14;
 
   if (!title || !slug || !duration) {
     throw new Error("Missing required fields");
@@ -39,6 +48,9 @@ async function createEventType(formData: FormData) {
       slug,
       description,
       duration,
+      maxBookingsPerWeek,
+      minimumNoticeHours,
+      maximumNoticeDays,
     },
   });
 
@@ -135,6 +147,59 @@ export default async function NewEventTypePage() {
                   step="15"
                   required
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="maxBookingsPerWeek">
+                  Max Bookings Per Week
+                </Label>
+                <Input
+                  id="maxBookingsPerWeek"
+                  name="maxBookingsPerWeek"
+                  type="number"
+                  placeholder="Unlimited"
+                  min="1"
+                />
+                <p className="text-sm text-gray-500">
+                  Leave empty for unlimited bookings
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="minimumNoticeHours">
+                  Minimum Notice (hours) *
+                </Label>
+                <Input
+                  id="minimumNoticeHours"
+                  name="minimumNoticeHours"
+                  type="number"
+                  placeholder="24"
+                  defaultValue="24"
+                  min="1"
+                  required
+                />
+                <p className="text-sm text-gray-500">
+                  Minimum hours before event can start (e.g., 24 or 48)
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="maximumNoticeDays">
+                  Maximum Notice (days) *
+                </Label>
+                <Input
+                  id="maximumNoticeDays"
+                  name="maximumNoticeDays"
+                  type="number"
+                  placeholder="14"
+                  defaultValue="14"
+                  min="1"
+                  max="365"
+                  required
+                />
+                <p className="text-sm text-gray-500">
+                  Maximum days in advance for booking (e.g., 7 or 14)
+                </p>
               </div>
 
               <div className="flex gap-3">

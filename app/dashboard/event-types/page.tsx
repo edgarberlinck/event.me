@@ -110,6 +110,21 @@ export default async function EventTypesPage() {
                           <Clock className="h-4 w-4" />
                           {eventType.duration} minutes
                         </div>
+                        {eventType.maxBookingsPerWeek && (
+                          <div className="text-xs bg-blue-50 px-2 py-1 rounded">
+                            Max {eventType.maxBookingsPerWeek}/week
+                          </div>
+                        )}
+                        {eventType.minimumNoticeHours > 24 && (
+                          <div className="text-xs bg-yellow-50 px-2 py-1 rounded">
+                            {eventType.minimumNoticeHours}h notice
+                          </div>
+                        )}
+                        {eventType.maximumNoticeDays < 30 && (
+                          <div className="text-xs bg-purple-50 px-2 py-1 rounded">
+                            {eventType.maximumNoticeDays} days max
+                          </div>
+                        )}
                         {user?.username && (
                           <div className="flex items-center gap-1">
                             <LinkIcon className="h-4 w-4" />

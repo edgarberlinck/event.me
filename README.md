@@ -88,13 +88,18 @@ npm run db:studio    # Open Prisma Studio
 - Protected dashboard
 - Database schema
 - CI/CD pipeline
-- 10/10 E2E tests passing
+- Pre-commit hooks (Biome)
+- E2E tests passing
 
-**Phase 2: Core Scheduling** 🚧
-- [ ] Availability management
-- [ ] Event type creation
-- [ ] Public booking pages
-- [ ] Booking confirmation
+**Phase 2: Core Scheduling** ✅
+- ✅ Availability management
+- ✅ Event type creation with booking constraints
+  - Max bookings per week
+  - Minimum notice hours
+  - Maximum notice days
+- ✅ Public booking pages
+- ✅ Booking confirmation
+- ✅ 32 E2E tests passing
 
 **Phase 3: Enhancements** 📋
 - [ ] Calendar integration
@@ -118,7 +123,12 @@ npm run test:debug         # Debug mode
 npm run test:unit          # Run unit tests
 ```
 
-**Coverage**: 10 E2E tests covering authentication flow
+**Coverage**: 32 E2E tests covering:
+- Authentication (register/login/logout)
+- Availability management
+- Event type CRUD with constraints
+- Public booking flow
+- Booking validation
 
 ---
 

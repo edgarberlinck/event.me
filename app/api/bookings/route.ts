@@ -50,8 +50,8 @@ export async function POST(request: Request) {
         endTime: new Date(endTime),
         guestName,
         guestEmail,
-        notes,
-        status: "CONFIRMED",
+        guestNotes: notes,
+        status: "confirmed",
       },
     });
 

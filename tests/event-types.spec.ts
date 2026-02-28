@@ -14,6 +14,7 @@ function generateTestUser() {
 test.describe("Event Types Management", () => {
   test("should create and view event type", async ({ page }) => {
     const testUser = generateTestUser();
+    const uniqueSlug = `30min-${Date.now()}`;
 
     // Register
     await page.goto("/register");
@@ -42,16 +43,21 @@ test.describe("Event Types Management", () => {
     await expect(page.locator("h1")).toContainText("Create Event Type");
 
     await page.fill("#title", "30 Minute Meeting");
-    await page.fill("#slug", "30min");
+    await page.fill("#slug", uniqueSlug);
     await page.fill("#description", "A quick 30-minute meeting");
     await page.fill("#duration", "30");
 
+    // Click submit
     await page.getByRole("button", { name: "Create Event Type" }).click();
     
-    await page.waitForTimeout(2000);
+    // Wait for redirect - the server action should redirect us
+    await page.waitForURL("/dashboard/event-types");
+    
+    // Wait a bit for the page to fully load
+    await page.waitForLoadState("domcontentloaded");
 
     // Verify event type was created
-    await expect(page.getByText("30 Minute Meeting")).toBeVisible();
+    await expect(page.getByText("30 Minute Meeting")).toBeVisible({ timeout: 10000 });
     await expect(page.getByText("30 minutes")).toBeVisible();
   });
 });

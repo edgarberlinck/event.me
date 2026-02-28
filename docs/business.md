@@ -30,7 +30,7 @@ Event.me is a simplified scheduling platform that enables professionals to share
 - Secure password storage with industry-standard encryption
 
 ### 2. Event Type Management
-**User Benefit**: Create different types of meetings you offer
+**User Benefit**: Create different types of meetings you offer with built-in protection against booking abuse
 
 **Use Cases**:
 - 15-minute quick call
@@ -43,6 +43,15 @@ Event.me is a simplified scheduling platform that enables professionals to share
 - Set meeting duration
 - Unique URL slug for sharing
 - Toggle active/inactive status
+- **Booking constraints**:
+  - Limit bookings per week (prevent overload)
+  - Require minimum advance notice (e.g., 24-48 hours)
+  - Set maximum booking window (e.g., 7-14 days ahead)
+
+**Business Value**:
+- **Prevent burnout**: Cap weekly bookings
+- **Planning time**: Require advance notice
+- **Flexibility control**: Balance availability with other commitments
 
 ### 3. Availability Settings
 **User Benefit**: Define when you're available for bookings
@@ -163,8 +172,24 @@ The dashboard is the control center with three main sections:
 - Creates multiple event types for different services
 - Sets different availability for each week
 - Updates availability when traveling
+- **Uses constraints**: 
+  - Limits "Deep Dive Sessions" to 3 per week to prevent burnout
+  - Requires 48-hour notice for preparation time
+  - Only allows booking 2 weeks out to maintain flexibility
 
-**Outcome**: Clients can book appropriate session type at convenient times
+**Outcome**: Clients can book appropriate session type at convenient times, while Lisa maintains work-life balance and preparation time
+
+### Scenario 4: High-Demand Consultant
+**User**: Alex, a popular tech consultant
+
+**Challenge**: Getting overwhelmed with too many bookings
+
+**Solution**:
+- Sets "max 5 consultations per week" limit
+- Requires 72-hour minimum notice
+- Limits bookings to 7 days ahead
+
+**Outcome**: Maintains quality service, has time to prepare, stays in control of schedule
 
 ## Competitive Advantages
 
@@ -215,6 +240,10 @@ Step-by-step instructions for new users to:
 - Use clear event type descriptions
 - Keep event durations reasonable
 - Update availability regularly
+- **Use booking constraints wisely**:
+  - Set max bookings/week to prevent overload
+  - Require minimum notice for preparation (24-72 hours)
+  - Limit future bookings to maintain schedule flexibility (7-14 days)
 
 ### Common Questions
 
@@ -229,3 +258,12 @@ A: The system only shows available time slots based on your settings.
 
 **Q: Can I cancel or reschedule bookings?**
 A: This feature is planned for Phase 2.
+
+**Q: How do I limit how many meetings I take per week?**
+A: When creating or editing an event type, set the "Max Bookings Per Week" field. This caps how many times that specific event type can be booked each week.
+
+**Q: Can I prevent last-minute bookings?**
+A: Yes! Set the "Minimum Notice Hours" field (e.g., 24 or 48) to require advance notice. This gives you preparation time.
+
+**Q: How do I stop people from booking too far in advance?**
+A: Set the "Maximum Notice Days" field (e.g., 7 or 14) to limit how far ahead bookings can be made. This keeps your schedule flexible.

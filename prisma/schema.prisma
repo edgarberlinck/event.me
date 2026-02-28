@@ -79,18 +79,21 @@ model Availability {
 }
 
 model EventType {
-  id          String    @id @default(cuid())
-  userId      String
-  title       String
-  slug        String    @unique
-  description String?
-  duration    Int       // minutes
-  color       String?
-  active      Boolean   @default(true)
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bookings    Booking[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id                    String    @id @default(cuid())
+  userId                String
+  title                 String
+  slug                  String    @unique
+  description           String?
+  duration              Int       // minutes
+  color                 String?
+  active                Boolean   @default(true)
+  maxBookingsPerWeek    Int?      // null = unlimited
+  minimumNoticeHours    Int       @default(24) // minimum hours before event can start
+  maximumNoticeDays     Int       @default(14) // maximum days in future for booking
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookings              Booking[]
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
   
   @@index([userId])
   @@index([slug])

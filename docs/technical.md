@@ -48,6 +48,10 @@ event.me/
 - Defines meeting types that users offer
 - Contains title, slug, description, and duration
 - Can be activated/deactivated
+- **Booking Constraints**:
+  - `maxBookingsPerWeek`: Optional limit on bookings per week (null = unlimited)
+  - `minimumNoticeHours`: Minimum hours required before event start (default: 24)
+  - `maximumNoticeDays`: Maximum days in advance for booking (default: 14)
 - Users can have multiple event types
 
 ### Availability
@@ -80,7 +84,12 @@ event.me/
   - Description
   - Duration (in minutes)
   - Active/inactive status
+  - **Booking constraints**:
+    - Max bookings per week (optional)
+    - Minimum notice hours (prevents last-minute bookings)
+    - Maximum notice days (limits how far ahead bookings can be made)
 - Users can create multiple event types
+- Constraints are validated server-side during booking creation
 
 ### 3. Availability Management
 **Location**: `app/dashboard/availability/`
@@ -131,9 +140,15 @@ Creates a new booking.
 }
 ```
 
+**Validation**:
+- Validates minimum notice hours (event must start at least X hours from now)
+- Validates maximum notice days (event cannot be scheduled more than X days ahead)
+- Validates max bookings per week (if limit is set for event type)
+- Checks for conflicting bookings
+
 **Responses**:
 - 201: Booking created successfully
-- 400: Missing required fields
+- 400: Missing required fields or validation errors
 - 409: Time slot already booked
 - 500: Internal server error
 
@@ -218,6 +233,24 @@ The application uses shadcn/ui components for a consistent UI:
 - Badge
 - Textarea
 - Toast notifications (Sonner)
+
+## Utility Functions
+
+### Booking Validation (`lib/booking-validation.ts`)
+
+Server-side validation helper for booking constraints:
+
+```typescript
+validateBooking(eventTypeId: string, startTime: Date): Promise<BookingValidationError[]>
+```
+
+**Validations performed**:
+1. Event type exists and is active
+2. Start time respects minimum notice hours
+3. Start time is within maximum notice days
+4. Max bookings per week limit not exceeded (if set)
+
+Returns array of validation errors, empty if valid.
 
 ## Security Considerations
 

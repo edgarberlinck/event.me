@@ -23,13 +23,14 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  const [availability, eventTypesCount, bookingsCount] = await Promise.all([
+  const [availability, eventTypes, bookingsCount] = await Promise.all([
     prisma.availability.findMany({
       where: { userId: session.user.id },
       orderBy: { dayOfWeek: "asc" },
     }),
-    prisma.eventType.count({
+    prisma.eventType.findMany({
       where: { userId: session.user.id },
+      orderBy: { createdAt: "desc" },
     }),
     prisma.booking.count({
       where: { userId: session.user.id },
@@ -100,10 +101,32 @@ export default async function DashboardPage() {
               <Clock className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{eventTypesCount}</div>
-              <p className="text-xs text-muted-foreground">
-                {eventTypesCount === 0 ? "Create your first event type" : "Active event types"}
-              </p>
+              {eventTypes.length === 0 ? (
+                <>
+                  <div className="text-2xl font-bold">0</div>
+                  <p className="text-xs text-muted-foreground">
+                    Create your first event type
+                  </p>
+                </>
+              ) : (
+                <div className="space-y-2">
+                  {eventTypes.slice(0, 3).map((event) => (
+                    <div key={event.id} className="text-sm">
+                      <span className="font-medium">{event.title}</span>{" "}
+                      <span className="text-muted-foreground">
+                        ({event.duration} min)
+                      </span>
+                    </div>
+                  ))}
+                  {eventTypes.length > 3 && (
+                    <Button variant="link" className="px-0 h-auto text-xs" asChild>
+                      <a href="/dashboard/event-types">
+                        View all {eventTypes.length} event types →
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
 

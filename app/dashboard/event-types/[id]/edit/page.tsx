@@ -15,6 +15,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { DeleteButton } from "./delete-button";
 
 export default async function EditEventTypePage({
   params,
@@ -53,6 +54,15 @@ export default async function EditEventTypePage({
     const description = formData.get("description") as string;
     const duration = Number.parseInt(formData.get("duration") as string);
     const active = formData.get("active") === "on";
+    const maxBookingsPerWeek = formData.get("maxBookingsPerWeek")
+      ? Number.parseInt(formData.get("maxBookingsPerWeek") as string)
+      : null;
+    const minimumNoticeHours = formData.get("minimumNoticeHours")
+      ? Number.parseInt(formData.get("minimumNoticeHours") as string)
+      : 24;
+    const maximumNoticeDays = formData.get("maximumNoticeDays")
+      ? Number.parseInt(formData.get("maximumNoticeDays") as string)
+      : 14;
 
     if (!title || !slug || !duration) {
       throw new Error("Missing required fields");
@@ -69,6 +79,9 @@ export default async function EditEventTypePage({
         description,
         duration,
         active,
+        maxBookingsPerWeek,
+        minimumNoticeHours,
+        maximumNoticeDays,
       },
     });
 
@@ -156,6 +169,58 @@ export default async function EditEventTypePage({
                 />
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="maxBookingsPerWeek">
+                  Max Bookings Per Week
+                </Label>
+                <Input
+                  id="maxBookingsPerWeek"
+                  name="maxBookingsPerWeek"
+                  type="number"
+                  defaultValue={eventType.maxBookingsPerWeek ?? ""}
+                  placeholder="Unlimited"
+                  min="1"
+                />
+                <p className="text-sm text-gray-500">
+                  Leave empty for unlimited bookings
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="minimumNoticeHours">
+                  Minimum Notice (hours)
+                </Label>
+                <Input
+                  id="minimumNoticeHours"
+                  name="minimumNoticeHours"
+                  type="number"
+                  defaultValue={eventType.minimumNoticeHours}
+                  min="1"
+                  required
+                />
+                <p className="text-sm text-gray-500">
+                  Minimum hours before event can start
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="maximumNoticeDays">
+                  Maximum Notice (days)
+                </Label>
+                <Input
+                  id="maximumNoticeDays"
+                  name="maximumNoticeDays"
+                  type="number"
+                  defaultValue={eventType.maximumNoticeDays}
+                  min="1"
+                  max="365"
+                  required
+                />
+                <p className="text-sm text-gray-500">
+                  Maximum days in advance for booking
+                </p>
+              </div>
+
               <div className="flex items-center space-x-2">
                 <input
                   type="checkbox"
@@ -171,18 +236,7 @@ export default async function EditEventTypePage({
                 <Button type="submit" className="flex-1">
                   Save Changes
                 </Button>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  formAction={deleteEventType}
-                  onClick={(e) => {
-                    if (!confirm("Are you sure you want to delete this event type?")) {
-                      e.preventDefault();
-                    }
-                  }}
-                >
-                  Delete
-                </Button>
+                <DeleteButton deleteAction={deleteEventType} />
               </div>
             </form>
           </CardContent>
