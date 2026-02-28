@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getGoogleCalendarClient } from "@/lib/google-calendar";
 import { prisma } from "@/lib/prisma.server";
+import { sendBookingCancelledEmail } from "@/lib/resend";
 
 async function cancelBooking(id: string) {
   const booking = await prisma.booking.findUnique({
@@ -41,6 +42,20 @@ async function cancelBooking(id: string) {
     where: { id },
     data: { status: "cancelled" },
   });
+
+  // Send email notification
+  try {
+    await sendBookingCancelledEmail({
+      to: booking.user.email,
+      guestName: booking.guestName,
+      guestEmail: booking.guestEmail,
+      eventTitle: booking.eventType.title,
+      startTime: booking.startTime,
+      endTime: booking.endTime,
+    });
+  } catch (emailError) {
+    console.error("Email notification error:", emailError);
+  }
 
   // Redirect to confirmation page
   const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";

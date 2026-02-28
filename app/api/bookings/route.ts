@@ -5,6 +5,7 @@ import {
   isGoogleCalendarConnected,
 } from "@/lib/google-calendar";
 import { prisma } from "@/lib/prisma.server";
+import { sendBookingCreatedEmail } from "@/lib/resend";
 
 export async function POST(request: NextRequest) {
   try {
@@ -187,6 +188,22 @@ export async function POST(request: NextRequest) {
           },
         });
 
+        // Send email notification
+        try {
+          await sendBookingCreatedEmail({
+            to: booking.user.email,
+            guestName,
+            guestEmail,
+            eventTitle: booking.eventType.title,
+            startTime: start,
+            endTime: end,
+            guestNotes,
+            meetLink: calendarEvent.meetLink,
+          });
+        } catch (emailError) {
+          console.error("Email notification error:", emailError);
+        }
+
         // Return booking with calendar info
         return NextResponse.json(
           { ...booking, meetLink: calendarEvent.meetLink },
@@ -196,6 +213,21 @@ export async function POST(request: NextRequest) {
     } catch (calendarError) {
       console.error("Google Calendar error:", calendarError);
       // Continue without calendar event - booking was still created
+    }
+
+    // Send email notification (no calendar integration)
+    try {
+      await sendBookingCreatedEmail({
+        to: booking.user.email,
+        guestName,
+        guestEmail,
+        eventTitle: booking.eventType.title,
+        startTime: start,
+        endTime: end,
+        guestNotes,
+      });
+    } catch (emailError) {
+      console.error("Email notification error:", emailError);
     }
 
     return NextResponse.json(booking, { status: 201 });
