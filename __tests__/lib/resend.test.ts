@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { mockSend } = vi.hoisted(() => ({
   mockSend: vi.fn().mockResolvedValue({ id: "test-email-id" }),
@@ -11,8 +11,8 @@ vi.mock("resend", () => ({
 }));
 
 import {
-  sendBookingCreatedEmail,
   sendBookingCancelledEmail,
+  sendBookingCreatedEmail,
   sendBookingRescheduledEmail,
   sendBookingStatusChangedEmail,
 } from "@/lib/resend";
