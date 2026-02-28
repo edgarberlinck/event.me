@@ -11,6 +11,11 @@
 7. [Testing Strategy](#testing-strategy)
 8. [CI/CD Pipeline](#cicd-pipeline)
 9. [Deployment](#deployment)
+10. [Integrations](#integrations)
+
+### Integration Guides
+- [Google Calendar Integration](google-calendar-integration.md)
+- [Resend Email Integration](resend-email-integration.md)
 
 ---
 
@@ -89,6 +94,10 @@ Event.me is a meeting scheduling application built with Next.js 16, using server
 ### Code Quality
 - **Biome 2.4.4** (Linting & Formatting)
 - **Husky 9.1.7** (Git hooks)
+
+### Integrations
+- **Google Calendar API** (OAuth 2.0, event creation, Meet links)
+- **Resend** (transactional email notifications)
 
 ---
 
@@ -352,6 +361,13 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-here"
 AUTH_URL="http://localhost:3000"
 AUTH_SECRET="your-secret-here"
+
+# Google OAuth (for Calendar integration)
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Resend (for email notifications)
+RESEND_APIKEY="your-resend-api-key"
 ```
 
 ### Development Commands
@@ -475,6 +491,16 @@ AUTH_SECRET="same-as-nextauth-secret"
 AUTH_URL="https://your-domain.com"
 ```
 
+**Optional Integrations**:
+```env
+# Google Calendar integration
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Email notifications (Resend)
+RESEND_APIKEY="your-resend-api-key"
+```
+
 ### Build Command
 
 ```bash
@@ -519,7 +545,7 @@ npx prisma migrate deploy
 - ✅ Password hashing with bcrypt
 - ✅ CSRF protection (NextAuth)
 - ✅ SQL injection prevention (Prisma)
-- ✅ XSS protection (React sanitization)
+- ✅ XSS protection (React sanitization + HTML escaping in emails)
 - ✅ HTTP-only cookies
 - ✅ Environment variable validation
 - ✅ Protected API routes (middleware)
@@ -551,7 +577,7 @@ npx prisma migrate deploy
 - [ ] Calendar integration (Google, Outlook)
 
 ### Phase 3: Advanced Features
-- [ ] Email notifications (Resend/SendGrid)
+- ✅ Email notifications (Resend — booking created, cancelled, rescheduled, status changed)
 - [ ] Time zone conversion
 - [ ] Custom booking questions
 - [ ] Payment integration (Stripe)

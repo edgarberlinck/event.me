@@ -162,10 +162,11 @@ Event.me is a **meeting scheduling platform** that eliminates the back-and-forth
 **Why**: Prevent double-bookings, show real-time availability
 **Business Value**: Critical for professional users
 
-#### 📧 Email Notifications
+#### 📧 Email Notifications ✅
 **What**: Automated confirmations, reminders, cancellations
 **Why**: Reduces no-shows, keeps everyone informed
-**Channels**: Email (Resend/SendGrid)
+**Channels**: Email via [Resend](https://resend.com)
+**Triggers**: Booking created, cancelled, rescheduled, status changed
 
 #### 🌍 Time Zone Support
 **What**: Automatic time zone detection and conversion
@@ -391,8 +392,8 @@ Event.me is a **meeting scheduling platform** that eliminates the back-and-forth
 - ⏳ Public booking pages
 
 ### Q2 2026
-- 📅 Calendar integration (Google)
-- 📧 Email notifications
+- ✅ Calendar integration (Google)
+- ✅ Email notifications (Resend)
 - 🌍 Time zone support
 - 📱 Mobile-responsive booking pages
 - 🔍 SEO optimization
