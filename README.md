@@ -43,6 +43,8 @@ Visit: http://localhost:3000
 - API routes
 - Testing strategy
 - Deployment guide
+- [Google Calendar Integration](docs/technical/google-calendar-integration.md)
+- [Resend Email Integration](docs/technical/resend-email-integration.md)
 
 ### For Business
 **[Business Documentation](docs/business/README.md)**
@@ -60,7 +62,7 @@ Visit: http://localhost:3000
 - **Language**: TypeScript 5
 - **Database**: PostgreSQL 16 + Prisma 7
 - **Auth**: NextAuth v5 (Credentials + Google OAuth)
-- **Integrations**: Google Calendar API (auto event creation + Meet links)
+- **Integrations**: Google Calendar API (auto event creation + Meet links), Resend (email notifications)
 - **UI**: Tailwind CSS 4 + shadcn/ui
 - **Testing**: Playwright (E2E) + Vitest (Unit)
 - **Code Quality**: Biome 2.4.4
@@ -116,8 +118,8 @@ npm run db:studio    # Open Prisma Studio
 - ✅ Guest invitations
 - ✅ Token refresh handling
 
-**Phase 5: Enhancements** 📋
-- [ ] Email notifications (booking confirmations, reminders)
+**Phase 5: Enhancements** 🚧
+- ✅ Email notifications (booking confirmations, cancellations, reschedules via Resend)
 - [ ] Advanced time zone support
 - [ ] Payment integration
 - [ ] Recurring availability
@@ -158,6 +160,13 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="your-secret-here"
 AUTH_URL="http://localhost:3000"
 AUTH_SECRET="your-secret-here"
+
+# Google OAuth (for Calendar integration)
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
+
+# Resend (for email notifications)
+RESEND_APIKEY="your-resend-api-key"
 ```
 
 ---
@@ -192,6 +201,7 @@ event.me/
 │   └── ui/               # shadcn/ui components
 ├── lib/                   # Utilities & database
 │   ├── prisma.ts         # Prisma client
+│   ├── resend.ts         # Email notifications (Resend)
 │   └── utils.ts          # Helper functions
 ├── prisma/               # Database schema & migrations
 │   └── schema.prisma     # Data model
@@ -232,6 +242,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 - **NextAuth** - Authentication
 - **shadcn/ui** - UI components
 - **Biome** - Fast linting & formatting
+- **Resend** - Email delivery
 
 ---
 
