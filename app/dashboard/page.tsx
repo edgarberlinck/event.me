@@ -70,6 +70,9 @@ export default async function DashboardPage() {
                 <Button variant="ghost" asChild>
                   <a href="/availability">Availability</a>
                 </Button>
+                <Button variant="ghost" asChild>
+                  <a href="/dashboard/settings">Settings</a>
+                </Button>
               </nav>
             </div>
             <div className="flex items-center gap-4">

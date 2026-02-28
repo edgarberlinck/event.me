@@ -86,18 +86,50 @@ export function SettingsForm({ user, updateSettings }: SettingsFormProps) {
           className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
           disabled={isPending}
         >
-          <option value="America/New_York">Eastern Time (US & Canada)</option>
-          <option value="America/Chicago">Central Time (US & Canada)</option>
-          <option value="America/Denver">Mountain Time (US & Canada)</option>
-          <option value="America/Los_Angeles">
-            Pacific Time (US & Canada)
-          </option>
-          <option value="America/Sao_Paulo">São Paulo</option>
-          <option value="Europe/London">London</option>
-          <option value="Europe/Paris">Paris</option>
-          <option value="Asia/Tokyo">Tokyo</option>
-          <option value="Asia/Shanghai">Shanghai</option>
-          <option value="Australia/Sydney">Sydney</option>
+          <optgroup label="Americas">
+            <option value="America/New_York">Eastern Time (US & Canada)</option>
+            <option value="America/Chicago">Central Time (US & Canada)</option>
+            <option value="America/Denver">Mountain Time (US & Canada)</option>
+            <option value="America/Los_Angeles">
+              Pacific Time (US & Canada)
+            </option>
+            <option value="America/Sao_Paulo">São Paulo</option>
+            <option value="America/Mexico_City">Mexico City</option>
+            <option value="America/Buenos_Aires">Buenos Aires</option>
+            <option value="America/Toronto">Toronto</option>
+          </optgroup>
+          <optgroup label="Europe">
+            <option value="Europe/London">London</option>
+            <option value="Europe/Paris">Paris</option>
+            <option value="Europe/Stockholm">Stockholm</option>
+            <option value="Europe/Berlin">Berlin</option>
+            <option value="Europe/Madrid">Madrid</option>
+            <option value="Europe/Rome">Rome</option>
+            <option value="Europe/Amsterdam">Amsterdam</option>
+            <option value="Europe/Brussels">Brussels</option>
+            <option value="Europe/Vienna">Vienna</option>
+            <option value="Europe/Copenhagen">Copenhagen</option>
+            <option value="Europe/Oslo">Oslo</option>
+            <option value="Europe/Helsinki">Helsinki</option>
+            <option value="Europe/Dublin">Dublin</option>
+            <option value="Europe/Lisbon">Lisbon</option>
+            <option value="Europe/Zurich">Zurich</option>
+          </optgroup>
+          <optgroup label="Asia">
+            <option value="Asia/Tokyo">Tokyo</option>
+            <option value="Asia/Shanghai">Shanghai</option>
+            <option value="Asia/Hong_Kong">Hong Kong</option>
+            <option value="Asia/Singapore">Singapore</option>
+            <option value="Asia/Dubai">Dubai</option>
+            <option value="Asia/Seoul">Seoul</option>
+            <option value="Asia/Mumbai">Mumbai</option>
+            <option value="Asia/Bangkok">Bangkok</option>
+          </optgroup>
+          <optgroup label="Pacific">
+            <option value="Australia/Sydney">Sydney</option>
+            <option value="Australia/Melbourne">Melbourne</option>
+            <option value="Pacific/Auckland">Auckland</option>
+          </optgroup>
         </select>
       </div>
 

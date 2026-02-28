@@ -61,7 +61,7 @@ export default async function SettingsPage() {
       },
     });
 
-    return { success: true };
+    redirect("/dashboard/settings");
   }
 
   return (
