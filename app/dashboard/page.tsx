@@ -162,7 +162,7 @@ export default async function DashboardPage() {
                   Define when you&apos;re available for meetings
                 </p>
                 <Button variant="link" className="px-0" asChild>
-                  <a href="/availability">Configure now →</a>
+                  <a href="/dashboard/availability">Configure now →</a>
                 </Button>
               </div>
             </div>
