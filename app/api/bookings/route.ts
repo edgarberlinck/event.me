@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma.server";
 import { addHours, addDays, isAfter, isBefore } from "date-fns";
+import {
+  createGoogleCalendarEvent,
+  isGoogleCalendarConnected,
+} from "@/lib/google-calendar";
 
 export async function POST(request: NextRequest) {
   try {
@@ -131,8 +135,66 @@ export async function POST(request: NextRequest) {
       },
       include: {
         eventType: true,
+        user: true,
       },
     });
+
+    // Try to create Google Calendar event
+    try {
+      const isConnected = await isGoogleCalendarConnected(eventType.userId);
+      if (isConnected) {
+        const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+        const cancelUrl = `${baseUrl}/api/bookings/${booking.id}/cancel`;
+        const rescheduleUrl = `${baseUrl}/booking/reschedule/${booking.id}`;
+
+        const descriptionParts = [
+          `Meeting with ${guestName}`,
+          `Email: ${guestEmail}`,
+        ];
+
+        if (guestNotes) {
+          descriptionParts.push("", "Notes:", guestNotes);
+        }
+
+        descriptionParts.push(
+          "",
+          "---",
+          "Manage your booking:",
+          `Cancel: ${cancelUrl}`,
+          `Reschedule: ${rescheduleUrl}`,
+        );
+
+        const calendarEvent = await createGoogleCalendarEvent(
+          eventType.userId,
+          {
+            summary: eventType.title,
+            description: descriptionParts.join("\n"),
+            startTime: start,
+            endTime: end,
+            attendees: [guestEmail],
+            bookingId: booking.id,
+          }
+        );
+
+        // Update booking with Google Calendar info
+        await prisma.booking.update({
+          where: { id: booking.id },
+          data: {
+            googleCalendarEventId: calendarEvent.eventId || null,
+            meetLink: calendarEvent.meetLink || null,
+          },
+        });
+
+        // Return booking with calendar info
+        return NextResponse.json(
+          { ...booking, meetLink: calendarEvent.meetLink },
+          { status: 201 }
+        );
+      }
+    } catch (calendarError) {
+      console.error("Google Calendar error:", calendarError);
+      // Continue without calendar event - booking was still created
+    }
 
     return NextResponse.json(booking, { status: 201 });
   } catch (error) {

@@ -59,7 +59,8 @@ Visit: http://localhost:3000
 - **Framework**: Next.js 16 (App Router with Turbopack)
 - **Language**: TypeScript 5
 - **Database**: PostgreSQL 16 + Prisma 7
-- **Auth**: NextAuth v5 (Credentials)
+- **Auth**: NextAuth v5 (Credentials + Google OAuth)
+- **Integrations**: Google Calendar API (auto event creation + Meet links)
 - **UI**: Tailwind CSS 4 + shadcn/ui
 - **Testing**: Playwright (E2E) + Vitest (Unit)
 - **Code Quality**: Biome 2.4.4
@@ -108,11 +109,18 @@ npm run db:studio    # Open Prisma Studio
 - ✅ Booking confirmation
 - ✅ 32 E2E tests passing
 
-**Phase 3: Enhancements** 📋
-- [ ] Calendar integration
-- [ ] Email notifications
-- [ ] Time zone support
+**Phase 4: Google Calendar Integration** ✅
+- ✅ Google OAuth authentication
+- ✅ Automatic calendar event creation
+- ✅ Google Meet link generation
+- ✅ Guest invitations
+- ✅ Token refresh handling
+
+**Phase 5: Enhancements** 📋
+- [ ] Email notifications (booking confirmations, reminders)
+- [ ] Advanced time zone support
 - [ ] Payment integration
+- [ ] Recurring availability
 
 ---
 

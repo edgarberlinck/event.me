@@ -10,8 +10,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma.server";
+import { isGoogleCalendarConnected } from "@/lib/google-calendar";
 import { BookingLinkCard } from "./booking-link-card";
 import { SettingsForm } from "./settings-form";
+import { GoogleCalendarCard } from "./google-calendar-card";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -28,6 +30,8 @@ export default async function SettingsPage() {
   if (!user) {
     redirect("/login");
   }
+
+  const googleConnected = await isGoogleCalendarConnected(session.user.id);
 
   async function updateSettings(prevState: any, formData: FormData) {
     "use server";
@@ -104,6 +108,8 @@ export default async function SettingsPage() {
         {user?.username && (
           <BookingLinkCard username={user.username} />
         )}
+
+        <GoogleCalendarCard isConnected={googleConnected} />
 
         <Card>
           <CardHeader>

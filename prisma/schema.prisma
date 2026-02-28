@@ -100,19 +100,21 @@ model EventType {
 }
 
 model Booking {
-  id            String    @id @default(cuid())
-  eventTypeId   String
-  userId        String
-  guestName     String
-  guestEmail    String
-  guestNotes    String?
-  startTime     DateTime
-  endTime       DateTime
-  status        String    @default("confirmed") // confirmed, cancelled, completed
-  eventType     EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                  String    @id @default(cuid())
+  eventTypeId         String
+  userId              String
+  guestName           String
+  guestEmail          String
+  guestNotes          String?
+  startTime           DateTime
+  endTime             DateTime
+  status              String    @default("confirmed") // confirmed, cancelled, completed
+  googleCalendarEventId String?
+  meetLink            String?
+  eventType           EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
   
   @@index([userId])
   @@index([eventTypeId])

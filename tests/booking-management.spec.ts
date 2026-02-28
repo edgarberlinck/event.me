@@ -1,8 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../lib/prisma.server";
 import bcrypt from "bcryptjs";
-
-const prisma = new PrismaClient();
 
 test.describe("Booking Management", () => {
   let userId: string;

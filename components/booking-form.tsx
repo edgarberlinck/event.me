@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { format, startOfDay } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ interface BookingFormProps {
 }
 
 export function BookingForm({ eventType }: BookingFormProps) {
+  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedSlot, setSelectedSlot] = useState<{ start: Date; end: Date } | null>(null);
   const [availableSlots, setAvailableSlots] = useState<{ start: Date; end: Date }[]>([]);
@@ -88,22 +90,25 @@ export function BookingForm({ eventType }: BookingFormProps) {
         }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || "Failed to create booking");
       }
 
-      toast.success("Booking confirmed! You will receive a confirmation email shortly.");
+      const data = await response.json();
 
-      // Reset form
-      e.currentTarget.reset();
-      setSelectedDate(undefined);
-      setSelectedSlot(null);
-      setAvailableSlots([]);
+      // Redirect to success page with booking data
+      const params = new URLSearchParams({
+        guestName: formData.get("guestName") as string,
+        guestEmail: formData.get("guestEmail") as string,
+        startTime: selectedSlot.start.toISOString(),
+        ...(data.meetLink && { meetLink: data.meetLink }),
+      });
+      router.push(`/book/success?${params.toString()}`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to create booking");
-    } finally {
+      console.error("Booking error:", error);
+      const errorMessage = error instanceof Error ? error.message : "Failed to create booking";
+      toast.error(errorMessage);
       setSubmitting(false);
     }
   };
