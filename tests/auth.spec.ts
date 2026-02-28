@@ -88,6 +88,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
     await page.getByRole("button", { name: "Create Account" }).click();
 
@@ -112,6 +113,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
     await page.getByRole("button", { name: "Create Account" }).click();
 
@@ -144,6 +146,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
     await page.getByRole("button", { name: "Create Account" }).click();
 
@@ -185,6 +188,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
     await page.getByLabel("Name").fill(user.name);
     await page.getByLabel("Email").fill(user.email);
+    await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
     await page.getByRole("button", { name: "Create Account" }).click();
 

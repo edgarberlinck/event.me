@@ -10,6 +10,7 @@ test.describe("Availability Management", () => {
     await page.goto("/register");
     await page.fill('input[name="name"]', "Availability Test User");
     await page.fill('input[name="email"]', email);
+    await page.fill('input[name="username"]', `availuser${timestamp}`);
     await page.fill('input[name="password"]', password);
     await page.click('button[type="submit"]');
 
@@ -29,24 +30,24 @@ test.describe("Availability Management", () => {
     page,
   }) => {
     // Click on availability link
-    await page.click('a[href="/availability"]');
+    await page.click('a[href="/dashboard/availability"]');
 
     // Verify we're on the availability page
-    await expect(page).toHaveURL("/availability");
+    await expect(page).toHaveURL("/dashboard/availability");
     await expect(page.locator("h1")).toContainText("Availability");
   });
 
   test("should show empty state when no availability is set", async ({
     page,
   }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Check empty state message
     await expect(page.locator("text=No availability set yet")).toBeVisible();
   });
 
   test("should add new availability slot", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Fill the form
     await page.selectOption('select[name="dayOfWeek"]', "1"); // Monday
@@ -57,7 +58,7 @@ test.describe("Availability Management", () => {
     await page.click('button[type="submit"]:has-text("Add Availability")');
 
     // Wait for redirect and page load
-    await page.waitForURL("/availability");
+    await page.waitForURL("/dashboard/availability");
     await page.waitForLoadState("networkidle");
 
     // Verify the availability was added
@@ -65,14 +66,14 @@ test.describe("Availability Management", () => {
   });
 
   test("should add multiple availability slots", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Add Monday
     await page.selectOption('select[name="dayOfWeek"]', "1");
     await page.fill('input[name="startTime"]', "09:00");
     await page.fill('input[name="endTime"]', "12:00");
     await page.click('button[type="submit"]:has-text("Add Availability")');
-    await page.waitForURL("/availability");
+    await page.waitForURL("/dashboard/availability");
     await page.waitForLoadState("networkidle");
 
     // Add Wednesday
@@ -80,7 +81,7 @@ test.describe("Availability Management", () => {
     await page.fill('input[name="startTime"]', "14:00");
     await page.fill('input[name="endTime"]', "18:00");
     await page.click('button[type="submit"]:has-text("Add Availability")');
-    await page.waitForURL("/availability");
+    await page.waitForURL("/dashboard/availability");
     await page.waitForLoadState("networkidle");
 
     // Verify both slots exist
@@ -89,14 +90,14 @@ test.describe("Availability Management", () => {
   });
 
   test("should delete availability slot", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Add a slot
     await page.selectOption('select[name="dayOfWeek"]', "2"); // Tuesday
     await page.fill('input[name="startTime"]', "10:00");
     await page.fill('input[name="endTime"]', "16:00");
     await page.click('button[type="submit"]:has-text("Add Availability")');
-    await page.waitForURL("/availability");
+    await page.waitForURL("/dashboard/availability");
     await page.waitForLoadState("networkidle");
 
     // Verify it was added
@@ -106,7 +107,7 @@ test.describe("Availability Management", () => {
     await page.click('button:has-text("Delete")');
 
     // Wait for redirect and load
-    await page.waitForURL("/availability");
+    await page.waitForURL("/dashboard/availability");
     await page.waitForLoadState("networkidle");
 
     // Verify empty state is back
@@ -114,10 +115,10 @@ test.describe("Availability Management", () => {
   });
 
   test("should navigate back to dashboard", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
-    // Click back button
-    await page.click('a:has-text("Back to Dashboard")');
+    // Click Dashboard nav link
+    await page.click('a[href="/dashboard"]');
 
     // Verify we're on dashboard
     await expect(page).toHaveURL("/dashboard");
@@ -131,14 +132,14 @@ test.describe("Availability Management", () => {
     await context.clearCookies();
 
     // Try to access availability page
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Should redirect to login
     await expect(page).toHaveURL("/login");
   });
 
   test("should validate time inputs are required", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Try to submit without times
     await page.selectOption('select[name="dayOfWeek"]', "1");
@@ -162,7 +163,7 @@ test.describe("Availability Management", () => {
   });
 
   test("should show all days of the week in dropdown", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     const select = page.locator('select[name="dayOfWeek"]');
 
@@ -188,7 +189,7 @@ test.describe("Availability Management", () => {
   });
 
   test("should persist availability across sessions", async ({ page }) => {
-    await page.goto("/availability");
+    await page.goto("/dashboard/availability");
 
     // Add availability
     await page.selectOption('select[name="dayOfWeek"]', "5"); // Friday

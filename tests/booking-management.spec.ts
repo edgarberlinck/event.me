@@ -171,6 +171,7 @@ test.describe("Booking Management", () => {
     const bookingRow = page
       .locator(`text=cancel@example.com`)
       .locator("..")
+      .locator("..")
       .locator("..");
     await bookingRow.locator('button:has-text("Cancel")').click();
 
