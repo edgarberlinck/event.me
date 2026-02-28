@@ -1,5 +1,4 @@
-import { Calendar, Clock, Edit, Link as LinkIcon, Plus, Trash2 } from "lucide-react";
-import { redirect } from "next/navigation";
+import { Clock, Edit, Link as LinkIcon, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,7 @@ export default async function EventTypesPage() {
   const session = await auth();
 
   if (!session?.user) {
-    redirect("/login");
+    return null;
   }
 
   const eventTypes = await prisma.eventType.findMany({
@@ -31,46 +30,21 @@ export default async function EventTypesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="border-b bg-white dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-8">
-              <Link href="/dashboard" className="flex items-center">
-                <Calendar className="h-8 w-8 text-indigo-600" />
-                <span className="ml-2 text-xl font-bold">Event.me</span>
-              </Link>
-              <nav className="flex gap-4">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/event-types" className="text-indigo-600 font-medium">
-                  Event Types
-                </Link>
-                <Link href="/availability" className="text-gray-600 hover:text-gray-900">
-                  Availability
-                </Link>
-              </nav>
-            </div>
-          </div>
+    <>
+      <div className="flex justify-between items-center mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Event Types</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">
+            Create and manage your meeting types
+          </p>
         </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold">Event Types</h1>
-            <p className="text-gray-600 dark:text-gray-400 mt-2">
-              Create and manage your meeting types
-            </p>
-          </div>
-          <Button asChild>
-            <Link href="/dashboard/event-types/new">
-              <Plus className="h-4 w-4 mr-2" />
-              New Event Type
-            </Link>
-          </Button>
-        </div>
+        <Button asChild>
+          <Link href="/dashboard/event-types/new">
+            <Plus className="h-4 w-4 mr-2" />
+            New Event Type
+          </Link>
+        </Button>
+      </div>
 
         {eventTypes.length === 0 ? (
           <Card>
@@ -168,7 +142,6 @@ export default async function EventTypesPage() {
             ))}
           </div>
         )}
-      </main>
-    </div>
+    </>
   );
 }

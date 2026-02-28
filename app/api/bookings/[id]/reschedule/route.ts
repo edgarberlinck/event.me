@@ -91,7 +91,7 @@ export async function POST(
     }
 
     // Update booking
-    const updatedBooking = await prisma.booking.update({
+    await prisma.booking.update({
       where: { id },
       data: {
         startTime: newStartTime,
@@ -100,10 +100,9 @@ export async function POST(
       },
     });
 
-    return NextResponse.json({
-      message: "Booking rescheduled successfully",
-      booking: updatedBooking,
-    });
+    // Redirect to confirmation page
+    const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+    return NextResponse.redirect(`${baseUrl}/booking/rescheduled/${id}`);
   } catch (error) {
     console.error("Error rescheduling booking:", error);
     return NextResponse.json(

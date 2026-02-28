@@ -55,7 +55,7 @@ async function handleSaveAvailability(formData: FormData) {
     },
   });
 
-  redirect("/availability");
+  redirect("/dashboard/availability");
 }
 
 async function handleDeleteAvailability(formData: FormData) {
@@ -75,7 +75,7 @@ async function handleDeleteAvailability(formData: FormData) {
     },
   });
 
-  redirect("/availability");
+  redirect("/dashboard/availability");
 }
 
 export default async function AvailabilityPage() {
@@ -88,7 +88,7 @@ export default async function AvailabilityPage() {
   const availability = await getAvailability(session.user.id);
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-4xl">
+    <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Availability</h1>
         <p className="text-gray-600">
@@ -189,12 +189,6 @@ export default async function AvailabilityPage() {
             )}
           </CardContent>
         </Card>
-      </div>
-
-      <div className="mt-6">
-        <Button variant="outline" asChild>
-          <a href="/dashboard">Back to Dashboard</a>
-        </Button>
       </div>
     </div>
   );

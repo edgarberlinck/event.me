@@ -1,6 +1,5 @@
-import { Calendar, Clock, LogOut, Users } from "lucide-react";
-import { redirect } from "next/navigation";
-import { auth, signOut } from "@/auth";
+import { Calendar, Clock, Users } from "lucide-react";
+import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,31 +10,33 @@ import {
 } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma.server";
 
-async function handleSignOut() {
-  "use server";
-  await signOut({ redirectTo: "/" });
-}
-
 export default async function DashboardPage() {
   const session = await auth();
 
   if (!session?.user) {
-    redirect("/login");
+    return null;
   }
 
-  const [availability, eventTypes, bookingsCount] = await Promise.all([
-    prisma.availability.findMany({
-      where: { userId: session.user.id },
-      orderBy: { dayOfWeek: "asc" },
-    }),
-    prisma.eventType.findMany({
-      where: { userId: session.user.id },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.booking.count({
-      where: { userId: session.user.id },
-    }),
-  ]);
+  const [availability, eventTypes, bookingsCount, recentBookings] =
+    await Promise.all([
+      prisma.availability.findMany({
+        where: { userId: session.user.id },
+        orderBy: { dayOfWeek: "asc" },
+      }),
+      prisma.eventType.findMany({
+        where: { userId: session.user.id },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.booking.count({
+        where: { userId: session.user.id },
+      }),
+      prisma.booking.findMany({
+        where: { userId: session.user.id },
+        include: { eventType: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }),
+    ]);
 
   const DAYS_OF_WEEK = [
     "Sunday",
@@ -48,55 +49,13 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <nav className="border-b bg-white dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-8">
-              <div className="flex items-center">
-                <Calendar className="h-8 w-8 text-indigo-600" />
-                <span className="ml-2 text-xl font-bold">Event.me</span>
-              </div>
-              <nav className="flex gap-4">
-                <Button variant="ghost" asChild>
-                  <a href="/dashboard">Dashboard</a>
-                </Button>
-                <Button variant="ghost" asChild>
-                  <a href="/dashboard/event-types">Event Types</a>
-                </Button>
-                <Button variant="ghost" asChild>
-                  <a href="/dashboard/bookings">Bookings</a>
-                </Button>
-                <Button variant="ghost" asChild>
-                  <a href="/availability">Availability</a>
-                </Button>
-                <Button variant="ghost" asChild>
-                  <a href="/dashboard/settings">Settings</a>
-                </Button>
-              </nav>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-sm">
-                <p className="font-medium">{session.user.name}</p>
-                <p className="text-gray-500">{session.user.email}</p>
-              </div>
-              <form action={handleSignOut}>
-                <Button variant="ghost" size="icon" type="submit">
-                  <LogOut className="h-5 w-5" />
-                </Button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Welcome back, {session.user.name?.split(" ")[0]}! 👋
-          </p>
-        </div>
+    <>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">
+          Welcome back, {session.user.name?.split(" ")[0]}! 👋
+        </p>
+      </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <Card>
@@ -246,18 +205,74 @@ export default async function DashboardPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8 text-gray-500">
-                <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No recent activity</p>
-                <p className="text-sm mt-2">
-                  Your bookings will appear here once people start scheduling
-                  with you.
-                </p>
-              </div>
+              {recentBookings.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No recent activity</p>
+                  <p className="text-sm mt-2">
+                    Your bookings will appear here once people start scheduling
+                    with you.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recentBookings.map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="flex items-start gap-3 pb-3 border-b last:border-0"
+                    >
+                      <div className="flex-shrink-0 mt-1">
+                        <div
+                          className={`h-2 w-2 rounded-full ${
+                            booking.status === "CONFIRMED"
+                              ? "bg-green-500"
+                              : booking.status === "CANCELLED"
+                                ? "bg-red-500"
+                                : "bg-yellow-500"
+                          }`}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {booking.attendeeName}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {booking.eventType.title} •{" "}
+                          {new Date(booking.startTime).toLocaleString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            booking.status === "CONFIRMED"
+                              ? "bg-green-100 text-green-700"
+                              : booking.status === "CANCELLED"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {booking.status.toLowerCase()}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                  {bookingsCount > 5 && (
+                    <Button variant="link" className="px-0 h-auto text-xs w-full" asChild>
+                      <a href="/dashboard/bookings">
+                        View all {bookingsCount} bookings →
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
-      </main>
-    </div>
+    </>
   );
 }
