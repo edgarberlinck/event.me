@@ -70,9 +70,11 @@ export async function POST(
           requestBody: {
             start: {
               dateTime: newStartTime.toISOString(),
+              timeZone: booking.user.timezone,
             },
             end: {
               dateTime: newEndTime.toISOString(),
+              timeZone: booking.user.timezone,
             },
             description,
           },

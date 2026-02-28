@@ -30,6 +30,11 @@ export async function POST(request: NextRequest) {
     // Get event type
     const eventType = await prisma.eventType.findUnique({
       where: { id: eventTypeId },
+      include: {
+        user: {
+          select: { timezone: true },
+        },
+      },
     });
 
     if (!eventType) {
@@ -176,6 +181,7 @@ export async function POST(request: NextRequest) {
             endTime: end,
             attendees: [guestEmail],
             bookingId: booking.id,
+            timezone: eventType.user.timezone,
           },
         );
 
