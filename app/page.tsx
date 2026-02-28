@@ -31,7 +31,7 @@ export default function Home() {
             slots. No complexity, no fuss - just clean, efficient appointment
             scheduling.
           </p>
-          <div className="mt-10 flex justify-center gap-4">
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
             <Link href="/register">
               <Button size="lg" className="text-lg px-8 py-6">
                 Get Started

@@ -139,7 +139,7 @@ export default async function PublicBookingPage({
                 <CardDescription>
                   {eventType.description || "Please provide your details"}
                 </CardDescription>
-                <div className="flex items-center gap-4 mt-4 text-sm text-gray-600">
+                <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <User className="h-4 w-4" />
                     {user.name}
