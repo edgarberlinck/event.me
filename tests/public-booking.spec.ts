@@ -75,12 +75,11 @@ test.describe("Public Booking Flow", () => {
     await expect(page.getByText("A test meeting for E2E tests")).toBeVisible();
   });
 
-  test("should show availability on booking page", async ({ page }) => {
+  test("should show calendar on booking page", async ({ page }) => {
     await page.goto(`/${testUsername}/${testEventTypeSlug}`);
 
-    await expect(page.getByText("Available Hours:")).toBeVisible();
-    await expect(page.getByText("Monday:")).toBeVisible();
-    await expect(page.getByText("09:00 - 17:00")).toBeVisible();
+    await expect(page.getByText("Select a Date & Time")).toBeVisible();
+    await expect(page.getByText("Select a date")).toBeVisible();
   });
 
   test("should show booking form with date and time params", async ({

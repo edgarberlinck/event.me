@@ -1,6 +1,7 @@
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -75,6 +76,11 @@ export default async function PublicBookingPage({
 
   const user = await prisma.user.findUnique({
     where: { username },
+    include: {
+      availability: {
+        orderBy: { dayOfWeek: "asc" },
+      },
+    },
   });
 
   if (!user) {
@@ -93,10 +99,13 @@ export default async function PublicBookingPage({
     notFound();
   }
 
-  const availability = await prisma.availability.findMany({
-    where: { userId: user.id },
-    orderBy: { dayOfWeek: "asc" },
-  });
+  const eventTypeWithUser = {
+    ...eventType,
+    user: {
+      availability: user.availability,
+      timezone: user.timezone,
+    },
+  };
 
   const showBookingForm = date && time;
 
@@ -245,42 +254,7 @@ export default async function PublicBookingPage({
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8">
-                  <Calendar className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-                  <p className="text-gray-600 mb-4">
-                    Calendar integration coming soon...
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    For now, you can test the booking form by adding
-                    ?date=2024-03-20&time=10:00 to the URL
-                  </p>
-                  {availability.length > 0 && (
-                    <div className="mt-6 text-left max-w-md mx-auto">
-                      <h3 className="font-semibold mb-2">Available Hours:</h3>
-                      <div className="space-y-1 text-sm">
-                        {availability.map((slot) => (
-                          <div key={slot.id}>
-                            <span className="font-medium">
-                              {
-                                [
-                                  "Sunday",
-                                  "Monday",
-                                  "Tuesday",
-                                  "Wednesday",
-                                  "Thursday",
-                                  "Friday",
-                                  "Saturday",
-                                ][slot.dayOfWeek]
-                              }
-                              :
-                            </span>{" "}
-                            {slot.startTime} - {slot.endTime}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <BookingForm eventType={eventTypeWithUser} />
               </CardContent>
             </Card>
           </div>
