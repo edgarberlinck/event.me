@@ -245,4 +245,4 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ---
 
-**Built with ❤️ in Brazil 🇧🇷**
+**Built with ❤️ in Sweden 🇸🇪**
