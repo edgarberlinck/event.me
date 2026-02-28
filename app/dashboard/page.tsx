@@ -52,9 +52,25 @@ export default async function DashboardPage() {
       <nav className="border-b bg-white dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Calendar className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-xl font-bold">Event.me</span>
+            <div className="flex items-center gap-8">
+              <div className="flex items-center">
+                <Calendar className="h-8 w-8 text-indigo-600" />
+                <span className="ml-2 text-xl font-bold">Event.me</span>
+              </div>
+              <nav className="flex gap-4">
+                <Button variant="ghost" asChild>
+                  <a href="/dashboard">Dashboard</a>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <a href="/dashboard/event-types">Event Types</a>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <a href="/dashboard/bookings">Bookings</a>
+                </Button>
+                <Button variant="ghost" asChild>
+                  <a href="/availability">Availability</a>
+                </Button>
+              </nav>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-sm">

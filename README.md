@@ -97,7 +97,14 @@ npm run db:studio    # Open Prisma Studio
   - Max bookings per week
   - Minimum notice hours
   - Maximum notice days
-- ✅ Public booking pages
+
+**Phase 3: Booking System** ✅
+- ✅ Public booking pages with calendar UI
+- ✅ Real-time slot availability
+- ✅ Booking creation with validation
+- ✅ Booking management dashboard
+- ✅ Cancel bookings
+- ✅ Constraint enforcement
 - ✅ Booking confirmation
 - ✅ 32 E2E tests passing
 
