@@ -1,5 +1,13 @@
 import type { Availability, Booking, EventType } from "@prisma/client";
-import { addDays, addMinutes, isAfter, isBefore, startOfDay } from "date-fns";
+import {
+  addDays,
+  addMinutes,
+  format,
+  isAfter,
+  isBefore,
+  startOfDay,
+} from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 
 export interface TimeSlot {
   start: Date;
@@ -14,7 +22,7 @@ export function getAvailableSlots(
   existingBookings: Booking[],
 ): TimeSlot[] {
   const dayOfWeek = date.getDay();
-  const _timezone = eventType.user.timezone;
+  const timezone = eventType.user.timezone;
 
   // Find availability for this day
   const dayAvailability = eventType.user.availability.filter(
@@ -26,19 +34,18 @@ export function getAvailableSlots(
   }
 
   const slots: TimeSlot[] = [];
+  const dateStr = format(date, "yyyy-MM-dd");
 
   for (const availability of dayAvailability) {
-    // Parse start and end times
-    const [startHour, startMinute] = availability.startTime
-      .split(":")
-      .map(Number);
-    const [endHour, endMinute] = availability.endTime.split(":").map(Number);
-
-    const start = new Date(date);
-    start.setHours(startHour, startMinute, 0, 0);
-
-    const end = new Date(date);
-    end.setHours(endHour, endMinute, 0, 0);
+    // Create start and end times interpreted in the host's timezone
+    const start = fromZonedTime(
+      `${dateStr}T${availability.startTime}:00`,
+      timezone,
+    );
+    const end = fromZonedTime(
+      `${dateStr}T${availability.endTime}:00`,
+      timezone,
+    );
 
     // Generate slots
     let currentSlot = start;

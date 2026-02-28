@@ -61,6 +61,7 @@ export async function createGoogleCalendarEvent(
     endTime: Date;
     attendees: string[];
     bookingId?: string;
+    timezone?: string;
   },
 ) {
   const calendar = await getGoogleCalendarClient(userId);
@@ -92,9 +93,11 @@ export async function createGoogleCalendarEvent(
       description,
       start: {
         dateTime: event.startTime.toISOString(),
+        timeZone: event.timezone,
       },
       end: {
         dateTime: event.endTime.toISOString(),
+        timeZone: event.timezone,
       },
       attendees: event.attendees.map((email) => ({ email })),
       conferenceData: {
