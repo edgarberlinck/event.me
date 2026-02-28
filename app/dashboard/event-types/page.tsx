@@ -31,7 +31,7 @@ export default async function EventTypesPage() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold">Event Types</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">
@@ -81,7 +81,7 @@ export default async function EventTypesPage() {
                     <CardDescription>
                       {eventType.description || "No description"}
                     </CardDescription>
-                    <div className="flex items-center gap-4 mt-4 text-sm text-gray-600">
+                    <div className="flex flex-wrap items-center gap-4 mt-4 text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
                         {eventType.duration} minutes
