@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { deleteGoogleCalendarEvent } from "@/lib/google-calendar";
 import { prisma } from "@/lib/prisma.server";
 import { sendBookingStatusChangedEmail } from "@/lib/resend";
 
@@ -50,6 +51,18 @@ export async function PATCH(
         eventType: true,
       },
     });
+
+    // Delete Google Calendar event when cancelling
+    if (status === "cancelled" && booking.googleCalendarEventId) {
+      try {
+        await deleteGoogleCalendarEvent(user.id, booking.googleCalendarEventId);
+      } catch (calendarError) {
+        console.error(
+          `Failed to delete Google Calendar event ${booking.googleCalendarEventId} for booking ${booking.id}:`,
+          calendarError,
+        );
+      }
+    }
 
     // Send email notification
     try {
