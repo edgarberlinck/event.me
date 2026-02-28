@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma.server";
+import { sendBookingStatusChangedEmail } from "@/lib/resend";
 
 export async function PATCH(
   request: NextRequest,
@@ -49,6 +50,21 @@ export async function PATCH(
         eventType: true,
       },
     });
+
+    // Send email notification
+    try {
+      await sendBookingStatusChangedEmail({
+        to: session.user.email,
+        guestName: booking.guestName,
+        guestEmail: booking.guestEmail,
+        eventTitle: updatedBooking.eventType.title,
+        startTime: updatedBooking.startTime,
+        endTime: updatedBooking.endTime,
+        status,
+      });
+    } catch (emailError) {
+      console.error("Email notification error:", emailError);
+    }
 
     return NextResponse.json(updatedBooking);
   } catch (error) {

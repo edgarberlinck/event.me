@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { getGoogleCalendarClient } from "@/lib/google-calendar";
 import { prisma } from "@/lib/prisma.server";
+import { sendBookingRescheduledEmail } from "@/lib/resend";
 
 export async function POST(
   request: NextRequest,
@@ -96,6 +97,23 @@ export async function POST(
         meetLink,
       },
     });
+
+    // Send email notification
+    try {
+      await sendBookingRescheduledEmail({
+        to: booking.user.email,
+        guestName: booking.guestName,
+        guestEmail: booking.guestEmail,
+        eventTitle: booking.eventType.title,
+        startTime: newStartTime,
+        endTime: newEndTime,
+        previousStartTime: booking.startTime,
+        previousEndTime: booking.endTime,
+        meetLink,
+      });
+    } catch (emailError) {
+      console.error("Email notification error:", emailError);
+    }
 
     // Redirect to confirmation page
     const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
