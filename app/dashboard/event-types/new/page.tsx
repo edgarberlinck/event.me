@@ -1,6 +1,6 @@
 import { Calendar } from "lucide-react";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,15 +26,15 @@ async function createEventType(formData: FormData) {
   const title = formData.get("title") as string;
   const slug = formData.get("slug") as string;
   const description = formData.get("description") as string;
-  const duration = Number.parseInt(formData.get("duration") as string);
+  const duration = Number.parseInt(formData.get("duration") as string, 10);
   const maxBookingsPerWeek = formData.get("maxBookingsPerWeek")
-    ? Number.parseInt(formData.get("maxBookingsPerWeek") as string)
+    ? Number.parseInt(formData.get("maxBookingsPerWeek") as string, 10)
     : null;
   const minimumNoticeHours = formData.get("minimumNoticeHours")
-    ? Number.parseInt(formData.get("minimumNoticeHours") as string)
+    ? Number.parseInt(formData.get("minimumNoticeHours") as string, 10)
     : 24;
   const maximumNoticeDays = formData.get("maximumNoticeDays")
-    ? Number.parseInt(formData.get("maximumNoticeDays") as string)
+    ? Number.parseInt(formData.get("maximumNoticeDays") as string, 10)
     : 14;
 
   if (!title || !slug || !duration) {

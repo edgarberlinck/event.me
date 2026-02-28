@@ -1,12 +1,12 @@
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma.server";
+import { auth } from "@/auth";
 import { BookingsTable } from "@/components/bookings-table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma.server";
 
 export default async function BookingsPage() {
   const session = await auth();
-  
+
   if (!session?.user?.email) {
     redirect("/login");
   }

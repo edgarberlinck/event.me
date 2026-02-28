@@ -1,8 +1,14 @@
-import { CheckCircle, Calendar, Mail, Video } from "lucide-react";
+import { format } from "date-fns";
+import { Calendar, CheckCircle, Mail, Video } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { format } from "date-fns";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 interface BookingSuccessPageProps {
   searchParams: Promise<{
@@ -13,7 +19,9 @@ interface BookingSuccessPageProps {
   }>;
 }
 
-export default async function BookingSuccessPage({ searchParams }: BookingSuccessPageProps) {
+export default async function BookingSuccessPage({
+  searchParams,
+}: BookingSuccessPageProps) {
   const params = await searchParams;
   const { guestName, guestEmail, startTime, meetLink } = params;
 
@@ -60,8 +68,10 @@ export default async function BookingSuccessPage({ searchParams }: BookingSucces
               <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
                 <Video className="w-5 h-5 text-blue-600 mt-0.5" />
                 <div className="flex-1">
-                  <p className="font-medium text-sm text-blue-900">Google Meet Link</p>
-                  <a 
+                  <p className="font-medium text-sm text-blue-900">
+                    Google Meet Link
+                  </p>
+                  <a
                     href={meetLink}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -75,7 +85,8 @@ export default async function BookingSuccessPage({ searchParams }: BookingSucces
 
             <div className="pt-4 border-t">
               <p className="text-sm text-gray-600 text-center mb-4">
-                A calendar invite with the meeting details has been sent to your email address.
+                A calendar invite with the meeting details has been sent to your
+                email address.
               </p>
               <Button asChild className="w-full">
                 <Link href="/">Back to Home</Link>

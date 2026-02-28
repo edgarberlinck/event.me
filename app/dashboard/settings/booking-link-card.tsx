@@ -1,5 +1,7 @@
 "use client";
 
+import { Check, Copy } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,8 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
-import { Check, Copy } from "lucide-react";
 
 export function BookingLinkCard({ username }: { username: string }) {
   const [copied, setCopied] = useState(false);

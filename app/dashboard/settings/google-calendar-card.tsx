@@ -1,5 +1,6 @@
 "use client";
 
+import { Calendar, CheckCircle2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,13 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Calendar, CheckCircle2 } from "lucide-react";
 
-export function GoogleCalendarCard({
-  isConnected,
-}: {
-  isConnected: boolean;
-}) {
+export function GoogleCalendarCard({ isConnected }: { isConnected: boolean }) {
   return (
     <Card className="mb-6">
       <CardHeader>

@@ -1,6 +1,7 @@
-import { Calendar, Clock, User, ArrowLeft } from "lucide-react";
-import { notFound, redirect } from "next/navigation";
+import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -33,7 +33,7 @@ async function createBooking(formData: FormData) {
   const guestEmail = formData.get("guestEmail") as string;
   const guestNotes = formData.get("guestNotes") as string;
   const startTime = formData.get("startTime") as string;
-  const duration = Number.parseInt(formData.get("duration") as string);
+  const duration = Number.parseInt(formData.get("duration") as string, 10);
 
   if (!eventTypeId || !guestName || !guestEmail || !startTime || !duration) {
     throw new Error("Missing required fields");
@@ -66,7 +66,10 @@ async function createBooking(formData: FormData) {
   redirect("/booking/success");
 }
 
-export default async function PublicBookingPage({ params, searchParams }: Props) {
+export default async function PublicBookingPage({
+  params,
+  searchParams,
+}: Props) {
   const { username, slug } = await params;
   const { date, time } = await searchParams;
 
@@ -120,7 +123,7 @@ export default async function PublicBookingPage({ params, searchParams }: Props)
               <ArrowLeft className="h-4 w-4" />
               Back to date selection
             </Link>
-            
+
             <Card>
               <CardHeader>
                 <CardTitle>Book {eventType.title}</CardTitle>
@@ -151,8 +154,16 @@ export default async function PublicBookingPage({ params, searchParams }: Props)
               </CardHeader>
               <CardContent>
                 <form action={createBooking} className="space-y-6">
-                  <input type="hidden" name="eventTypeId" value={eventType.id} />
-                  <input type="hidden" name="duration" value={eventType.duration} />
+                  <input
+                    type="hidden"
+                    name="eventTypeId"
+                    value={eventType.id}
+                  />
+                  <input
+                    type="hidden"
+                    name="duration"
+                    value={eventType.duration}
+                  />
                   <input
                     type="hidden"
                     name="startTime"
@@ -240,7 +251,8 @@ export default async function PublicBookingPage({ params, searchParams }: Props)
                     Calendar integration coming soon...
                   </p>
                   <p className="text-sm text-gray-500">
-                    For now, you can test the booking form by adding ?date=2024-03-20&time=10:00 to the URL
+                    For now, you can test the booking form by adding
+                    ?date=2024-03-20&time=10:00 to the URL
                   </p>
                   {availability.length > 0 && (
                     <div className="mt-6 text-left max-w-md mx-auto">
@@ -249,7 +261,18 @@ export default async function PublicBookingPage({ params, searchParams }: Props)
                         {availability.map((slot) => (
                           <div key={slot.id}>
                             <span className="font-medium">
-                              {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][slot.dayOfWeek]}:
+                              {
+                                [
+                                  "Sunday",
+                                  "Monday",
+                                  "Tuesday",
+                                  "Wednesday",
+                                  "Thursday",
+                                  "Friday",
+                                  "Saturday",
+                                ][slot.dayOfWeek]
+                              }
+                              :
                             </span>{" "}
                             {slot.startTime} - {slot.endTime}
                           </div>

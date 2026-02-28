@@ -8,7 +8,7 @@ export const authConfig = {
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       if (token && session.user) {
         session.user.id = token.sub as string;
         session.accessToken = token.accessToken as string;

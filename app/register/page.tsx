@@ -25,10 +25,7 @@ async function handleRegister(formData: FormData) {
   // Check if user already exists
   const existingUser = await prisma.user.findFirst({
     where: {
-      OR: [
-        { email },
-        { username },
-      ],
+      OR: [{ email }, { username }],
     },
   });
 

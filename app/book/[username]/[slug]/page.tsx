@@ -1,8 +1,14 @@
-import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma.server";
-import { BookingForm } from "@/components/booking-form";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock } from "lucide-react";
+import { notFound } from "next/navigation";
+import { BookingForm } from "@/components/booking-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { prisma } from "@/lib/prisma.server";
 
 interface BookingPageProps {
   params: Promise<{

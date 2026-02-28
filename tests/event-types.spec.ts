@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 function generateTestUser() {
   const timestamp = Date.now();
@@ -18,11 +18,17 @@ test.describe("Event Types Management", () => {
 
     // Register
     await page.goto("/register");
-    await page.getByRole("textbox", { name: "Name", exact: true }).fill(testUser.name);
+    await page
+      .getByRole("textbox", { name: "Name", exact: true })
+      .fill(testUser.name);
     await page.getByRole("textbox", { name: "Email" }).fill(testUser.email);
-    await page.getByRole("textbox", { name: "Username" }).fill(testUser.username);
+    await page
+      .getByRole("textbox", { name: "Username" })
+      .fill(testUser.username);
     await page.getByLabel("Password").fill(testUser.password);
-    await page.getByRole("button", { name: "Create Account" }).click({ force: true });
+    await page
+      .getByRole("button", { name: "Create Account" })
+      .click({ force: true });
 
     await page.waitForTimeout(2000);
 
@@ -49,15 +55,17 @@ test.describe("Event Types Management", () => {
 
     // Click submit
     await page.getByRole("button", { name: "Create Event Type" }).click();
-    
+
     // Wait for redirect - the server action should redirect us
     await page.waitForURL("/dashboard/event-types");
-    
+
     // Wait a bit for the page to fully load
     await page.waitForLoadState("domcontentloaded");
 
     // Verify event type was created
-    await expect(page.getByText("30 Minute Meeting")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("30 Minute Meeting")).toBeVisible({
+      timeout: 10000,
+    });
     await expect(page.getByText("30 minutes")).toBeVisible();
   });
 });

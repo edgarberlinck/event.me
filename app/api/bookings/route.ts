@@ -1,21 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma.server";
-import { addHours, addDays, isAfter, isBefore } from "date-fns";
+import { addDays, addHours, isAfter, isBefore } from "date-fns";
+import { type NextRequest, NextResponse } from "next/server";
 import {
   createGoogleCalendarEvent,
   isGoogleCalendarConnected,
 } from "@/lib/google-calendar";
+import { prisma } from "@/lib/prisma.server";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { eventTypeId, guestName, guestEmail, guestNotes, startTime, endTime } = body;
+    const {
+      eventTypeId,
+      guestName,
+      guestEmail,
+      guestNotes,
+      startTime,
+      endTime,
+    } = body;
 
     // Validate required fields
     if (!eventTypeId || !guestName || !guestEmail || !startTime || !endTime) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -27,7 +34,7 @@ export async function POST(request: NextRequest) {
     if (!eventType) {
       return NextResponse.json(
         { error: "Event type not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -39,8 +46,10 @@ export async function POST(request: NextRequest) {
     const minNoticeTime = addHours(now, eventType.minimumNoticeHours);
     if (isBefore(start, minNoticeTime)) {
       return NextResponse.json(
-        { error: `Booking must be at least ${eventType.minimumNoticeHours} hours in advance` },
-        { status: 400 }
+        {
+          error: `Booking must be at least ${eventType.minimumNoticeHours} hours in advance`,
+        },
+        { status: 400 },
       );
     }
 
@@ -48,8 +57,10 @@ export async function POST(request: NextRequest) {
     const maxNoticeTime = addDays(now, eventType.maximumNoticeDays);
     if (isAfter(start, maxNoticeTime)) {
       return NextResponse.json(
-        { error: `Booking cannot be more than ${eventType.maximumNoticeDays} days in advance` },
-        { status: 400 }
+        {
+          error: `Booking cannot be more than ${eventType.maximumNoticeDays} days in advance`,
+        },
+        { status: 400 },
       );
     }
 
@@ -62,22 +73,13 @@ export async function POST(request: NextRequest) {
         },
         OR: [
           {
-            AND: [
-              { startTime: { lte: start } },
-              { endTime: { gt: start } },
-            ],
+            AND: [{ startTime: { lte: start } }, { endTime: { gt: start } }],
           },
           {
-            AND: [
-              { startTime: { lt: end } },
-              { endTime: { gte: end } },
-            ],
+            AND: [{ startTime: { lt: end } }, { endTime: { gte: end } }],
           },
           {
-            AND: [
-              { startTime: { gte: start } },
-              { endTime: { lte: end } },
-            ],
+            AND: [{ startTime: { gte: start } }, { endTime: { lte: end } }],
           },
         ],
       },
@@ -86,7 +88,7 @@ export async function POST(request: NextRequest) {
     if (conflictingBooking) {
       return NextResponse.json(
         { error: "This time slot is no longer available" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
@@ -116,7 +118,7 @@ export async function POST(request: NextRequest) {
       if (weekBookings >= eventType.maxBookingsPerWeek) {
         return NextResponse.json(
           { error: "Maximum bookings for this week reached" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -173,7 +175,7 @@ export async function POST(request: NextRequest) {
             endTime: end,
             attendees: [guestEmail],
             bookingId: booking.id,
-          }
+          },
         );
 
         // Update booking with Google Calendar info
@@ -188,7 +190,7 @@ export async function POST(request: NextRequest) {
         // Return booking with calendar info
         return NextResponse.json(
           { ...booking, meetLink: calendarEvent.meetLink },
-          { status: 201 }
+          { status: 201 },
         );
       }
     } catch (calendarError) {
@@ -201,7 +203,7 @@ export async function POST(request: NextRequest) {
     console.error("Booking creation error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -223,7 +225,7 @@ export async function GET() {
     console.error("Fetch bookings error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

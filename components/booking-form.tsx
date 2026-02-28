@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import type { Availability, EventType } from "@prisma/client";
 import { format, startOfDay } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import type { EventType, Availability } from "@prisma/client";
 
 interface BookingFormProps {
   eventType: EventType & {
@@ -23,15 +23,20 @@ interface BookingFormProps {
 export function BookingForm({ eventType }: BookingFormProps) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
-  const [selectedSlot, setSelectedSlot] = useState<{ start: Date; end: Date } | null>(null);
-  const [availableSlots, setAvailableSlots] = useState<{ start: Date; end: Date }[]>([]);
+  const [selectedSlot, setSelectedSlot] = useState<{
+    start: Date;
+    end: Date;
+  } | null>(null);
+  const [availableSlots, setAvailableSlots] = useState<
+    { start: Date; end: Date }[]
+  >([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleDateSelect = async (date: Date | undefined) => {
     setSelectedDate(date);
     setSelectedSlot(null);
-    
+
     if (!date) {
       setAvailableSlots([]);
       return;
@@ -40,9 +45,9 @@ export function BookingForm({ eventType }: BookingFormProps) {
     setLoadingSlots(true);
     try {
       const response = await fetch(
-        `/api/slots?eventTypeId=${eventType.id}&date=${format(date, "yyyy-MM-dd")}`
+        `/api/slots?eventTypeId=${eventType.id}&date=${format(date, "yyyy-MM-dd")}`,
       );
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch slots");
       }
@@ -52,9 +57,9 @@ export function BookingForm({ eventType }: BookingFormProps) {
         data.slots.map((slot: { start: string; end: string }) => ({
           start: new Date(slot.start),
           end: new Date(slot.end),
-        }))
+        })),
       );
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to load available slots");
       setAvailableSlots([]);
     } finally {
@@ -64,7 +69,7 @@ export function BookingForm({ eventType }: BookingFormProps) {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!selectedSlot) {
       toast.error("Please select a time slot");
       return;
@@ -73,7 +78,7 @@ export function BookingForm({ eventType }: BookingFormProps) {
     setSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    
+
     try {
       const response = await fetch("/api/bookings", {
         method: "POST",
@@ -107,7 +112,8 @@ export function BookingForm({ eventType }: BookingFormProps) {
       router.push(`/book/success?${params.toString()}`);
     } catch (error) {
       console.error("Booking error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to create booking";
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to create booking";
       toast.error(errorMessage);
       setSubmitting(false);
     }
@@ -132,18 +138,24 @@ export function BookingForm({ eventType }: BookingFormProps) {
             <h3 className="font-semibold mb-4">
               Available times - {format(selectedDate, "MMMM d, yyyy")}
             </h3>
-            
+
             {loadingSlots ? (
               <p className="text-sm text-gray-500">Loading slots...</p>
             ) : availableSlots.length === 0 ? (
-              <p className="text-sm text-gray-500">No available slots for this date</p>
+              <p className="text-sm text-gray-500">
+                No available slots for this date
+              </p>
             ) : (
               <div className="space-y-2 mb-6">
-                {availableSlots.map((slot, index) => (
+                {availableSlots.map((slot) => (
                   <Button
-                    key={index}
+                    key={slot.start.toISOString()}
                     type="button"
-                    variant={selectedSlot?.start.getTime() === slot.start.getTime() ? "default" : "outline"}
+                    variant={
+                      selectedSlot?.start.getTime() === slot.start.getTime()
+                        ? "default"
+                        : "outline"
+                    }
                     className="w-full"
                     onClick={() => setSelectedSlot(slot)}
                   >

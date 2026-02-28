@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Username and Public Booking Page", () => {
   test.beforeEach(async ({ page }) => {
@@ -30,9 +30,7 @@ test.describe("Username and Public Booking Page", () => {
     await expect(page.locator("h1")).toContainText("Test User");
 
     // Should show message about no event types (user hasn't created any yet)
-    await expect(
-      page.locator("text=No available event types")
-    ).toBeVisible();
+    await expect(page.locator("text=No available event types")).toBeVisible();
   });
 
   test("should show error for duplicate username", async ({ page }) => {
@@ -42,19 +40,19 @@ test.describe("Username and Public Booking Page", () => {
 
     // Register first user with username
     await page.goto("/register");
-    await page.fill('input#name', "User One");
-    await page.fill('input#email', testEmail1);
-    await page.fill('input#username', testUsername);
-    await page.fill('input#password', "Password123!");
+    await page.fill("input#name", "User One");
+    await page.fill("input#email", testEmail1);
+    await page.fill("input#username", testUsername);
+    await page.fill("input#password", "Password123!");
     await page.getByRole("button", { name: "Create Account" }).click();
     await page.waitForURL(/\/login/, { timeout: 10000 });
 
     // Try to register second user with same username
     await page.goto("/register");
-    await page.fill('input#name', "User Two");
-    await page.fill('input#email', testEmail2);
-    await page.fill('input#username', testUsername);
-    await page.fill('input#password', "Password123!");
+    await page.fill("input#name", "User Two");
+    await page.fill("input#email", testEmail2);
+    await page.fill("input#username", testUsername);
+    await page.fill("input#password", "Password123!");
     await page.getByRole("button", { name: "Create Account" }).click();
 
     // Should show username error
@@ -98,14 +96,16 @@ test.describe("Username and Public Booking Page", () => {
 
     // Go to settings
     await page.goto("/dashboard/settings");
-    
+
     // Click copy button in the booking link card
     const copyButton = page.locator('button:has-text("Copy")').first();
     await expect(copyButton).toBeVisible();
     await copyButton.click();
 
     // Verify copied text shows
-    await expect(page.locator('button:has-text("Copied")').first()).toBeVisible();
+    await expect(
+      page.locator('button:has-text("Copied")').first(),
+    ).toBeVisible();
   });
 
   test("should update username from settings", async ({ page }) => {
@@ -115,10 +115,10 @@ test.describe("Username and Public Booking Page", () => {
 
     // Register with initial username
     await page.goto("/register");
-    await page.fill('input#name', "Username Update Test");
-    await page.fill('input#email', testEmail);
-    await page.fill('input#username', initialUsername);
-    await page.fill('input#password', "Password123!");
+    await page.fill("input#name", "Username Update Test");
+    await page.fill("input#email", testEmail);
+    await page.fill("input#username", initialUsername);
+    await page.fill("input#password", "Password123!");
     await page.getByRole("button", { name: "Create Account" }).click();
     await page.waitForURL(/\/login/, { timeout: 10000 });
 
@@ -137,7 +137,7 @@ test.describe("Username and Public Booking Page", () => {
 
     // Wait for success toast
     await expect(
-      page.locator("text=Settings updated successfully")
+      page.locator("text=Settings updated successfully"),
     ).toBeVisible({ timeout: 10000 });
 
     // Wait a bit for the page to update

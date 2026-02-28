@@ -1,11 +1,10 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
-import { useEffect } from "react";
 
 interface SettingsFormProps {
   user: {
@@ -16,7 +15,7 @@ interface SettingsFormProps {
   };
   updateSettings: (
     prevState: any,
-    formData: FormData
+    formData: FormData,
   ) => Promise<{ error?: string; success?: boolean }>;
 }
 

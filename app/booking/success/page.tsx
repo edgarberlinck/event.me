@@ -1,5 +1,6 @@
 import { Calendar, CheckCircle } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 export default function BookingSuccessPage() {
   return (
@@ -36,10 +36,12 @@ export default function BookingSuccessPage() {
           </CardHeader>
           <CardContent className="text-center space-y-4">
             <p className="text-gray-600 dark:text-gray-400">
-              A confirmation email has been sent to your email address with all the details.
+              A confirmation email has been sent to your email address with all
+              the details.
             </p>
             <p className="text-sm text-gray-500">
-              If you need to make any changes or cancel your booking, please contact the organizer directly.
+              If you need to make any changes or cancel your booking, please
+              contact the organizer directly.
             </p>
             <Button asChild className="mt-6">
               <Link href="/">Back to Home</Link>

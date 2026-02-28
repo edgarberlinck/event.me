@@ -1,12 +1,12 @@
-import { test, expect } from "@playwright/test";
-import { prisma } from "../lib/prisma.server";
+import { expect, test } from "@playwright/test";
 import bcrypt from "bcryptjs";
+import { prisma } from "../lib/prisma.server";
 
 test.describe("Booking Management", () => {
   let userId: string;
   let eventTypeId: string;
-  let username: string;
-  let slug: string;
+  let _username: string;
+  let _slug: string;
 
   test.beforeAll(async () => {
     // Create test user
@@ -22,13 +22,13 @@ test.describe("Booking Management", () => {
       },
     });
     userId = user.id;
-    username = user.username!;
+    _username = user.username ?? "testuser";
 
     // Create availability for tomorrow
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const dayOfWeek = tomorrow.getDay();
-    
+
     await prisma.availability.deleteMany({ where: { userId } });
     await prisma.availability.create({
       data: {
@@ -54,7 +54,7 @@ test.describe("Booking Management", () => {
       },
     });
     eventTypeId = eventType.id;
-    slug = eventType.slug;
+    _slug = eventType.slug;
   });
 
   test.afterAll(async () => {
@@ -72,12 +72,12 @@ test.describe("Booking Management", () => {
     await page.fill('input[name="email"]', "booking-mgmt-test@test.com");
     await page.fill('input[name="password"]', "Test123!@#");
     await page.click('button[type="submit"]');
-    
+
     await expect(page).toHaveURL("/dashboard", { timeout: 5000 });
-    
+
     // Navigate to bookings page
     await page.click('a:has-text("Bookings")');
-    
+
     await expect(page).toHaveURL("/dashboard/bookings");
     await expect(page.locator("h1")).toContainText("Bookings");
   });
@@ -88,12 +88,12 @@ test.describe("Booking Management", () => {
     await page.fill('input[name="email"]', "booking-mgmt-test@test.com");
     await page.fill('input[name="password"]', "Test123!@#");
     await page.click('button[type="submit"]');
-    
+
     await page.waitForURL("/dashboard");
-    
+
     // Navigate to bookings
     await page.goto("/dashboard/bookings");
-    
+
     await expect(page.locator("text=No bookings yet")).toBeVisible();
   });
 
@@ -102,10 +102,10 @@ test.describe("Booking Management", () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     tomorrow.setHours(10, 0, 0, 0);
-    
+
     const endTime = new Date(tomorrow);
     endTime.setMinutes(endTime.getMinutes() + 30);
-    
+
     await prisma.booking.create({
       data: {
         eventTypeId,
@@ -118,18 +118,18 @@ test.describe("Booking Management", () => {
         status: "confirmed",
       },
     });
-    
+
     // Login
     await page.goto("/login");
     await page.fill('input[name="email"]', "booking-mgmt-test@test.com");
     await page.fill('input[name="password"]', "Test123!@#");
     await page.click('button[type="submit"]');
-    
+
     await page.waitForURL("/dashboard");
-    
+
     // Navigate to bookings
     await page.goto("/dashboard/bookings");
-    
+
     await expect(page.locator("text=Test Meeting")).toBeVisible();
     await expect(page.locator("text=Test Guest")).toBeVisible();
     await expect(page.locator("text=guest@example.com")).toBeVisible();
@@ -140,10 +140,10 @@ test.describe("Booking Management", () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 2);
     tomorrow.setHours(14, 0, 0, 0);
-    
+
     const endTime = new Date(tomorrow);
     endTime.setMinutes(endTime.getMinutes() + 30);
-    
+
     const booking = await prisma.booking.create({
       data: {
         eventTypeId,
@@ -155,32 +155,37 @@ test.describe("Booking Management", () => {
         status: "confirmed",
       },
     });
-    
+
     // Login
     await page.goto("/login");
     await page.fill('input[name="email"]', "booking-mgmt-test@test.com");
     await page.fill('input[name="password"]', "Test123!@#");
     await page.click('button[type="submit"]');
-    
+
     await page.waitForURL("/dashboard");
-    
+
     // Navigate to bookings
     await page.goto("/dashboard/bookings");
-    
+
     // Find and click cancel button for the specific booking
-    const bookingRow = page.locator(`text=cancel@example.com`).locator("..").locator("..");
+    const bookingRow = page
+      .locator(`text=cancel@example.com`)
+      .locator("..")
+      .locator("..");
     await bookingRow.locator('button:has-text("Cancel")').click();
-    
+
     // Wait for success message
-    await expect(page.locator("text=cancelled successfully")).toBeVisible({ timeout: 5000 });
-    
+    await expect(page.locator("text=cancelled successfully")).toBeVisible({
+      timeout: 5000,
+    });
+
     // Verify booking is cancelled in database
     const cancelledBooking = await prisma.booking.findUnique({
       where: { id: booking.id },
     });
-    
+
     expect(cancelledBooking?.status).toBe("cancelled");
-    
+
     // Verify badge updated
     await expect(bookingRow.locator("text=cancelled")).toBeVisible();
   });

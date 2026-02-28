@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { parse, startOfDay } from "date-fns";
+import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma.server";
 import { getAvailableSlots } from "@/lib/slots";
-import { parse, startOfDay } from "date-fns";
 
 export async function GET(request: NextRequest) {
   try {
@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     if (!eventTypeId || !dateStr) {
       return NextResponse.json(
         { error: "Missing required parameters" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
     if (!eventType) {
       return NextResponse.json(
         { error: "Event type not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
     console.error("Slots API error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

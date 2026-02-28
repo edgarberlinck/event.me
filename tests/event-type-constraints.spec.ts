@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 function generateTestUser() {
   const timestamp = Date.now();
@@ -18,20 +18,26 @@ test.describe("Event Type Constraints", () => {
     // Register a new user for each test
     testUser = generateTestUser();
     await page.goto("/register");
-    await page.getByRole("textbox", { name: "Name", exact: true }).fill(testUser.name);
+    await page
+      .getByRole("textbox", { name: "Name", exact: true })
+      .fill(testUser.name);
     await page.getByRole("textbox", { name: "Email" }).fill(testUser.email);
-    await page.getByRole("textbox", { name: "Username" }).fill(testUser.username);
+    await page
+      .getByRole("textbox", { name: "Username" })
+      .fill(testUser.username);
     await page.getByLabel("Password").fill(testUser.password);
-    await page.getByRole("button", { name: "Create Account" }).click({ force: true });
-    
+    await page
+      .getByRole("button", { name: "Create Account" })
+      .click({ force: true });
+
     await page.waitForTimeout(2000);
-    
+
     // Login
     await page.goto("/login");
     await page.getByLabel("Email").fill(testUser.email);
     await page.getByLabel("Password").fill(testUser.password);
     await page.getByRole("button", { name: "Sign In" }).click({ force: true });
-    
+
     await page.waitForTimeout(2000);
   });
 
@@ -39,7 +45,7 @@ test.describe("Event Type Constraints", () => {
     page,
   }) => {
     const uniqueSlug = `limited-consultation-${Date.now()}`;
-    
+
     // Navigate to create event type
     await page.goto("/dashboard/event-types/new");
 
@@ -72,7 +78,7 @@ test.describe("Event Type Constraints", () => {
 
   test("should edit event type constraints", async ({ page }) => {
     const uniqueSlug = `test-event-constraints-${Date.now()}`;
-    
+
     // First create an event type
     await page.goto("/dashboard/event-types/new");
     await page.fill('input[name="title"]', "Test Event");
@@ -82,7 +88,10 @@ test.describe("Event Type Constraints", () => {
     await page.waitForURL("/dashboard/event-types");
 
     // Find and click edit button (look for the link with Edit icon)
-    await page.locator(`a[href*="/dashboard/event-types/"][href$="/edit"]`).first().click();
+    await page
+      .locator(`a[href*="/dashboard/event-types/"][href$="/edit"]`)
+      .first()
+      .click();
 
     // Update constraints
     await page.fill('input[name="maxBookingsPerWeek"]', "5");
@@ -103,7 +112,7 @@ test.describe("Event Type Constraints", () => {
     page,
   }) => {
     const uniqueSlug = `unlimited-event-${Date.now()}`;
-    
+
     await page.goto("/dashboard/event-types/new");
     await page.fill('input[name="title"]', "Unlimited Event");
     await page.fill('input[name="slug"]', uniqueSlug);
@@ -119,7 +128,7 @@ test.describe("Event Type Constraints", () => {
 
   test("should show constraints in edit form", async ({ page }) => {
     const uniqueSlug = `constrained-event-form-${Date.now()}`;
-    
+
     // Create event with constraints
     await page.goto("/dashboard/event-types/new");
     await page.fill('input[name="title"]', "Constrained Event");
@@ -132,7 +141,10 @@ test.describe("Event Type Constraints", () => {
     await page.waitForURL("/dashboard/event-types");
 
     // Navigate to edit (find the first edit link on the page)
-    await page.locator(`a[href*="/dashboard/event-types/"][href$="/edit"]`).first().click();
+    await page
+      .locator(`a[href*="/dashboard/event-types/"][href$="/edit"]`)
+      .first()
+      .click();
 
     // Verify form shows current values
     await expect(page.locator('input[name="maxBookingsPerWeek"]')).toHaveValue(

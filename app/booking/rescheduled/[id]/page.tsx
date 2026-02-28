@@ -1,10 +1,9 @@
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma.server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CalendarCheck2, ArrowLeft } from "lucide-react";
+import { ArrowLeft, CalendarCheck2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma.server";
 
 export default async function BookingRescheduledPage({
   params,
@@ -38,14 +37,15 @@ export default async function BookingRescheduledPage({
           <div className="text-center text-gray-600">
             <p>Your meeting has been successfully rescheduled.</p>
             <p className="mt-2 text-sm">
-              A calendar invitation with the updated details has been sent to your email.
+              A calendar invitation with the updated details has been sent to
+              your email.
             </p>
           </div>
 
           <div className="border-t pt-4 space-y-3">
             <div>
               <p className="text-sm text-gray-500">Event Type</p>
-              <p className="font-medium">{booking.eventType.name}</p>
+              <p className="font-medium">{booking.eventType.title}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">New Time</p>
@@ -58,7 +58,9 @@ export default async function BookingRescheduledPage({
             </div>
             <div>
               <p className="text-sm text-gray-500">Duration</p>
-              <p className="font-medium">{booking.eventType.duration} minutes</p>
+              <p className="font-medium">
+                {booking.eventType.duration} minutes
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-500">With</p>

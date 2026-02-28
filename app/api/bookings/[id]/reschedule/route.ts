@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma.server";
+import { type NextRequest, NextResponse } from "next/server";
 import { getGoogleCalendarClient } from "@/lib/google-calendar";
+import { prisma } from "@/lib/prisma.server";
 
 export async function POST(
   request: NextRequest,
@@ -27,10 +27,7 @@ export async function POST(
     });
 
     if (!booking) {
-      return NextResponse.json(
-        { error: "Booking not found" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "Booking not found" }, { status: 404 });
     }
 
     if (booking.status === "cancelled") {
@@ -48,7 +45,7 @@ export async function POST(
     if (booking.googleCalendarEventId) {
       try {
         const calendar = await getGoogleCalendarClient(booking.userId);
-        
+
         const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
         const cancelUrl = `${baseUrl}/api/bookings/${booking.id}/cancel`;
         const rescheduleUrl = `${baseUrl}/booking/reschedule/${booking.id}`;

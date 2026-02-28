@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma.server";
+import { type NextRequest, NextResponse } from "next/server";
 import { getGoogleCalendarClient } from "@/lib/google-calendar";
+import { prisma } from "@/lib/prisma.server";
 
 async function cancelBooking(id: string) {
   const booking = await prisma.booking.findUnique({
@@ -12,10 +12,7 @@ async function cancelBooking(id: string) {
   });
 
   if (!booking) {
-    return NextResponse.json(
-      { error: "Booking not found" },
-      { status: 404 },
-    );
+    return NextResponse.json({ error: "Booking not found" }, { status: 404 });
   }
 
   if (booking.status === "cancelled") {
@@ -51,7 +48,7 @@ async function cancelBooking(id: string) {
 }
 
 export async function POST(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
@@ -67,7 +64,7 @@ export async function POST(
 }
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {

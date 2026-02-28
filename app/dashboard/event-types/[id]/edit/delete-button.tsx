@@ -1,9 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
-export function DeleteButton({ deleteAction }: { deleteAction: () => Promise<void> }) {
+export function DeleteButton({
+  deleteAction,
+}: {
+  deleteAction: () => Promise<void>;
+}) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {

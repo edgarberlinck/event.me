@@ -7,11 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { prisma } from "@/lib/prisma.server";
 import { isGoogleCalendarConnected } from "@/lib/google-calendar";
+import { prisma } from "@/lib/prisma.server";
 import { BookingLinkCard } from "./booking-link-card";
-import { SettingsForm } from "./settings-form";
 import { GoogleCalendarCard } from "./google-calendar-card";
+import { SettingsForm } from "./settings-form";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -31,7 +31,7 @@ export default async function SettingsPage() {
 
   const googleConnected = await isGoogleCalendarConnected(session.user.id);
 
-  async function updateSettings(prevState: any, formData: FormData) {
+  async function updateSettings(_prevState: any, formData: FormData) {
     "use server";
     const session = await auth();
     if (!session?.user) return { error: "Not authenticated" };
@@ -75,9 +75,7 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      {user?.username && (
-        <BookingLinkCard username={user.username} />
-      )}
+      {user?.username && <BookingLinkCard username={user.username} />}
 
       <GoogleCalendarCard isConnected={googleConnected} />
 
@@ -85,7 +83,8 @@ export default async function SettingsPage() {
         <CardHeader>
           <CardTitle>Profile</CardTitle>
           <CardDescription>
-            Update your profile information. Username is required to share your booking link.
+            Update your profile information. Username is required to share your
+            booking link.
           </CardDescription>
         </CardHeader>
         <CardContent>

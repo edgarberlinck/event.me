@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma.server";
 
@@ -10,7 +10,7 @@ test.describe("Public Booking Flow", () => {
 
   test.beforeAll(async () => {
     const hashedPassword = await bcrypt.hash("TestPassword123!", 10);
-    
+
     const user = await prisma.user.create({
       data: {
         name: "Booking Test User",
@@ -68,7 +68,7 @@ test.describe("Public Booking Flow", () => {
 
   test("should display public booking page", async ({ page }) => {
     await page.goto(`/${testUsername}/${testEventTypeSlug}`);
-    
+
     await expect(page.getByText("Booking Test User")).toBeVisible();
     await expect(page.getByText("Test Meeting")).toBeVisible();
     await expect(page.getByText("30 minutes")).toBeVisible();
@@ -77,15 +77,19 @@ test.describe("Public Booking Flow", () => {
 
   test("should show availability on booking page", async ({ page }) => {
     await page.goto(`/${testUsername}/${testEventTypeSlug}`);
-    
+
     await expect(page.getByText("Available Hours:")).toBeVisible();
     await expect(page.getByText("Monday:")).toBeVisible();
     await expect(page.getByText("09:00 - 17:00")).toBeVisible();
   });
 
-  test("should show booking form with date and time params", async ({ page }) => {
-    await page.goto(`/${testUsername}/${testEventTypeSlug}?date=2024-03-20&time=10:00`);
-    
+  test("should show booking form with date and time params", async ({
+    page,
+  }) => {
+    await page.goto(
+      `/${testUsername}/${testEventTypeSlug}?date=2024-03-20&time=10:00`,
+    );
+
     await expect(page.getByText("Book Test Meeting")).toBeVisible();
     await expect(page.getByLabel("Your Name *")).toBeVisible();
     await expect(page.getByLabel("Your Email *")).toBeVisible();
@@ -93,18 +97,25 @@ test.describe("Public Booking Flow", () => {
   });
 
   test("should create a booking", async ({ page }) => {
-    await page.goto(`/${testUsername}/${testEventTypeSlug}?date=2024-03-20&time=14:00`);
-    
+    await page.goto(
+      `/${testUsername}/${testEventTypeSlug}?date=2024-03-20&time=14:00`,
+    );
+
     await page.fill('input[name="guestName"]', "John Doe");
     await page.fill('input[name="guestEmail"]', "john@example.com");
-    await page.fill('textarea[name="guestNotes"]', "Looking forward to our meeting");
-    
+    await page.fill(
+      'textarea[name="guestNotes"]',
+      "Looking forward to our meeting",
+    );
+
     await page.click('button[type="submit"]');
-    
+
     await page.waitForURL("/booking/success");
-    
+
     await expect(page.getByText("Booking Confirmed!")).toBeVisible();
-    await expect(page.getByText("Your meeting has been successfully scheduled")).toBeVisible();
+    await expect(
+      page.getByText("Your meeting has been successfully scheduled"),
+    ).toBeVisible();
   });
 
   test("should return 404 for non-existent username", async ({ page }) => {

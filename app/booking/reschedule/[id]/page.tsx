@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { format, startOfDay } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Card,
   CardContent,
@@ -12,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "sonner";
 
 interface ReschedulePageProps {
   params: Promise<{ id: string }>;
@@ -62,7 +62,7 @@ export default function ReschedulePage({ params }: ReschedulePageProps) {
       }
 
       setAvailableSlots(slots);
-    } catch (error) {
+    } catch (_error) {
       toast.error("Failed to load available slots");
       setAvailableSlots([]);
     } finally {
@@ -146,9 +146,9 @@ export default function ReschedulePage({ params }: ReschedulePageProps) {
                     ) : (
                       <>
                         <div className="space-y-2 mb-6">
-                          {availableSlots.map((slot, index) => (
+                          {availableSlots.map((slot) => (
                             <Button
-                              key={index}
+                              key={slot.start.toISOString()}
                               type="button"
                               variant={
                                 selectedSlot?.start.getTime() ===

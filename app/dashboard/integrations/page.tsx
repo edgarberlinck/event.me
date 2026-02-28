@@ -1,3 +1,5 @@
+import { CheckCircle2, XCircle } from "lucide-react";
+import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,8 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { prisma } from "@/lib/prisma.server";
-import { CheckCircle2, XCircle } from "lucide-react";
-import { redirect } from "next/navigation";
 
 export default async function IntegrationsPage() {
   const session = await auth();
@@ -60,7 +60,13 @@ export default async function IntegrationsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-12 h-12 bg-white rounded-lg border flex items-center justify-center">
-                <svg className="w-6 h-6" viewBox="0 0 24 24">
+                <svg
+                  className="w-6 h-6"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  aria-label="Google Calendar"
+                >
+                  <title>Google Calendar</title>
                   <path
                     fill="#4285F4"
                     d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -130,7 +136,9 @@ export default async function IntegrationsPage() {
 
       <Card className="border-gray-200">
         <CardHeader>
-          <CardTitle className="text-sm">What can you do with this integration?</CardTitle>
+          <CardTitle className="text-sm">
+            What can you do with this integration?
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-gray-600">
           <div className="flex items-start">
@@ -147,7 +155,9 @@ export default async function IntegrationsPage() {
           </div>
           <div className="flex items-start">
             <CheckCircle2 className="w-4 h-4 mr-2 mt-0.5 text-green-600 flex-shrink-0" />
-            <span>Check your calendar for conflicts before accepting bookings</span>
+            <span>
+              Check your calendar for conflicts before accepting bookings
+            </span>
           </div>
           <div className="flex items-start">
             <CheckCircle2 className="w-4 h-4 mr-2 mt-0.5 text-green-600 flex-shrink-0" />

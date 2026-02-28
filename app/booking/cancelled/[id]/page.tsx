@@ -1,10 +1,9 @@
-import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma.server";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { CalendarX2, ArrowLeft } from "lucide-react";
+import { ArrowLeft, CalendarX2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/lib/prisma.server";
 
 export default async function BookingCancelledPage({
   params,
@@ -33,7 +32,10 @@ export default async function BookingCancelledPage({
             <CalendarX2 className="h-6 w-6 text-red-600" />
           </div>
           <CardTitle className="text-2xl">
-            Booking {booking.status === "cancelled" ? "Cancelled" : "Cancellation Confirmed"}
+            Booking{" "}
+            {booking.status === "cancelled"
+              ? "Cancelled"
+              : "Cancellation Confirmed"}
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -44,7 +46,7 @@ export default async function BookingCancelledPage({
           <div className="border-t pt-4 space-y-3">
             <div>
               <p className="text-sm text-gray-500">Event Type</p>
-              <p className="font-medium">{booking.eventType.name}</p>
+              <p className="font-medium">{booking.eventType.title}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500">Scheduled Time</p>

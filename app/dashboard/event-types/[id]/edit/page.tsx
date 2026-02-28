@@ -1,10 +1,8 @@
-import { redirect } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma.server";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -12,9 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { prisma } from "@/lib/prisma.server";
 import { DeleteButton } from "./delete-button";
 
 export default async function EditEventTypePage({
@@ -52,16 +51,16 @@ export default async function EditEventTypePage({
     const title = formData.get("title") as string;
     const slug = formData.get("slug") as string;
     const description = formData.get("description") as string;
-    const duration = Number.parseInt(formData.get("duration") as string);
+    const duration = Number.parseInt(formData.get("duration") as string, 10);
     const active = formData.get("active") === "on";
     const maxBookingsPerWeek = formData.get("maxBookingsPerWeek")
-      ? Number.parseInt(formData.get("maxBookingsPerWeek") as string)
+      ? Number.parseInt(formData.get("maxBookingsPerWeek") as string, 10)
       : null;
     const minimumNoticeHours = formData.get("minimumNoticeHours")
-      ? Number.parseInt(formData.get("minimumNoticeHours") as string)
+      ? Number.parseInt(formData.get("minimumNoticeHours") as string, 10)
       : 24;
     const maximumNoticeDays = formData.get("maximumNoticeDays")
-      ? Number.parseInt(formData.get("maximumNoticeDays") as string)
+      ? Number.parseInt(formData.get("maximumNoticeDays") as string, 10)
       : 14;
 
     if (!title || !slug || !duration) {
@@ -204,9 +203,7 @@ export default async function EditEventTypePage({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="maximumNoticeDays">
-                  Maximum Notice (days)
-                </Label>
+                <Label htmlFor="maximumNoticeDays">Maximum Notice (days)</Label>
                 <Input
                   id="maximumNoticeDays"
                   name="maximumNoticeDays"
