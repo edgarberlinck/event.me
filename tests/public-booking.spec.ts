@@ -97,8 +97,13 @@ test.describe("Public Booking Flow", () => {
   });
 
   test("should create a booking", async ({ page }) => {
+    // Use a date 2 days in the future to satisfy minimum notice and maximum notice constraints
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 2);
+    const dateStr = futureDate.toISOString().split("T")[0];
+
     await page.goto(
-      `/${testUsername}/${testEventTypeSlug}?date=2024-03-20&time=14:00`,
+      `/${testUsername}/${testEventTypeSlug}?date=${dateStr}&time=14:00`,
     );
 
     await page.fill('input[name="guestName"]', "John Doe");
