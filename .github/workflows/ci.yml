@@ -16,6 +16,7 @@ env:
   NEXTAUTH_URL: "http://localhost:3000"
   AUTH_SECRET: "test-secret-for-ci"
   AUTH_URL: "http://localhost:3000"
+  RESEND_APIKEY: "re_dummy_key_for_ci_build"
 
 jobs:
   build:

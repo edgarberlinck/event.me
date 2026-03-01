@@ -1,0 +1,1967 @@
+
+> event.me@0.1.0 test
+> playwright test
+
+
+Running 165 tests using 4 workers
+
+[1A[2K[1/165] [chromium] › tests/auth.spec.ts:55:7 › Authentication Flow › should not allow duplicate email registration
+[1A[2K[2/165] [chromium] › tests/auth.spec.ts:25:7 › Authentication Flow › should navigate to register page
+[1A[2K[3/165] [chromium] › tests/auth.spec.ts:15:7 › Authentication Flow › should display landing page
+[1A[2K[4/165] [chromium] › tests/auth.spec.ts:37:7 › Authentication Flow › should register a new user and redirect to login
+[1A[2K[5/165] [chromium] › tests/auth.spec.ts:84:7 › Authentication Flow › should login with valid credentials
+[1A[2K[6/165] [chromium] › tests/auth.spec.ts:109:7 › Authentication Flow › should not login with invalid password
+[1A[2K[7/165] [chromium] › tests/auth.spec.ts:131:7 › Authentication Flow › should not login with non-existent email
+[1A[2K[8/165] [chromium] › tests/auth.spec.ts:142:7 › Authentication Flow › should logout successfully
+[1A[2K[9/165] [chromium] › tests/auth.spec.ts:172:7 › Authentication Flow › should protect dashboard route when not logged in
+[1A[2K[10/165] [chromium] › tests/auth.spec.ts:182:7 › Authentication Flow › should redirect logged-in users from login page to dashboard
+[1A[2K[11/165] [chromium] › tests/availability.spec.ts:29:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K[12/165] [chromium] › tests/availability.spec.ts:40:7 › Availability Management › should show empty state when no availability is set
+[1A[2K[13/165] [chromium] › tests/availability.spec.ts:49:7 › Availability Management › should add new availability slot
+[1A[2K[14/165] [chromium] › tests/availability.spec.ts:68:7 › Availability Management › should add multiple availability slots
+[1A[2K[15/165] [chromium] › tests/availability.spec.ts:92:7 › Availability Management › should delete availability slot
+[1A[2K[16/165] [chromium] › tests/availability.spec.ts:117:7 › Availability Management › should navigate back to dashboard
+[1A[2K[17/165] [chromium] › tests/availability.spec.ts:127:7 › Availability Management › should require authentication to access availability page
+[1A[2K[18/165] [chromium] › tests/availability.spec.ts:141:7 › Availability Management › should validate time inputs are required
+[1A[2K[19/165] [chromium] › tests/availability.spec.ts:165:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K[20/165] [chromium] › tests/availability.spec.ts:191:7 › Availability Management › should persist availability across sessions
+[1A[2K[21/165] [chromium] › tests/booking-management.spec.ts:69:7 › Booking Management › should display bookings page with navigation
+[1A[2K[22/165] [chromium] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings
+[1A[2K[23/165] [chromium] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist
+[1A[2K[24/165] [chromium] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking
+[1A[2K  1) [chromium] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist 
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.booking.create()` invocation:
+
+
+    Foreign key constraint violated on the constraint: `Booking_eventTypeId_fkey`
+
+      107 |     endTime.setMinutes(endTime.getMinutes() + 30);
+      108 |
+    > 109 |     await prisma.booking.create({
+          |     ^
+      110 |       data: {
+      111 |         eventTypeId,
+      112 |         userId,
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:109:5
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+
+[1A[2K[25/165] [chromium] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone
+[1A[2K[26/165] [chromium] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones
+[1A[2K  2) [chromium] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.upsert()` invocation:
+
+
+    Unique constraint failed on the fields: (`email`)
+
+      20 |     // Create alice user if not exists
+      21 |     const hashedPassword = await bcrypt.hash(TEST_USER.password, 10);
+    > 22 |     await prisma.user.upsert({
+         |     ^
+      23 |       where: { email: TEST_USER.email },
+      24 |       update: {},
+      25 |       create: {
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:22:5
+
+
+[1A[2K[27/165] [chromium] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly
+[1A[2K[28/165] [chromium] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone
+[1A[2K  3) [chromium] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=No bookings yet')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=No bookings yet')[22m
+
+
+       95 |     await page.goto("/dashboard/bookings");
+       96 |
+    >  97 |     await expect(page.locator("text=No bookings yet")).toBeVisible();
+          |                                                        ^
+       98 |   });
+       99 |
+      100 |   test("should display bookings when they exist", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:97:56
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+    Error Context: test-results/booking-management-Booking-43b23-mpty-state-when-no-bookings-chromium/error-context.md
+
+
+[1A[2K  4) [chromium] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveURL[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Expected pattern: [32m/\/booking\/cancelled\//[39m
+    Received string:  [31m"http://localhost:3000/dashboard/bookings"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveURL" with timeout 5000ms[22m
+    [2m    9 × unexpected value "http://localhost:3000/dashboard/bookings"[22m
+
+
+      177 |
+      178 |     // Wait for redirect to cancellation page
+    > 179 |     await expect(page).toHaveURL(/\/booking\/cancelled\//, {
+          |                        ^
+      180 |       timeout: 5000,
+      181 |     });
+      182 |     await expect(page.locator("text=cancelled successfully")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:179:24
+
+    Error Context: test-results/booking-management-Booking-07b95-ent-should-cancel-a-booking-chromium/error-context.md
+
+
+[1A[2K[29/165] [chromium] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu
+[1A[2K[30/165] [chromium] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu
+[1A[2K  5) [chromium] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: /event types/i })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: /event types/i }) resolved to 2 elements:
+        1) <h1 class="text-3xl font-bold">Event Types</h1> aka getByRole('heading', { name: 'Event Types', exact: true })
+        2) <h3 class="text-lg font-semibold mb-2">No event types yet</h3> aka getByRole('heading', { name: 'No event types yet' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: /event types/i })[22m
+
+
+      33 |     await page.click('a[href="/dashboard/event-types"]');
+      34 |     await expect(page).toHaveURL(/\/dashboard\/event-types/);
+    > 35 |     await expect(page.getByRole("heading", { name: /event types/i })).toBeVisible();
+         |                                                                       ^
+      36 |
+      37 |     // Test Bookings link
+      38 |     await page.click('a[href="/dashboard/bookings"]');
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:35:71
+
+    Error Context: test-results/dashboard-navigation-Dashb-b4a0d-ard-pages-from-desktop-menu-chromium/error-context.md
+
+
+[1A[2K  6) [chromium] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      59 |     // Open mobile menu
+      60 |     await page.click('button[aria-label="Toggle menu"]');
+    > 61 |     await expect(page.getByText("Dashboard")).toBeVisible();
+         |                                               ^
+      62 |     await expect(page.getByText("Event Types")).toBeVisible();
+      63 |     await expect(page.getByText("Bookings")).toBeVisible();
+      64 |     await expect(page.getByText("Availability")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:61:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-6a28e-oard-pages-from-mobile-menu-chromium/error-context.md
+
+
+[1A[2K[31/165] [chromium] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside
+[1A[2K[32/165] [chromium] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key
+[1A[2K  7) [chromium] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      104 |     // Open mobile menu
+      105 |     await page.click('button[aria-label="Toggle menu"]');
+    > 106 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      107 |
+      108 |     // Click outside (on main content)
+      109 |     await page.click("main");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:106:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-e77df--menu-when-clicking-outside-chromium/error-context.md
+
+
+[1A[2K  8) [chromium] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      119 |     // Open mobile menu
+      120 |     await page.click('button[aria-label="Toggle menu"]');
+    > 121 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      122 |
+      123 |     // Press Escape
+      124 |     await page.keyboard.press("Escape");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:121:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-40e4c-mobile-menu-with-Escape-key-chromium/error-context.md
+
+
+[1A[2K[33/165] [chromium] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header
+[1A[2K[34/165] [chromium] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu
+[1A[2K  9) [chromium] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 3 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice', { exact: true })
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com')
+        3) <p class="text-gray-600 dark:text-gray-400 mt-2">…</p> aka getByText('Welcome back, Alice! 👋')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      132 |
+      133 |     // Check if user name and email are visible
+    > 134 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      135 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      136 |   });
+      137 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:134:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-a882d-user-info-in-desktop-header-chromium/error-context.md
+
+
+[1A[2K  10) [chromium] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 5 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice').first()
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com').first()
+        3) <p class="font-medium">Alice</p> aka getByRole('paragraph').filter({ hasText: /^Alice$/ })
+        4) <p class="text-xs text-gray-500">alice@example.com</p> aka getByRole('paragraph').filter({ hasText: 'alice@example.com' })
+        5) <p class="text-gray-600 dark:text-gray-400 mt-2">…</p> aka getByText('Welcome back, Alice! 👋')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      144 |
+      145 |     // Check if user name and email are visible
+    > 146 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      147 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      148 |   });
+      149 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:146:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-14b93-ay-user-info-in-mobile-menu-chromium/error-context.md
+
+
+[1A[2K[35/165] [chromium] › tests/dashboard-navigation.spec.ts:150:7 › Dashboard Navigation › should sign out from desktop menu
+[1A[2K[36/165] [chromium] › tests/dashboard-navigation.spec.ts:160:7 › Dashboard Navigation › should sign out from mobile menu
+[1A[2K[37/165] [chromium] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title
+[1A[2K[38/165] [chromium] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints
+[1A[2K  11) [chromium] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--eea37-king-times-in-host-timezone-chromium/error-context.md
+
+
+[1A[2K  12) [chromium] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Event.me')
+    Expected: visible
+    Error: strict mode violation: getByText('Event.me') resolved to 2 elements:
+        1) <span class="ml-2 text-xl font-bold">Event.me</span> aka getByText('Event.me', { exact: true })
+        2) <div data-slot="card-description" class="text-muted-foreground text-sm">Get started with Event.me in 3 simple steps</div> aka getByText('Get started with Event.me in')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Event.me')[22m
+
+
+      176 |
+      177 |     // Check for logo and title
+    > 178 |     await expect(page.getByText("Event.me")).toBeVisible();
+          |                                              ^
+      179 |   });
+      180 | });
+      181 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:178:46
+
+    Error Context: test-results/dashboard-navigation-Dashb-6e5e9-ave-Event-me-logo-and-title-chromium/error-context.md
+
+
+[1A[2K[39/165] [chromium] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times
+[1A[2K  13) [chromium] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--35b75-e-hours-respecting-timezone-chromium/error-context.md
+
+
+[1A[2K[40/165] [chromium] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints
+[1A[2K[41/165] [chromium] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones
+[1A[2K  14) [chromium] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--5ac79-ing-creation-with-UTC-times-chromium/error-context.md
+
+
+[1A[2K[42/165] [chromium] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set
+[1A[2K  15) [chromium] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--4b0b5-dary-in-different-timezones-chromium/error-context.md
+
+
+[1A[2K[43/165] [chromium] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form
+[1A[2K  16) [chromium] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      68 |
+      69 |     // Verify redirect to event types list
+    > 70 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      71 |
+      72 |     // Verify event type appears in list with constraints badges
+      73 |     await expect(page.locator("text=Limited Consultation")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:70:16
+
+    Error Context: test-results/event-type-constraints-Eve-7b96c-pe-with-booking-constraints-chromium/error-context.md
+
+
+[1A[2K[44/165] [chromium] › tests/event-types.spec.ts:15:7 › Event Types Management › should create and view event type
+[1A[2K  17) [chromium] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      86 |     await page.fill('input[name="duration"]', "30");
+      87 |     await page.click('button[type="submit"]');
+    > 88 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      89 |
+      90 |     // Find and click edit button (look for the link with Edit icon)
+      91 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:88:16
+
+    Error Context: test-results/event-type-constraints-Eve-3c276-edit-event-type-constraints-chromium/error-context.md
+
+
+[1A[2K[45/165] [chromium] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page
+[1A[2K  18) [chromium] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Test Meeting')
+    Expected: visible
+    Error: strict mode violation: getByText('Test Meeting') resolved to 2 elements:
+        1) <div data-slot="card-description" class="text-muted-foreground text-base">Test Meeting</div> aka getByText('Test Meeting', { exact: true })
+        2) <p class="mt-4 text-gray-700 dark:text-gray-300">A test meeting for E2E tests</p> aka getByText('A test meeting for E2E tests')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Test Meeting')[22m
+
+
+      71 |
+      72 |     await expect(page.getByText("Booking Test User")).toBeVisible();
+    > 73 |     await expect(page.getByText("Test Meeting")).toBeVisible();
+         |                                                  ^
+      74 |     await expect(page.getByText("30 minutes")).toBeVisible();
+      75 |     await expect(page.getByText("A test meeting for E2E tests")).toBeVisible();
+      76 |   });
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:73:50
+
+    Error Context: test-results/public-booking-Public-Book-a559d-display-public-booking-page-chromium/error-context.md
+
+
+[1A[2K[46/165] [chromium] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page
+[1A[2K  19) [chromium] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Select a date')
+    Expected: visible
+    Error: strict mode violation: getByText('Select a date') resolved to 2 elements:
+        1) <div data-slot="card-title" class="leading-none font-semibold">Select a Date & Time</div> aka getByText('Select a Date & Time')
+        2) <h3 class="font-semibold mb-4">Select a date</h3> aka getByRole('heading', { name: 'Select a date' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Select a date')[22m
+
+
+      80 |
+      81 |     await expect(page.getByText("Select a Date & Time")).toBeVisible();
+    > 82 |     await expect(page.getByText("Select a date")).toBeVisible();
+         |                                                   ^
+      83 |   });
+      84 |
+      85 |   test("should show booking form with date and time params", async ({
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:82:51
+
+    Error Context: test-results/public-booking-Public-Book-fb886-ow-calendar-on-booking-page-chromium/error-context.md
+
+
+[1A[2K[47/165] [chromium] › tests/public-booking.spec.ts:125:7 › Public Booking Flow › should return 404 for non-existent username
+[1A[2K[48/165] [chromium] › tests/public-booking.spec.ts:85:7 › Public Booking Flow › should show booking form with date and time params
+[1A[2K[49/165] [chromium] › tests/public-booking.spec.ts:130:7 › Public Booking Flow › should return 404 for non-existent event type
+[1A[2K[50/165] [chromium] › tests/username-public-booking.spec.ts:9:7 › Username and Public Booking Page › should configure username and view public booking page
+[1A[2K[51/165] [chromium] › tests/public-booking.spec.ts:98:7 › Public Booking Flow › should create a booking
+[1A[2K[52/165] [chromium] › tests/username-public-booking.spec.ts:36:7 › Username and Public Booking Page › should show error for duplicate username
+[1A[2K[53/165] [chromium] › tests/username-public-booking.spec.ts:64:7 › Username and Public Booking Page › should show 404 for non-existent username
+[1A[2K[54/165] [chromium] › tests/username-public-booking.spec.ts:71:7 › Username and Public Booking Page › should copy booking link to clipboard
+[1A[2K[55/165] [chromium] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings
+[1A[2K[56/165] [firefox] › tests/auth.spec.ts:15:7 › Authentication Flow › should display landing page
+[1A[2K[57/165] [firefox] › tests/auth.spec.ts:25:7 › Authentication Flow › should navigate to register page
+[1A[2K[58/165] [firefox] › tests/auth.spec.ts:37:7 › Authentication Flow › should register a new user and redirect to login
+[1A[2K[59/165] [firefox] › tests/auth.spec.ts:55:7 › Authentication Flow › should not allow duplicate email registration
+[1A[2K[60/165] [firefox] › tests/auth.spec.ts:84:7 › Authentication Flow › should login with valid credentials
+[1A[2K[61/165] [firefox] › tests/auth.spec.ts:109:7 › Authentication Flow › should not login with invalid password
+[1A[2K[62/165] [firefox] › tests/auth.spec.ts:131:7 › Authentication Flow › should not login with non-existent email
+[1A[2K[63/165] [firefox] › tests/auth.spec.ts:142:7 › Authentication Flow › should logout successfully
+[1A[2K[64/165] [firefox] › tests/auth.spec.ts:172:7 › Authentication Flow › should protect dashboard route when not logged in
+[1A[2K[65/165] [firefox] › tests/auth.spec.ts:182:7 › Authentication Flow › should redirect logged-in users from login page to dashboard
+[1A[2K  20) [chromium] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      120 |     // Don't fill maxBookingsPerWeek
+      121 |     await page.click('button[type="submit"]');
+    > 122 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      123 |
+      124 |     // Verify no "Max X/week" badge is shown
+      125 |     const eventCard = page.locator("text=Unlimited Event").locator("..");
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:122:16
+
+    Error Context: test-results/event-type-constraints-Eve-b7913-ed-when-no-max-bookings-set-chromium/error-context.md
+
+
+[1A[2K[66/165] [firefox] › tests/availability.spec.ts:40:7 › Availability Management › should show empty state when no availability is set
+[1A[2K  21) [chromium] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      139 |     await page.fill('input[name="maximumNoticeDays"]', "10");
+      140 |     await page.click('button[type="submit"]');
+    > 141 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      142 |
+      143 |     // Navigate to edit (find the first edit link on the page)
+      144 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:141:16
+
+    Error Context: test-results/event-type-constraints-Eve-1f5a4-ow-constraints-in-edit-form-chromium/error-context.md
+
+
+[1A[2K[67/165] [firefox] › tests/availability.spec.ts:29:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K  22) [chromium] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Settings updated successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('text=Settings updated successfully')[22m
+
+
+      139 |     await expect(
+      140 |       page.locator("text=Settings updated successfully"),
+    > 141 |     ).toBeVisible({ timeout: 10000 });
+          |       ^
+      142 |
+      143 |     // Wait a bit for the page to update
+      144 |     await page.waitForTimeout(1000);
+        at /Users/edgarberlinck/code/event.me/tests/username-public-booking.spec.ts:141:7
+
+    Error Context: test-results/username-public-booking-Us-15db8-date-username-from-settings-chromium/error-context.md
+
+
+[1A[2K[68/165] [firefox] › tests/availability.spec.ts:49:7 › Availability Management › should add new availability slot
+[1A[2K[69/165] [firefox] › tests/availability.spec.ts:68:7 › Availability Management › should add multiple availability slots
+[1A[2K[70/165] [firefox] › tests/availability.spec.ts:92:7 › Availability Management › should delete availability slot
+[1A[2K[71/165] [firefox] › tests/availability.spec.ts:117:7 › Availability Management › should navigate back to dashboard
+[1A[2K[72/165] [firefox] › tests/availability.spec.ts:127:7 › Availability Management › should require authentication to access availability page
+[1A[2K[73/165] [firefox] › tests/availability.spec.ts:141:7 › Availability Management › should validate time inputs are required
+[1A[2K[74/165] [firefox] › tests/availability.spec.ts:165:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K[75/165] [firefox] › tests/availability.spec.ts:191:7 › Availability Management › should persist availability across sessions
+[1A[2K[76/165] [firefox] › tests/booking-management.spec.ts:69:7 › Booking Management › should display bookings page with navigation
+[1A[2K[77/165] [firefox] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist
+[1A[2K[78/165] [firefox] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings
+[1A[2K[79/165] [firefox] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking
+[1A[2K[80/165] [firefox] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone
+[1A[2K[81/165] [firefox] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones
+[1A[2K  23) [firefox] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=No bookings yet')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=No bookings yet')[22m
+
+
+       95 |     await page.goto("/dashboard/bookings");
+       96 |
+    >  97 |     await expect(page.locator("text=No bookings yet")).toBeVisible();
+          |                                                        ^
+       98 |   });
+       99 |
+      100 |   test("should display bookings when they exist", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:97:56
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+    Error Context: test-results/booking-management-Booking-43b23-mpty-state-when-no-bookings-firefox/error-context.md
+
+
+[1A[2K  24) [firefox] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveURL[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Expected pattern: [32m/\/booking\/cancelled\//[39m
+    Received string:  [31m"http://localhost:3000/dashboard/bookings"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveURL" with timeout 5000ms[22m
+    [2m    9 × unexpected value "http://localhost:3000/dashboard/bookings"[22m
+
+
+      177 |
+      178 |     // Wait for redirect to cancellation page
+    > 179 |     await expect(page).toHaveURL(/\/booking\/cancelled\//, {
+          |                        ^
+      180 |       timeout: 5000,
+      181 |     });
+      182 |     await expect(page.locator("text=cancelled successfully")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:179:24
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+    Error Context: test-results/booking-management-Booking-07b95-ent-should-cancel-a-booking-firefox/error-context.md
+
+
+[1A[2K[82/165] [firefox] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu
+[1A[2K[83/165] [firefox] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone
+[1A[2K  25) [firefox] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: /event types/i })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: /event types/i }) resolved to 2 elements:
+        1) <h1 class="text-3xl font-bold">Event Types</h1> aka getByRole('heading', { name: 'Event Types', exact: true })
+        2) <h3 class="text-lg font-semibold mb-2">No event types yet</h3> aka getByRole('heading', { name: 'No event types yet' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: /event types/i })[22m
+
+
+      33 |     await page.click('a[href="/dashboard/event-types"]');
+      34 |     await expect(page).toHaveURL(/\/dashboard\/event-types/);
+    > 35 |     await expect(page.getByRole("heading", { name: /event types/i })).toBeVisible();
+         |                                                                       ^
+      36 |
+      37 |     // Test Bookings link
+      38 |     await page.click('a[href="/dashboard/bookings"]');
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:35:71
+
+    Error Context: test-results/dashboard-navigation-Dashb-b4a0d-ard-pages-from-desktop-menu-firefox/error-context.md
+
+
+[1A[2K[84/165] [firefox] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu
+[1A[2K  26) [firefox] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        ...
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      59 |     // Open mobile menu
+      60 |     await page.click('button[aria-label="Toggle menu"]');
+    > 61 |     await expect(page.getByText("Dashboard")).toBeVisible();
+         |                                               ^
+      62 |     await expect(page.getByText("Event Types")).toBeVisible();
+      63 |     await expect(page.getByText("Bookings")).toBeVisible();
+      64 |     await expect(page.getByText("Availability")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:61:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-6a28e-oard-pages-from-mobile-menu-firefox/error-context.md
+
+
+[1A[2K[85/165] [firefox] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside
+[1A[2K  27) [firefox] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--f8ccc-imes-in-different-timezones-firefox/error-context.md
+
+
+[1A[2K  28) [firefox] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--eea37-king-times-in-host-timezone-firefox/error-context.md
+
+
+[1A[2K  29) [firefox] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        ...
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      104 |     // Open mobile menu
+      105 |     await page.click('button[aria-label="Toggle menu"]');
+    > 106 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      107 |
+      108 |     // Click outside (on main content)
+      109 |     await page.click("main");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:106:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-e77df--menu-when-clicking-outside-firefox/error-context.md
+
+
+[1A[2K[86/165] [firefox] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly
+[1A[2K[87/165] [firefox] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times
+[1A[2K[88/165] [firefox] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key
+[1A[2K  30) [firefox] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        ...
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      119 |     // Open mobile menu
+      120 |     await page.click('button[aria-label="Toggle menu"]');
+    > 121 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      122 |
+      123 |     // Press Escape
+      124 |     await page.keyboard.press("Escape");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:121:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-40e4c-mobile-menu-with-Escape-key-firefox/error-context.md
+
+
+[1A[2K[89/165] [firefox] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header
+[1A[2K  31) [firefox] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 3 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice', { exact: true })
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com')
+        ...
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      132 |
+      133 |     // Check if user name and email are visible
+    > 134 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      135 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      136 |   });
+      137 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:134:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-a882d-user-info-in-desktop-header-firefox/error-context.md
+
+
+[1A[2K  32) [firefox] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--35b75-e-hours-respecting-timezone-firefox/error-context.md
+
+
+[1A[2K[90/165] [firefox] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu
+[1A[2K[91/165] [firefox] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones
+[1A[2K  33) [firefox] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 5 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice').first()
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com').first()
+        ...
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      144 |
+      145 |     // Check if user name and email are visible
+    > 146 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      147 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      148 |   });
+      149 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:146:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-14b93-ay-user-info-in-mobile-menu-firefox/error-context.md
+
+
+[1A[2K[92/165] [firefox] › tests/dashboard-navigation.spec.ts:150:7 › Dashboard Navigation › should sign out from desktop menu
+[1A[2K[93/165] [firefox] › tests/dashboard-navigation.spec.ts:160:7 › Dashboard Navigation › should sign out from mobile menu
+[1A[2K[94/165] [firefox] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title
+[1A[2K  34) [firefox] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Event.me')
+    Expected: visible
+    Error: strict mode violation: getByText('Event.me') resolved to 2 elements:
+        1) <span class="ml-2 text-xl font-bold">Event.me</span> aka getByText('Event.me', { exact: true })
+        2) <div data-slot="card-description" class="text-muted-foreground text-sm">Get started with Event.me in 3 simple steps</div> aka getByText('Get started with Event.me in')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Event.me')[22m
+
+
+      176 |
+      177 |     // Check for logo and title
+    > 178 |     await expect(page.getByText("Event.me")).toBeVisible();
+          |                                              ^
+      179 |   });
+      180 | });
+      181 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:178:46
+
+    Error Context: test-results/dashboard-navigation-Dashb-6e5e9-ave-Event-me-logo-and-title-firefox/error-context.md
+
+
+[1A[2K  35) [firefox] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--b3561-e-DST-transitions-correctly-firefox/error-context.md
+
+
+[1A[2K[95/165] [firefox] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints
+[1A[2K  36) [firefox] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--5ac79-ing-creation-with-UTC-times-firefox/error-context.md
+
+
+[1A[2K[96/165] [firefox] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints
+[1A[2K[97/165] [firefox] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set
+[1A[2K  37) [firefox] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--4b0b5-dary-in-different-timezones-firefox/error-context.md
+
+
+[1A[2K[98/165] [firefox] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form
+[1A[2K  38) [firefox] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      68 |
+      69 |     // Verify redirect to event types list
+    > 70 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      71 |
+      72 |     // Verify event type appears in list with constraints badges
+      73 |     await expect(page.locator("text=Limited Consultation")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:70:16
+
+    Error Context: test-results/event-type-constraints-Eve-7b96c-pe-with-booking-constraints-firefox/error-context.md
+
+
+[1A[2K  39) [firefox] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      86 |     await page.fill('input[name="duration"]', "30");
+      87 |     await page.click('button[type="submit"]');
+    > 88 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      89 |
+      90 |     // Find and click edit button (look for the link with Edit icon)
+      91 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:88:16
+
+    Error Context: test-results/event-type-constraints-Eve-3c276-edit-event-type-constraints-firefox/error-context.md
+
+
+[1A[2K[99/165] [firefox] › tests/event-types.spec.ts:15:7 › Event Types Management › should create and view event type
+[1A[2K  40) [firefox] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      120 |     // Don't fill maxBookingsPerWeek
+      121 |     await page.click('button[type="submit"]');
+    > 122 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      123 |
+      124 |     // Verify no "Max X/week" badge is shown
+      125 |     const eventCard = page.locator("text=Unlimited Event").locator("..");
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:122:16
+
+    Error Context: test-results/event-type-constraints-Eve-b7913-ed-when-no-max-bookings-set-firefox/error-context.md
+
+
+[1A[2K[100/165] [firefox] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page
+[1A[2K[101/165] [firefox] › tests/public-booking.spec.ts:85:7 › Public Booking Flow › should show booking form with date and time params
+[1A[2K  41) [firefox] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Test Meeting')
+    Expected: visible
+    Error: strict mode violation: getByText('Test Meeting') resolved to 2 elements:
+        1) <div data-slot="card-description" class="text-muted-foreground text-base">Test Meeting</div> aka getByText('Test Meeting', { exact: true })
+        2) <p class="mt-4 text-gray-700 dark:text-gray-300">A test meeting for E2E tests</p> aka getByText('A test meeting for E2E tests')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Test Meeting')[22m
+
+
+      71 |
+      72 |     await expect(page.getByText("Booking Test User")).toBeVisible();
+    > 73 |     await expect(page.getByText("Test Meeting")).toBeVisible();
+         |                                                  ^
+      74 |     await expect(page.getByText("30 minutes")).toBeVisible();
+      75 |     await expect(page.getByText("A test meeting for E2E tests")).toBeVisible();
+      76 |   });
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:73:50
+
+    Error Context: test-results/public-booking-Public-Book-a559d-display-public-booking-page-firefox/error-context.md
+
+
+[1A[2K[102/165] [firefox] › tests/public-booking.spec.ts:98:7 › Public Booking Flow › should create a booking
+[1A[2K[103/165] [firefox] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page
+[1A[2K[104/165] [firefox] › tests/public-booking.spec.ts:125:7 › Public Booking Flow › should return 404 for non-existent username
+[1A[2K[105/165] [firefox] › tests/public-booking.spec.ts:130:7 › Public Booking Flow › should return 404 for non-existent event type
+[1A[2K[106/165] [firefox] › tests/username-public-booking.spec.ts:9:7 › Username and Public Booking Page › should configure username and view public booking page
+[1A[2K  42) [firefox] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Select a date')
+    Expected: visible
+    Error: strict mode violation: getByText('Select a date') resolved to 2 elements:
+        1) <div data-slot="card-title" class="leading-none font-semibold">Select a Date & Time</div> aka getByText('Select a Date & Time')
+        2) <h3 class="font-semibold mb-4">Select a date</h3> aka getByRole('heading', { name: 'Select a date' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Select a date')[22m
+
+
+      80 |
+      81 |     await expect(page.getByText("Select a Date & Time")).toBeVisible();
+    > 82 |     await expect(page.getByText("Select a date")).toBeVisible();
+         |                                                   ^
+      83 |   });
+      84 |
+      85 |   test("should show booking form with date and time params", async ({
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:82:51
+
+    Error Context: test-results/public-booking-Public-Book-fb886-ow-calendar-on-booking-page-firefox/error-context.md
+
+
+[1A[2K[107/165] [firefox] › tests/username-public-booking.spec.ts:64:7 › Username and Public Booking Page › should show 404 for non-existent username
+[1A[2K[108/165] [firefox] › tests/username-public-booking.spec.ts:36:7 › Username and Public Booking Page › should show error for duplicate username
+[1A[2K[109/165] [firefox] › tests/username-public-booking.spec.ts:71:7 › Username and Public Booking Page › should copy booking link to clipboard
+[1A[2K[110/165] [firefox] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings
+[1A[2K  43) [firefox] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      139 |     await page.fill('input[name="maximumNoticeDays"]', "10");
+      140 |     await page.click('button[type="submit"]');
+    > 141 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      142 |
+      143 |     // Navigate to edit (find the first edit link on the page)
+      144 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:141:16
+
+    Error Context: test-results/event-type-constraints-Eve-1f5a4-ow-constraints-in-edit-form-firefox/error-context.md
+
+
+[1A[2K[111/165] [webkit] › tests/auth.spec.ts:15:7 › Authentication Flow › should display landing page
+[1A[2K[112/165] [webkit] › tests/auth.spec.ts:37:7 › Authentication Flow › should register a new user and redirect to login
+[1A[2K[113/165] [webkit] › tests/auth.spec.ts:84:7 › Authentication Flow › should login with valid credentials
+[1A[2K[114/165] [webkit] › tests/auth.spec.ts:25:7 › Authentication Flow › should navigate to register page
+[1A[2K[115/165] [webkit] › tests/auth.spec.ts:55:7 › Authentication Flow › should not allow duplicate email registration
+[1A[2K[116/165] [webkit] › tests/auth.spec.ts:109:7 › Authentication Flow › should not login with invalid password
+[1A[2K[117/165] [webkit] › tests/auth.spec.ts:131:7 › Authentication Flow › should not login with non-existent email
+[1A[2K[118/165] [webkit] › tests/auth.spec.ts:142:7 › Authentication Flow › should logout successfully
+[1A[2K[119/165] [webkit] › tests/auth.spec.ts:172:7 › Authentication Flow › should protect dashboard route when not logged in
+[1A[2K[120/165] [webkit] › tests/auth.spec.ts:182:7 › Authentication Flow › should redirect logged-in users from login page to dashboard
+[1A[2K[121/165] [webkit] › tests/availability.spec.ts:29:7 › Availability Management › should navigate to availability page from dashboard
+[1A[2K[122/165] [webkit] › tests/availability.spec.ts:40:7 › Availability Management › should show empty state when no availability is set
+[1A[2K[123/165] [webkit] › tests/availability.spec.ts:49:7 › Availability Management › should add new availability slot
+[1A[2K[124/165] [webkit] › tests/availability.spec.ts:68:7 › Availability Management › should add multiple availability slots
+[1A[2K[125/165] [webkit] › tests/availability.spec.ts:92:7 › Availability Management › should delete availability slot
+[1A[2K[126/165] [webkit] › tests/availability.spec.ts:117:7 › Availability Management › should navigate back to dashboard
+[1A[2K[127/165] [webkit] › tests/availability.spec.ts:127:7 › Availability Management › should require authentication to access availability page
+[1A[2K[128/165] [webkit] › tests/availability.spec.ts:141:7 › Availability Management › should validate time inputs are required
+[1A[2K[129/165] [webkit] › tests/availability.spec.ts:165:7 › Availability Management › should show all days of the week in dropdown
+[1A[2K[130/165] [webkit] › tests/availability.spec.ts:191:7 › Availability Management › should persist availability across sessions
+[1A[2K[131/165] [webkit] › tests/booking-management.spec.ts:69:7 › Booking Management › should display bookings page with navigation
+[1A[2K  44) [firefox] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Settings updated successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('text=Settings updated successfully')[22m
+
+
+      139 |     await expect(
+      140 |       page.locator("text=Settings updated successfully"),
+    > 141 |     ).toBeVisible({ timeout: 10000 });
+          |       ^
+      142 |
+      143 |     // Wait a bit for the page to update
+      144 |     await page.waitForTimeout(1000);
+        at /Users/edgarberlinck/code/event.me/tests/username-public-booking.spec.ts:141:7
+
+    Error Context: test-results/username-public-booking-Us-15db8-date-username-from-settings-firefox/error-context.md
+
+
+[1A[2K[132/165] [webkit] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist
+[1A[2K[133/165] [webkit] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings
+[1A[2K[134/165] [webkit] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking
+[1A[2K[135/165] [webkit] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone
+[1A[2K  45) [webkit] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Test Meeting').first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=Test Meeting').first()[22m
+
+
+      131 |     await page.goto("/dashboard/bookings");
+      132 |
+    > 133 |     await expect(page.locator("text=Test Meeting").first()).toBeVisible();
+          |                                                             ^
+      134 |     await expect(page.locator("text=Test Guest")).toBeVisible();
+      135 |     await expect(page.locator("text=guest@example.com")).toBeVisible();
+      136 |   });
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:133:61
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+    Error Context: test-results/booking-management-Booking-a6e4d-ay-bookings-when-they-exist-webkit/error-context.md
+
+
+[1A[2K[136/165] [webkit] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones
+[1A[2K  46) [webkit] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=No bookings yet')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=No bookings yet')[22m
+
+
+       95 |     await page.goto("/dashboard/bookings");
+       96 |
+    >  97 |     await expect(page.locator("text=No bookings yet")).toBeVisible();
+          |                                                        ^
+       98 |   });
+       99 |
+      100 |   test("should display bookings when they exist", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:97:56
+
+    PrismaClientKnownRequestError: 
+    Invalid `prisma.user.delete()` invocation:
+
+
+    An operation failed because it depends on one or more records that were required but not found. No record was found for a delete.
+
+      63 |     await prisma.eventType.deleteMany({ where: { userId } });
+      64 |     await prisma.availability.deleteMany({ where: { userId } });
+    > 65 |     await prisma.user.delete({ where: { id: userId } });
+         |     ^
+      66 |     await prisma.$disconnect();
+      67 |   });
+      68 |
+        at zr.handleRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:237:13)
+        at zr.handleAndLogRequestError (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:183:12)
+        at zr.request (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/RequestHandler.ts:152:12)
+        at a (/Users/edgarberlinck/code/event.me/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:808:24)
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:65:5
+
+    Error Context: test-results/booking-management-Booking-43b23-mpty-state-when-no-bookings-webkit/error-context.md
+
+
+[1A[2K  47) [webkit] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+
+    Error: [2mexpect([22m[31mpage[39m[2m).[22mtoHaveURL[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Expected pattern: [32m/\/booking\/cancelled\//[39m
+    Received string:  [31m"http://localhost:3000/dashboard/bookings"[39m
+    Timeout: 5000ms
+
+    Call log:
+    [2m  - Expect "toHaveURL" with timeout 5000ms[22m
+    [2m    9 × unexpected value "http://localhost:3000/dashboard/bookings"[22m
+
+
+      177 |
+      178 |     // Wait for redirect to cancellation page
+    > 179 |     await expect(page).toHaveURL(/\/booking\/cancelled\//, {
+          |                        ^
+      180 |       timeout: 5000,
+      181 |     });
+      182 |     await expect(page.locator("text=cancelled successfully")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/booking-management.spec.ts:179:24
+
+    Error Context: test-results/booking-management-Booking-07b95-ent-should-cancel-a-booking-webkit/error-context.md
+
+
+[1A[2K[137/165] [webkit] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone
+[1A[2K[138/165] [webkit] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu
+[1A[2K  48) [webkit] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('heading', { name: /event types/i })
+    Expected: visible
+    Error: strict mode violation: getByRole('heading', { name: /event types/i }) resolved to 2 elements:
+        1) <h1 class="text-3xl font-bold">Event Types</h1> aka getByRole('heading', { name: 'Event Types', exact: true })
+        2) <h3 class="text-lg font-semibold mb-2">No event types yet</h3> aka getByRole('heading', { name: 'No event types yet' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('heading', { name: /event types/i })[22m
+
+
+      33 |     await page.click('a[href="/dashboard/event-types"]');
+      34 |     await expect(page).toHaveURL(/\/dashboard\/event-types/);
+    > 35 |     await expect(page.getByRole("heading", { name: /event types/i })).toBeVisible();
+         |                                                                       ^
+      36 |
+      37 |     // Test Bookings link
+      38 |     await page.click('a[href="/dashboard/bookings"]');
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:35:71
+
+    Error Context: test-results/dashboard-navigation-Dashb-b4a0d-ard-pages-from-desktop-menu-webkit/error-context.md
+
+
+[1A[2K[139/165] [webkit] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu
+[1A[2K  49) [webkit] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      59 |     // Open mobile menu
+      60 |     await page.click('button[aria-label="Toggle menu"]');
+    > 61 |     await expect(page.getByText("Dashboard")).toBeVisible();
+         |                                               ^
+      62 |     await expect(page.getByText("Event Types")).toBeVisible();
+      63 |     await expect(page.getByText("Bookings")).toBeVisible();
+      64 |     await expect(page.getByText("Availability")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:61:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-6a28e-oard-pages-from-mobile-menu-webkit/error-context.md
+
+
+[1A[2K[140/165] [webkit] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside
+[1A[2K  50) [webkit] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      104 |     // Open mobile menu
+      105 |     await page.click('button[aria-label="Toggle menu"]');
+    > 106 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      107 |
+      108 |     // Click outside (on main content)
+      109 |     await page.click("main");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:106:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-e77df--menu-when-clicking-outside-webkit/error-context.md
+
+
+[1A[2K[141/165] [webkit] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key
+[1A[2K  51) [webkit] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--eea37-king-times-in-host-timezone-webkit/error-context.md
+
+
+[1A[2K  52) [webkit] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Dashboard')
+    Expected: visible
+    Error: strict mode violation: getByText('Dashboard') resolved to 3 elements:
+        1) <a href="/dashboard" data-slot="button" data-size="default" data-variant="ghost" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 a…>Dashboard</a> aka getByText('Dashboard').first()
+        2) <a href="/dashboard" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700">Dashboard</a> aka getByRole('link', { name: 'Dashboard' })
+        3) <h1 class="text-3xl font-bold">Dashboard</h1> aka getByRole('heading', { name: 'Dashboard' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Dashboard')[22m
+
+
+      119 |     // Open mobile menu
+      120 |     await page.click('button[aria-label="Toggle menu"]');
+    > 121 |     await expect(page.getByText("Dashboard")).toBeVisible();
+          |                                               ^
+      122 |
+      123 |     // Press Escape
+      124 |     await page.keyboard.press("Escape");
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:121:47
+
+    Error Context: test-results/dashboard-navigation-Dashb-40e4c-mobile-menu-with-Escape-key-webkit/error-context.md
+
+
+[1A[2K[142/165] [webkit] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times
+[1A[2K[143/165] [webkit] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header
+[1A[2K  53) [webkit] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 3 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice', { exact: true })
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com')
+        3) <p class="text-gray-600 dark:text-gray-400 mt-2">…</p> aka getByText('Welcome back, Alice! 👋')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      132 |
+      133 |     // Check if user name and email are visible
+    > 134 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      135 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      136 |   });
+      137 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:134:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-a882d-user-info-in-desktop-header-webkit/error-context.md
+
+
+[1A[2K[144/165] [webkit] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu
+[1A[2K  54) [webkit] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Alice')
+    Expected: visible
+    Error: strict mode violation: getByText('Alice') resolved to 5 elements:
+        1) <p class="font-medium">Alice</p> aka getByText('Alice').first()
+        2) <p class="text-gray-500">alice@example.com</p> aka getByText('alice@example.com').first()
+        3) <p class="font-medium">Alice</p> aka getByRole('paragraph').filter({ hasText: /^Alice$/ })
+        4) <p class="text-xs text-gray-500">alice@example.com</p> aka getByRole('paragraph').filter({ hasText: 'alice@example.com' })
+        5) <p class="text-gray-600 dark:text-gray-400 mt-2">…</p> aka getByText('Welcome back, Alice! 👋')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Alice')[22m
+
+
+      144 |
+      145 |     // Check if user name and email are visible
+    > 146 |     await expect(page.getByText("Alice")).toBeVisible();
+          |                                           ^
+      147 |     await expect(page.getByText("alice@example.com")).toBeVisible();
+      148 |   });
+      149 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:146:43
+
+    Error Context: test-results/dashboard-navigation-Dashb-14b93-ay-user-info-in-mobile-menu-webkit/error-context.md
+
+
+[1A[2K  55) [webkit] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--f8ccc-imes-in-different-timezones-webkit/error-context.md
+
+
+[1A[2K[145/165] [webkit] › tests/dashboard-navigation.spec.ts:150:7 › Dashboard Navigation › should sign out from desktop menu
+[1A[2K[146/165] [webkit] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly
+[1A[2K  56) [webkit] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--35b75-e-hours-respecting-timezone-webkit/error-context.md
+
+
+[1A[2K[147/165] [webkit] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones
+[1A[2K[148/165] [webkit] › tests/dashboard-navigation.spec.ts:160:7 › Dashboard Navigation › should sign out from mobile menu
+[1A[2K[149/165] [webkit] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title
+[1A[2K  57) [webkit] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Event.me')
+    Expected: visible
+    Error: strict mode violation: getByText('Event.me') resolved to 2 elements:
+        1) <span class="ml-2 text-xl font-bold">Event.me</span> aka getByText('Event.me', { exact: true })
+        2) <div data-slot="card-description" class="text-muted-foreground text-sm">Get started with Event.me in 3 simple steps</div> aka getByText('Get started with Event.me in')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Event.me')[22m
+
+
+      176 |
+      177 |     // Check for logo and title
+    > 178 |     await expect(page.getByText("Event.me")).toBeVisible();
+          |                                              ^
+      179 |   });
+      180 | });
+      181 |
+        at /Users/edgarberlinck/code/event.me/tests/dashboard-navigation.spec.ts:178:46
+
+    Error Context: test-results/dashboard-navigation-Dashb-6e5e9-ave-Event-me-logo-and-title-webkit/error-context.md
+
+
+[1A[2K[150/165] [webkit] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints
+[1A[2K  58) [webkit] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--5ac79-ing-creation-with-UTC-times-webkit/error-context.md
+
+
+[1A[2K[151/165] [webkit] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints
+[1A[2K  59) [webkit] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--b3561-e-DST-transitions-correctly-webkit/error-context.md
+
+
+[1A[2K[152/165] [webkit] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set
+[1A[2K  60) [webkit] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      41 |     await page.fill('input[name="duration"]', "30");
+      42 |     await page.click('button[type="submit"]');
+    > 43 |     await page.waitForURL(/\/dashboard\/event-types$/);
+         |                ^
+      44 |   });
+      45 |
+      46 |   test("should display booking times in host timezone", async ({ page }) => {
+        at /Users/edgarberlinck/code/event.me/tests/booking-timezones.spec.ts:43:16
+
+    Error Context: test-results/booking-timezones-Booking--4b0b5-dary-in-different-timezones-webkit/error-context.md
+
+
+[1A[2K[153/165] [webkit] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form
+[1A[2K  61) [webkit] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      68 |
+      69 |     // Verify redirect to event types list
+    > 70 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      71 |
+      72 |     // Verify event type appears in list with constraints badges
+      73 |     await expect(page.locator("text=Limited Consultation")).toBeVisible();
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:70:16
+
+    Error Context: test-results/event-type-constraints-Eve-7b96c-pe-with-booking-constraints-webkit/error-context.md
+
+
+[1A[2K[154/165] [webkit] › tests/event-types.spec.ts:15:7 › Event Types Management › should create and view event type
+[1A[2K  62) [webkit] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      86 |     await page.fill('input[name="duration"]', "30");
+      87 |     await page.click('button[type="submit"]');
+    > 88 |     await page.waitForURL("/dashboard/event-types");
+         |                ^
+      89 |
+      90 |     // Find and click edit button (look for the link with Edit icon)
+      91 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:88:16
+
+    Error Context: test-results/event-type-constraints-Eve-3c276-edit-event-type-constraints-webkit/error-context.md
+
+
+[1A[2K[155/165] [webkit] › tests/public-booking.spec.ts:85:7 › Public Booking Flow › should show booking form with date and time params
+[1A[2K[156/165] [webkit] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page
+[1A[2K[157/165] [webkit] › tests/public-booking.spec.ts:98:7 › Public Booking Flow › should create a booking
+[1A[2K  63) [webkit] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Test Meeting')
+    Expected: visible
+    Error: strict mode violation: getByText('Test Meeting') resolved to 2 elements:
+        1) <div data-slot="card-description" class="text-muted-foreground text-base">Test Meeting</div> aka getByText('Test Meeting', { exact: true })
+        2) <p class="mt-4 text-gray-700 dark:text-gray-300">A test meeting for E2E tests</p> aka getByText('A test meeting for E2E tests')
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Test Meeting')[22m
+
+
+      71 |
+      72 |     await expect(page.getByText("Booking Test User")).toBeVisible();
+    > 73 |     await expect(page.getByText("Test Meeting")).toBeVisible();
+         |                                                  ^
+      74 |     await expect(page.getByText("30 minutes")).toBeVisible();
+      75 |     await expect(page.getByText("A test meeting for E2E tests")).toBeVisible();
+      76 |   });
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:73:50
+
+    Error Context: test-results/public-booking-Public-Book-a559d-display-public-booking-page-webkit/error-context.md
+
+
+[1A[2K[158/165] [webkit] › tests/public-booking.spec.ts:125:7 › Public Booking Flow › should return 404 for non-existent username
+[1A[2K[159/165] [webkit] › tests/public-booking.spec.ts:130:7 › Public Booking Flow › should return 404 for non-existent event type
+[1A[2K[160/165] [webkit] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page
+[1A[2K[161/165] [webkit] › tests/username-public-booking.spec.ts:9:7 › Username and Public Booking Page › should configure username and view public booking page
+[1A[2K  64) [webkit] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByText('Select a date')
+    Expected: visible
+    Error: strict mode violation: getByText('Select a date') resolved to 2 elements:
+        1) <div data-slot="card-title" class="leading-none font-semibold">Select a Date & Time</div> aka getByText('Select a Date & Time')
+        2) <h3 class="font-semibold mb-4">Select a date</h3> aka getByRole('heading', { name: 'Select a date' })
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByText('Select a date')[22m
+
+
+      80 |
+      81 |     await expect(page.getByText("Select a Date & Time")).toBeVisible();
+    > 82 |     await expect(page.getByText("Select a date")).toBeVisible();
+         |                                                   ^
+      83 |   });
+      84 |
+      85 |   test("should show booking form with date and time params", async ({
+        at /Users/edgarberlinck/code/event.me/tests/public-booking.spec.ts:82:51
+
+    Error Context: test-results/public-booking-Public-Book-fb886-ow-calendar-on-booking-page-webkit/error-context.md
+
+
+[1A[2K[162/165] [webkit] › tests/username-public-booking.spec.ts:64:7 › Username and Public Booking Page › should show 404 for non-existent username
+[1A[2K[163/165] [webkit] › tests/username-public-booking.spec.ts:36:7 › Username and Public Booking Page › should show error for duplicate username
+[1A[2K[164/165] [webkit] › tests/username-public-booking.spec.ts:71:7 › Username and Public Booking Page › should copy booking link to clipboard
+[1A[2K  65) [webkit] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      120 |     // Don't fill maxBookingsPerWeek
+      121 |     await page.click('button[type="submit"]');
+    > 122 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      123 |
+      124 |     // Verify no "Max X/week" badge is shown
+      125 |     const eventCard = page.locator("text=Unlimited Event").locator("..");
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:122:16
+
+    Error Context: test-results/event-type-constraints-Eve-b7913-ed-when-no-max-bookings-set-webkit/error-context.md
+
+
+[1A[2K[165/165] [webkit] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings
+[1A[2K  66) [webkit] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation to "/dashboard/event-types" until "load"
+      navigated to "http://localhost:3000/"
+    ============================================================
+
+      139 |     await page.fill('input[name="maximumNoticeDays"]', "10");
+      140 |     await page.click('button[type="submit"]');
+    > 141 |     await page.waitForURL("/dashboard/event-types");
+          |                ^
+      142 |
+      143 |     // Navigate to edit (find the first edit link on the page)
+      144 |     await page
+        at /Users/edgarberlinck/code/event.me/tests/event-type-constraints.spec.ts:141:16
+
+    Error Context: test-results/event-type-constraints-Eve-1f5a4-ow-constraints-in-edit-form-webkit/error-context.md
+
+
+[1A[2K  67) [webkit] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=Settings updated successfully')
+    Expected: visible
+    Timeout: 10000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 10000ms[22m
+    [2m  - waiting for locator('text=Settings updated successfully')[22m
+
+
+      139 |     await expect(
+      140 |       page.locator("text=Settings updated successfully"),
+    > 141 |     ).toBeVisible({ timeout: 10000 });
+          |       ^
+      142 |
+      143 |     // Wait a bit for the page to update
+      144 |     await page.waitForTimeout(1000);
+        at /Users/edgarberlinck/code/event.me/tests/username-public-booking.spec.ts:141:7
+
+    Error Context: test-results/username-public-booking-Us-15db8-date-username-from-settings-webkit/error-context.md
+
+
+[1A[2K  67 failed
+    [chromium] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+    [chromium] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist 
+    [chromium] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+    [chromium] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+    [chromium] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+    [chromium] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+    [chromium] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+    [chromium] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+    [chromium] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+    [chromium] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+    [chromium] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+    [chromium] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+    [chromium] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+    [chromium] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+    [chromium] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+    [chromium] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+    [chromium] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+    [chromium] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+    [chromium] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+    [chromium] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+    [chromium] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+    [chromium] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+    [firefox] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+    [firefox] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+    [firefox] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+    [firefox] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+    [firefox] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+    [firefox] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly 
+    [firefox] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+    [firefox] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+    [firefox] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+    [firefox] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+    [firefox] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+    [firefox] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+    [firefox] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+    [firefox] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+    [firefox] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+    [firefox] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+    [firefox] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+    [firefox] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+    [firefox] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+    [firefox] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+    [firefox] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+    [firefox] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+    [webkit] › tests/booking-management.spec.ts:85:7 › Booking Management › should show empty state when no bookings 
+    [webkit] › tests/booking-management.spec.ts:100:7 › Booking Management › should display bookings when they exist 
+    [webkit] › tests/booking-management.spec.ts:138:7 › Booking Management › should cancel a booking 
+    [webkit] › tests/booking-timezones.spec.ts:46:7 › Booking Timezone Handling › should display booking times in host timezone 
+    [webkit] › tests/booking-timezones.spec.ts:74:7 › Booking Timezone Handling › should handle booking creation with UTC times 
+    [webkit] › tests/booking-timezones.spec.ts:110:7 › Booking Timezone Handling › should show correct times in different timezones 
+    [webkit] › tests/booking-timezones.spec.ts:143:7 › Booking Timezone Handling › should handle DST transitions correctly 
+    [webkit] › tests/booking-timezones.spec.ts:176:7 › Booking Timezone Handling › should validate minimum notice hours respecting timezone 
+    [webkit] › tests/booking-timezones.spec.ts:211:7 › Booking Timezone Handling › should handle booking across date boundary in different timezones 
+    [webkit] › tests/dashboard-navigation.spec.ts:22:7 › Dashboard Navigation › should navigate to all dashboard pages from desktop menu 
+    [webkit] › tests/dashboard-navigation.spec.ts:53:7 › Dashboard Navigation › should navigate to all dashboard pages from mobile menu 
+    [webkit] › tests/dashboard-navigation.spec.ts:100:7 › Dashboard Navigation › should close mobile menu when clicking outside 
+    [webkit] › tests/dashboard-navigation.spec.ts:115:7 › Dashboard Navigation › should close mobile menu with Escape key 
+    [webkit] › tests/dashboard-navigation.spec.ts:130:7 › Dashboard Navigation › should display user info in desktop header 
+    [webkit] › tests/dashboard-navigation.spec.ts:138:7 › Dashboard Navigation › should display user info in mobile menu 
+    [webkit] › tests/dashboard-navigation.spec.ts:174:7 › Dashboard Navigation › should have Event.me logo and title 
+    [webkit] › tests/event-type-constraints.spec.ts:44:7 › Event Type Constraints › should create event type with booking constraints 
+    [webkit] › tests/event-type-constraints.spec.ts:79:7 › Event Type Constraints › should edit event type constraints 
+    [webkit] › tests/event-type-constraints.spec.ts:111:7 › Event Type Constraints › should display unlimited when no max bookings set 
+    [webkit] › tests/event-type-constraints.spec.ts:129:7 › Event Type Constraints › should show constraints in edit form 
+    [webkit] › tests/public-booking.spec.ts:69:7 › Public Booking Flow › should display public booking page 
+    [webkit] › tests/public-booking.spec.ts:78:7 › Public Booking Flow › should show calendar on booking page 
+    [webkit] › tests/username-public-booking.spec.ts:111:7 › Username and Public Booking Page › should update username from settings 
+  1 did not run
+  97 passed (3.8m)
+
+[36m  Serving HTML report at http://localhost:59413. Press Ctrl+C to quit.[39m

@@ -40,7 +40,7 @@ test.describe("Authentication Flow", () => {
     await page.goto("/register");
 
     // Fill registration form
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(`user${Date.now()}`);
     await page.getByLabel("Password").fill(user.password);
@@ -58,7 +58,7 @@ test.describe("Authentication Flow", () => {
 
     // Register first time
     await page.goto("/register");
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(username);
     await page.getByLabel("Password").fill(user.password);
@@ -69,7 +69,7 @@ test.describe("Authentication Flow", () => {
 
     // Try to register again with same email
     await page.goto("/register");
-    await page.getByLabel("Name").fill("Another User");
+    await page.getByLabel("Name", { exact: true }).fill("Another User");
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(`other${Date.now()}`);
     await page.getByLabel("Password").fill("AnotherPass123");
@@ -86,7 +86,7 @@ test.describe("Authentication Flow", () => {
 
     // First register
     await page.goto("/register");
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
@@ -102,7 +102,9 @@ test.describe("Authentication Flow", () => {
 
     // Should redirect to dashboard
     await expect(page).toHaveURL("/dashboard", { timeout: 10000 });
-    await expect(page.getByText("Dashboard")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: "Dashboard" }),
+    ).toBeVisible();
     await expect(page.getByText(user.email)).toBeVisible();
   });
 
@@ -111,7 +113,7 @@ test.describe("Authentication Flow", () => {
 
     // First register
     await page.goto("/register");
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
@@ -144,7 +146,7 @@ test.describe("Authentication Flow", () => {
 
     // Register and login
     await page.goto("/register");
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);
@@ -186,7 +188,7 @@ test.describe("Authentication Flow", () => {
 
     // Register and login
     await page.goto("/register");
-    await page.getByLabel("Name").fill(user.name);
+    await page.getByLabel("Name", { exact: true }).fill(user.name);
     await page.getByLabel("Email").fill(user.email);
     await page.getByLabel("Username").fill(user.email.split("@")[0]);
     await page.getByLabel("Password").fill(user.password);

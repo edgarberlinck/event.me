@@ -76,7 +76,7 @@ test.describe("Booking Management", () => {
     await expect(page).toHaveURL("/dashboard", { timeout: 5000 });
 
     // Navigate to bookings page
-    await page.click('a:has-text("Bookings")');
+    await page.click('a[href="/dashboard/bookings"]');
 
     await expect(page).toHaveURL("/dashboard/bookings");
     await expect(page.locator("h1")).toContainText("Bookings");
@@ -130,7 +130,7 @@ test.describe("Booking Management", () => {
     // Navigate to bookings
     await page.goto("/dashboard/bookings");
 
-    await expect(page.locator("text=Test Meeting")).toBeVisible();
+    await expect(page.locator("text=Test Meeting").first()).toBeVisible();
     await expect(page.locator("text=Test Guest")).toBeVisible();
     await expect(page.locator("text=guest@example.com")).toBeVisible();
   });
@@ -175,10 +175,11 @@ test.describe("Booking Management", () => {
       .locator("..");
     await bookingRow.locator('button:has-text("Cancel")').click();
 
-    // Wait for success message
-    await expect(page.locator("text=cancelled successfully")).toBeVisible({
+    // Wait for redirect to cancellation page
+    await expect(page).toHaveURL(/\/booking\/cancelled\//, {
       timeout: 5000,
     });
+    await expect(page.locator("text=cancelled successfully")).toBeVisible();
 
     // Verify booking is cancelled in database
     const cancelledBooking = await prisma.booking.findUnique({

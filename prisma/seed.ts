@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import bcrypt from "bcryptjs";
+import { prisma } from "../lib/prisma.server";
 
 async function main() {
   console.log("🌱 Seeding database...");
@@ -14,6 +13,20 @@ async function main() {
   await prisma.user.deleteMany();
 
   console.log("✅ Database cleaned");
+
+  // Create test users
+  const hashedPassword = await bcrypt.hash("password123", 10);
+
+  await prisma.user.create({
+    data: {
+      name: "Alice",
+      email: "alice@example.com",
+      username: "alice",
+      password: hashedPassword,
+    },
+  });
+
+  console.log("✅ Test users created");
   console.log("🎉 Seeding complete!");
 }
 

@@ -3,10 +3,18 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const { mockDelete, mockInsert, mockPatch } = vi.hoisted(() => ({
   mockDelete: vi.fn().mockResolvedValue({}),
   mockInsert: vi.fn().mockResolvedValue({
-    data: { id: "cal-event-1", hangoutLink: "https://meet.google.com/abc", htmlLink: "https://calendar.google.com/event?id=1" },
+    data: {
+      id: "cal-event-1",
+      hangoutLink: "https://meet.google.com/abc",
+      htmlLink: "https://calendar.google.com/event?id=1",
+    },
   }),
   mockPatch: vi.fn().mockResolvedValue({
-    data: { id: "cal-event-1", hangoutLink: "https://meet.google.com/abc", htmlLink: "https://calendar.google.com/event?id=1" },
+    data: {
+      id: "cal-event-1",
+      hangoutLink: "https://meet.google.com/abc",
+      htmlLink: "https://calendar.google.com/event?id=1",
+    },
   }),
 }));
 
@@ -43,9 +51,7 @@ vi.mock("@/lib/prisma.server", () => ({
   },
 }));
 
-import {
-  deleteGoogleCalendarEvent,
-} from "@/lib/google-calendar";
+import { deleteGoogleCalendarEvent } from "@/lib/google-calendar";
 
 describe("Google Calendar - deleteGoogleCalendarEvent", () => {
   beforeEach(() => {
