@@ -11,7 +11,7 @@ env:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_DB: test
-  DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/test?schema=public"
+  DATABASE_URL: "postgresql://postgres:postgres@localhost:55010/test?schema=public"
   NEXTAUTH_SECRET: "test-secret-for-ci"
   NEXTAUTH_URL: "http://localhost:3000"
   AUTH_SECRET: "test-secret-for-ci"
@@ -35,6 +35,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 55010:5432
 
     steps:
       - name: Checkout
@@ -54,6 +56,8 @@ jobs:
 
       - name: Run database migrations
         run: npx prisma db push
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:55010/test?schema=public"
 
       - name: Build application
         run: npm run build
@@ -92,6 +96,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 55011:5432
 
     steps:
       - name: Checkout
@@ -114,6 +120,8 @@ jobs:
 
       - name: Run database migrations
         run: npx prisma db push
+        env:
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:55011/test?schema=public"
 
       - name: Run Playwright tests
         run: npm test
