@@ -11,7 +11,7 @@ env:
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_DB: test
-  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test?schema=public"
+  DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/test?schema=public"
   NEXTAUTH_SECRET: "test-secret-for-ci"
   NEXTAUTH_URL: "http://localhost:3000"
   AUTH_SECRET: "test-secret-for-ci"
@@ -35,8 +35,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: Checkout
@@ -94,8 +92,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: Checkout
