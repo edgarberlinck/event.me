@@ -131,12 +131,14 @@ jobs:
       - name: Run database migrations
         run: |
           export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+          echo "DATABASE_URL=$DATABASE_URL"
           npx prisma db push
 
       - name: Run Playwright tests
-        run: npm test
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+        run: |
+          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+          echo "DATABASE_URL=$DATABASE_URL"
+          npm test
 
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
