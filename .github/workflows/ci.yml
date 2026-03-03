@@ -29,12 +29,16 @@ jobs:
 
       - name: Start PostgreSQL
         run: |
+          # Use uma porta aleatória entre 50000-60000
+          POSTGRES_PORT=$((50000 + RANDOM % 10000))
+          echo "Using port: $POSTGRES_PORT"
+          
           docker run -d \
             --name postgres-build-${{ github.run_id }} \
             -e POSTGRES_USER=postgres \
             -e POSTGRES_PASSWORD=postgres \
             -e POSTGRES_DB=test \
-            -p 5432:5432 \
+            -p $POSTGRES_PORT:5432 \
             --health-cmd pg_isready \
             --health-interval 10s \
             --health-timeout 5s \
@@ -42,7 +46,10 @@ jobs:
             postgres:16-alpine
           
           echo "Waiting for PostgreSQL to be ready..."
-          timeout 60 bash -c 'until docker exec postgres-build-${{ github.run_id }} pg_isready -U postgres; do sleep 2; done'
+          timeout 60 bash -c "until docker exec postgres-build-${{ github.run_id }} pg_isready -U postgres; do sleep 2; done"
+          
+          # Exporta a porta para os próximos steps
+          echo "POSTGRES_PORT=$POSTGRES_PORT" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -98,12 +105,16 @@ jobs:
 
       - name: Start PostgreSQL
         run: |
+          # Use uma porta aleatória entre 50000-60000
+          POSTGRES_PORT=$((50000 + RANDOM % 10000))
+          echo "Using port: $POSTGRES_PORT"
+          
           docker run -d \
             --name postgres-e2e-${{ github.run_id }} \
             -e POSTGRES_USER=postgres \
             -e POSTGRES_PASSWORD=postgres \
             -e POSTGRES_DB=test \
-            -p 5432:5432 \
+            -p $POSTGRES_PORT:5432 \
             --health-cmd pg_isready \
             --health-interval 10s \
             --health-timeout 5s \
@@ -111,7 +122,10 @@ jobs:
             postgres:16-alpine
           
           echo "Waiting for PostgreSQL to be ready..."
-          timeout 60 bash -c 'until docker exec postgres-e2e-${{ github.run_id }} pg_isready -U postgres; do sleep 2; done'
+          timeout 60 bash -c "until docker exec postgres-e2e-${{ github.run_id }} pg_isready -U postgres; do sleep 2; done"
+          
+          # Exporta a porta para os próximos steps
+          echo "POSTGRES_PORT=$POSTGRES_PORT" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -130,13 +144,13 @@ jobs:
 
       - name: Run database migrations
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:$POSTGRES_PORT/test?schema=public"
           echo "DATABASE_URL=$DATABASE_URL"
           npx prisma db push
 
       - name: Run Playwright tests
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:$POSTGRES_PORT/test?schema=public"
           echo "DATABASE_URL=$DATABASE_URL"
           npm test
 
