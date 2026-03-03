@@ -129,9 +129,9 @@ jobs:
         run: npx prisma generate
 
       - name: Run database migrations
-        run: npx prisma db push
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+        run: |
+          export DATABASE_URL="postgresql://postgres:postgres@host.docker.internal:5432/test?schema=public"
+          npx prisma db push
 
       - name: Run Playwright tests
         run: npm test
