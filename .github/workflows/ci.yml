@@ -56,21 +56,6 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: [lint]
-    
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: Checkout
@@ -88,14 +73,7 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Run database migrations
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test?schema=public"
-        run: npx prisma db push
-
       - name: Build application
-        env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/test?schema=public"
         run: npm run build
 
   e2e:
