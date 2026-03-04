@@ -65,13 +65,13 @@ jobs:
 
       - name: Run database migrations
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@localhost:$POSTGRES_PORT/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:$POSTGRES_PORT/test?schema=public"
           echo "DATABASE_URL=$DATABASE_URL"
           npx prisma db push
 
       - name: Build application
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@localhost:$POSTGRES_PORT/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:$POSTGRES_PORT/test?schema=public"
           npm run build
 
       - name: Cleanup PostgreSQL
@@ -167,13 +167,13 @@ jobs:
 
       - name: Run database migrations
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@localhost:$POSTGRES_PORT/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:$POSTGRES_PORT/test?schema=public"
           echo "DATABASE_URL=$DATABASE_URL"
           npx prisma db push
 
       - name: Run Playwright tests
         run: |
-          export DATABASE_URL="postgresql://postgres:postgres@localhost:$POSTGRES_PORT/test?schema=public"
+          export DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:$POSTGRES_PORT/test?schema=public"
           echo "DATABASE_URL=$DATABASE_URL"
           npm run test:e2e
 
