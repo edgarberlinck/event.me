@@ -1,13 +1,11 @@
-# 1. Base Stage
+# 1. Base Stage (build only)
 FROM node:22-slim AS base
-ARG RESEND_APIKEY
-ENV RESEND_APIKEY=${RESEND_APIKEY}
 ENV DIR=/usr/src/app
 WORKDIR $DIR
 # Prisma needs openssl and ca-certificates
 RUN apt-get update && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
-# 2. Dependencies Stage (The "Classpath" setup)
+# 2. Dependencies Stage
 FROM base AS deps
 COPY package*.json ./
 COPY prisma ./prisma/
@@ -17,29 +15,44 @@ RUN npm ci && npx prisma generate
 
 # 3. Builder Stage
 FROM base AS builder
+ARG RESEND_APIKEY
+ENV RESEND_APIKEY=${RESEND_APIKEY}
 COPY --from=deps $DIR/node_modules ./node_modules
 COPY . .
 RUN npm run build
-# Remove devDeps now that build is done
-RUN npm prune --omit=dev
 
 # 4. Production Stage (The "Runtime")
-FROM base AS production
+# Uses the standalone output — only traced dependencies are included, not all of node_modules
+FROM node:22-slim AS production
 ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION}
 ENV NODE_ENV=production
-USER node
+ENV DIR=/usr/src/app
+WORKDIR $DIR
 
-# Copy only what's strictly necessary to run the app, including the generated Prisma Client and the healthcheck script
+RUN apt-get update && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
+
 COPY healthcheck.js ./
-COPY --from=builder --chown=node:node $DIR/prisma ./prisma
-COPY --from=builder --chown=node:node $DIR/prisma.config.ts ./prisma.config.ts
-COPY --from=builder --chown=node:node $DIR/node_modules ./node_modules
-COPY --from=builder --chown=node:node $DIR/.next ./.next
-COPY --from=builder --chown=node:node $DIR/public ./public
-COPY --from=builder --chown=node:node $DIR/package.json ./package.json
 
+# standalone/ contains server.js + minimal node_modules (traced deps only)
+COPY --from=builder --chown=node:node $DIR/.next/standalone ./
+# Static assets and public dir must be copied separately
+COPY --from=builder --chown=node:node $DIR/.next/static ./.next/static
+COPY --from=builder --chown=node:node $DIR/public ./public
+# Prisma query engine binary is not always picked up by the tracer — copy explicitly
+COPY --from=builder --chown=node:node $DIR/node_modules/.prisma ./node_modules/.prisma
+
+USER node
 EXPOSE 3000
 
-# Using next binary directly is faster/lighter than 'npm run start'
-CMD ["node_modules/.bin/next", "start"]
+CMD ["node", "server.js"]
+
+# 5. Migrations Stage
+# Separate image used only by the init-db container to run `prisma db push`.
+# Has full node_modules so the Prisma CLI and all its dependencies are available.
+FROM base AS migrations
+ENV NODE_ENV=production
+COPY --from=deps $DIR/node_modules ./node_modules
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+CMD ["node", "node_modules/prisma/build/index.js", "db", "push"]

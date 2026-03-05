@@ -65,7 +65,19 @@ jobs:
           build-args: |
             BUILD_VERSION=${{ steps.version.outputs.tag }}
             RESEND_APIKEY=${{ secrets.RESEND_APIKEY }}
-          
+
+      - name: Build and push migrations image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          target: migrations
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ steps.version.outputs.tag }}-migrations
+            ghcr.io/${{ github.repository }}:latest-migrations
+          provenance: false
+          sbom: false
+
       - name: Create and push Git tag
         run: |
           git config user.name "github-actions[bot]"
