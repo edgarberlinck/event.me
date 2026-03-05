@@ -1,4 +1,4 @@
-name: Backend CI
+name: Build and Deploy
 
 on:
   workflow_dispatch:
