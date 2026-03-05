@@ -1,0 +1,57 @@
+---
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: eventme-db
+    ports:
+      - "55002:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: eventme
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d eventme"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  init-db:
+    image: ghcr.io/rmcampos/event.me:latest
+    container_name: eventme-init-db
+    command: npx prisma db push
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/eventme?schema=public
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: on-failure
+
+  backend:
+    build:
+      context: .
+      args:
+        RESEND_APIKEY: ${RESEND_APIKEY}
+    container_name: eventme-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/eventme?schema=public
+      BUILD_VERSION: v1.0.0
+      RESEND_APIKEY: ${RESEND_APIKEY}
+      NEXTAUTH_URL: http://localhost:3000
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      AUTH_URL: http://localhost:3000
+      AUTH_SECRET: ${NEXTAUTH_SECRET}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      init-db:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
