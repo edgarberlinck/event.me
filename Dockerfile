@@ -36,7 +36,7 @@ CMD ["node", "node_modules/prisma/build/index.js", "db", "push"]
 FROM node:22-slim AS production
 ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION}
-ENV NODE_ENV=production
+ENV NODE_OPTIONS="--network-family-autoselection-attempt-timeout=900"
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 ENV DIR=/usr/src/app
 WORKDIR $DIR

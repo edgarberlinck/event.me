@@ -200,8 +200,8 @@ resource "kubernetes_deployment_v1" "eventme_app" {
             value = "0.0.0.0"
           }
           env {
-            name  = "NODE_TLS_REJECT_UNAUTHORIZED"
-            value = "0"
+            name  = "NODE_OPTIONS"
+            value = "--network-family-autoselection-attempt-timeout=900"
           }
           env {
             name = "RESEND_APIKEY"
