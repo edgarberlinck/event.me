@@ -84,7 +84,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    return await cancelBooking(id);
+    const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+    return NextResponse.redirect(`${baseUrl}/booking/cancel/${id}`);
   } catch (error) {
     console.error("Error cancelling booking:", error);
     return NextResponse.json(
