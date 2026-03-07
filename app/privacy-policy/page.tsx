@@ -8,7 +8,13 @@ export default function PrivacyPolicyPage() {
       <header className="bg-white shadow-sm">
         <div className="container mx-auto px-4 py-6">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo.png" alt="Event.me" width={40} height={40} />
+            <Image
+              src="/logo.png"
+              alt="Event.me"
+              width={60}
+              height={40}
+              className="object-contain"
+            />
             <span className="text-xl font-bold">Event.me</span>
           </Link>
         </div>

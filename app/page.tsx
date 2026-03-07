@@ -10,7 +10,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link href="/" className="flex items-center space-x-2">
-              <Image src="/logo.png" alt="Event.me" width={32} height={32} />
+              <Image
+                src="/logo.png"
+                alt="Event.me"
+                width={48}
+                height={32}
+                className="object-contain"
+              />
               <span className="text-xl font-bold">Event.me</span>
             </Link>
             <Link href="/login">
@@ -51,9 +57,9 @@ export default function Home() {
               <Image
                 src="/logo.png"
                 alt="Set Availability"
-                width={48}
+                width={72}
                 height={48}
-                className="text-indigo-600"
+                className="object-contain"
               />
             </div>
             <h3 className="mt-4 text-xl font-semibold">
