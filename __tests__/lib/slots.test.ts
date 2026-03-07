@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getAvailableSlots } from "@/lib/slots";
+import { getAvailableSlots, getBookableDates } from "@/lib/slots";
 
 // Minimal mock types matching Prisma shapes
 const baseEventType = {
@@ -130,5 +130,73 @@ describe("getAvailableSlots - timezone handling", () => {
 
     const slots = getAvailableSlots(monday, eventType, []);
     expect(slots).toHaveLength(0);
+  });
+});
+
+describe("getBookableDates - minimum notice enforcement", () => {
+  it("only returns dates where at least one slot meets the minimum notice requirement", () => {
+    const allDayAvailability = [0, 1, 2, 3, 4, 5, 6].map((day) => ({
+      ...baseAvailability,
+      id: `avail-${day}`,
+      dayOfWeek: day,
+      startTime: "09:00",
+      endTime: "11:00",
+    }));
+
+    const eventType = {
+      ...baseEventType,
+      duration: 60,
+      minimumNoticeHours: 24,
+      maximumNoticeDays: 7,
+      user: {
+        timezone: "UTC",
+        availability: allDayAvailability,
+      },
+    };
+
+    const dates = getBookableDates(eventType, []);
+
+    const now = new Date();
+    const minNoticeTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+
+    // Every bookable date must have at least one slot that meets the 24h notice requirement
+    for (const date of dates) {
+      const slots = getAvailableSlots(date, eventType, []);
+      const validSlots = slots.filter((slot) => slot.start >= minNoticeTime);
+      expect(validSlots.length).toBeGreaterThan(0);
+    }
+  });
+
+  it("does not include dates where all slots fall inside the minimum notice window", () => {
+    const allDayAvailability = [0, 1, 2, 3, 4, 5, 6].map((day) => ({
+      ...baseAvailability,
+      id: `avail48-${day}`,
+      dayOfWeek: day,
+      startTime: "08:00",
+      endTime: "10:00",
+    }));
+
+    const eventType = {
+      ...baseEventType,
+      duration: 60,
+      minimumNoticeHours: 48,
+      maximumNoticeDays: 14,
+      user: {
+        timezone: "UTC",
+        availability: allDayAvailability,
+      },
+    };
+
+    const dates = getBookableDates(eventType, []);
+
+    const now = new Date();
+    const minNoticeTime = new Date(now.getTime() + 48 * 60 * 60 * 1000);
+
+    // Every bookable date must have at least one slot at or after minNoticeTime
+    for (const date of dates) {
+      const slots = getAvailableSlots(date, eventType, []);
+      const validSlots = slots.filter((slot) => slot.start >= minNoticeTime);
+      expect(validSlots.length).toBeGreaterThan(0);
+    }
   });
 });

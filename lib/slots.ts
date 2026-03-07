@@ -115,7 +115,9 @@ export function getBookableDates(
     if (hasAvailability) {
       // Check if there are available slots
       const slots = getAvailableSlots(currentDate, eventType, existingBookings);
-      const availableSlots = slots.filter((slot) => isAfter(slot.start, now));
+      const availableSlots = slots.filter(
+        (slot) => !isBefore(slot.start, minDate),
+      );
 
       if (availableSlots.length > 0) {
         dates.push(new Date(currentDate));
