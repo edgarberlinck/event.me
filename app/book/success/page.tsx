@@ -1,6 +1,6 @@
-import { format } from "date-fns";
 import { Calendar, CheckCircle, Mail, Video } from "lucide-react";
 import Link from "next/link";
+import { LocalTime } from "@/components/local-time";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -58,7 +58,7 @@ export default async function BookingSuccessPage({
                 <div>
                   <p className="font-medium text-sm">Meeting Time</p>
                   <p className="text-sm text-gray-600">
-                    {format(new Date(startTime), "MMMM d, yyyy 'at' HH:mm")}
+                    <LocalTime isoString={startTime} />
                   </p>
                 </div>
               </div>
