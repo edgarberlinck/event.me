@@ -14,12 +14,33 @@ export interface TimeSlot {
   end: Date;
 }
 
+function hasTimeOverlap(
+  slotStart: Date,
+  slotEnd: Date,
+  intervalStart: Date,
+  intervalEnd: Date,
+): boolean {
+  return (
+    ((isAfter(slotStart, intervalStart) ||
+      slotStart.getTime() === intervalStart.getTime()) &&
+      isBefore(slotStart, intervalEnd)) ||
+    (isAfter(slotEnd, intervalStart) &&
+      (isBefore(slotEnd, intervalEnd) ||
+        slotEnd.getTime() === intervalEnd.getTime())) ||
+    ((isBefore(slotStart, intervalStart) ||
+      slotStart.getTime() === intervalStart.getTime()) &&
+      (isAfter(slotEnd, intervalEnd) ||
+        slotEnd.getTime() === intervalEnd.getTime()))
+  );
+}
+
 export function getAvailableSlots(
   date: Date,
   eventType: EventType & {
     user: { availability: Availability[]; timezone: string };
   },
   existingBookings: Booking[],
+  googleBusyTimes: TimeSlot[] = [],
 ): TimeSlot[] {
   const dayOfWeek = date.getDay();
   const timezone = eventType.user.timezone;
@@ -58,23 +79,22 @@ export function getAvailableSlots(
       // Check if slot is available (not booked)
       const isBooked = existingBookings.some((booking) => {
         if (booking.status === "cancelled") return false;
-
-        return (
-          ((isAfter(currentSlot, booking.startTime) ||
-            currentSlot.getTime() === booking.startTime.getTime()) &&
-            isBefore(currentSlot, booking.endTime)) ||
-          (isAfter(slotEnd, booking.startTime) &&
-            (isBefore(slotEnd, booking.endTime) ||
-              slotEnd.getTime() === booking.endTime.getTime())) ||
-          ((isBefore(currentSlot, booking.startTime) ||
-            currentSlot.getTime() === booking.startTime.getTime()) &&
-            (isAfter(slotEnd, booking.endTime) ||
-              slotEnd.getTime() === booking.endTime.getTime()))
+        return hasTimeOverlap(
+          currentSlot,
+          slotEnd,
+          booking.startTime,
+          booking.endTime,
         );
       });
 
       if (!isBooked) {
-        slots.push({ start: new Date(currentSlot), end: new Date(slotEnd) });
+        const isBusy = googleBusyTimes.some((busy) =>
+          hasTimeOverlap(currentSlot, slotEnd, busy.start, busy.end),
+        );
+
+        if (!isBusy) {
+          slots.push({ start: new Date(currentSlot), end: new Date(slotEnd) });
+        }
       }
 
       currentSlot = addMinutes(currentSlot, eventType.duration);

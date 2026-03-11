@@ -1,0 +1,2 @@
+-- This migration failed in production and was rolled back.
+-- It is kept here so that `prisma migrate resolve --rolled-back` can reference it.
