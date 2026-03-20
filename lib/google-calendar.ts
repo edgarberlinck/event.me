@@ -179,6 +179,31 @@ export async function deleteGoogleCalendarEvent(
   });
 }
 
+export async function getGoogleCalendarBusyTimes(
+  userId: string,
+  startTime: Date,
+  endTime: Date,
+): Promise<{ start: Date; end: Date }[]> {
+  const calendar = await getGoogleCalendarClient(userId);
+
+  const response = await calendar.freebusy.query({
+    requestBody: {
+      timeMin: startTime.toISOString(),
+      timeMax: endTime.toISOString(),
+      items: [{ id: "primary" }],
+    },
+  });
+
+  const busyIntervals = response.data.calendars?.primary?.busy ?? [];
+
+  return busyIntervals
+    .filter((interval) => interval.start && interval.end)
+    .map((interval) => ({
+      start: new Date(interval.start as string),
+      end: new Date(interval.end as string),
+    }));
+}
+
 export async function isGoogleCalendarConnected(userId: string) {
   const account = await prisma.account.findFirst({
     where: {

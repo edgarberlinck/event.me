@@ -1,5 +1,9 @@
 import { parse, startOfDay } from "date-fns";
 import { type NextRequest, NextResponse } from "next/server";
+import {
+  getGoogleCalendarBusyTimes,
+  isGoogleCalendarConnected,
+} from "@/lib/google-calendar";
 import { prisma } from "@/lib/prisma.server";
 import { getAvailableSlots } from "@/lib/slots";
 
@@ -57,7 +61,20 @@ export async function GET(request: NextRequest) {
     });
 
     // Calculate available slots
-    const slots = getAvailableSlots(date, eventType, existingBookings);
+    const googleBusyTimes = (await isGoogleCalendarConnected(eventType.userId))
+      ? await getGoogleCalendarBusyTimes(
+          eventType.userId,
+          startOfDate,
+          endOfDate,
+        ).catch(() => [])
+      : [];
+
+    const slots = getAvailableSlots(
+      date,
+      eventType,
+      existingBookings,
+      googleBusyTimes,
+    );
 
     // Filter slots that are in the future and meet the minimum notice requirement
     const now = new Date();

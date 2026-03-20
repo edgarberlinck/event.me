@@ -366,3 +366,99 @@ describe("getBookableDates - minimum notice enforcement", () => {
     }
   });
 });
+
+describe("getAvailableSlots - Google Calendar busy times", () => {
+  const monday = new Date(2024, 0, 15); // Monday, January 15 2024
+
+  const eventType = {
+    ...baseEventType,
+    duration: 60,
+    user: {
+      timezone: "UTC",
+      availability: [
+        {
+          ...baseAvailability,
+          dayOfWeek: 1, // Monday
+          startTime: "20:00",
+          endTime: "22:00",
+        },
+      ],
+    },
+  };
+
+  it("blocks a slot that overlaps with a Google Calendar busy interval", () => {
+    const googleBusyTimes = [
+      {
+        start: new Date("2024-01-15T20:00:00Z"),
+        end: new Date("2024-01-15T20:30:00Z"),
+      },
+    ];
+
+    const slots = getAvailableSlots(monday, eventType, [], googleBusyTimes);
+
+    // 20:00-21:00 slot overlaps with busy 20:00-20:30 → should be blocked
+    const twentyHourSlot = slots.find(
+      (s) => s.start.getUTCHours() === 20 && s.start.getUTCMinutes() === 0,
+    );
+    expect(twentyHourSlot).toBeUndefined();
+  });
+
+  it("keeps a slot that does not overlap with any Google Calendar busy interval", () => {
+    const googleBusyTimes = [
+      {
+        start: new Date("2024-01-15T20:00:00Z"),
+        end: new Date("2024-01-15T21:00:00Z"),
+      },
+    ];
+
+    const slots = getAvailableSlots(monday, eventType, [], googleBusyTimes);
+
+    // 21:00-22:00 slot has no overlap → should be available
+    const twentyOneHourSlot = slots.find(
+      (s) => s.start.getUTCHours() === 21 && s.start.getUTCMinutes() === 0,
+    );
+    expect(twentyOneHourSlot).toBeDefined();
+  });
+
+  it("blocks all slots when Google Calendar marks the entire window as busy", () => {
+    const googleBusyTimes = [
+      {
+        start: new Date("2024-01-15T20:00:00Z"),
+        end: new Date("2024-01-15T22:00:00Z"),
+      },
+    ];
+
+    const slots = getAvailableSlots(monday, eventType, [], googleBusyTimes);
+
+    expect(slots).toHaveLength(0);
+  });
+
+  it("returns all slots when google busy times list is empty", () => {
+    const slots = getAvailableSlots(monday, eventType, [], []);
+
+    expect(slots.length).toBeGreaterThan(0);
+  });
+
+  it("blocks a slot that is busy in Google Calendar even when it has no existing app bookings", () => {
+    const googleBusyTimes = [
+      {
+        start: new Date("2024-01-15T21:00:00Z"),
+        end: new Date("2024-01-15T22:00:00Z"),
+      },
+    ];
+
+    const slots = getAvailableSlots(monday, eventType, [], googleBusyTimes);
+
+    // 21:00-22:00 is busy in Google Calendar → blocked
+    const twentyOneHourSlot = slots.find(
+      (s) => s.start.getUTCHours() === 21 && s.start.getUTCMinutes() === 0,
+    );
+    expect(twentyOneHourSlot).toBeUndefined();
+
+    // 20:00-21:00 is not busy → available
+    const twentyHourSlot = slots.find(
+      (s) => s.start.getUTCHours() === 20 && s.start.getUTCMinutes() === 0,
+    );
+    expect(twentyHourSlot).toBeDefined();
+  });
+});
