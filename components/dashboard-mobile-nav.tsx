@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/dashboard/event-types", label: "Event Types" },
   { href: "/dashboard/bookings", label: "Bookings" },
+  { href: "/dashboard/clients", label: "Clients" },
   { href: "/dashboard/availability", label: "Availability" },
   { href: "/dashboard/settings", label: "Settings" },
 ];
