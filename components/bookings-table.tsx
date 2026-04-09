@@ -2,7 +2,7 @@
 
 import type { Booking, EventType } from "@prisma/client";
 import { format } from "date-fns";
-import { X } from "lucide-react";
+import { UserX, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,7 @@ export function BookingsTable({
 }: BookingsTableProps) {
   const [bookings, setBookings] = useState(initialBookings);
   const [cancelling, setCancelling] = useState<string | null>(null);
+  const [markingNoShow, setMarkingNoShow] = useState<string | null>(null);
 
   const handleCancel = async (bookingId: string) => {
     setCancelling(bookingId);
@@ -48,6 +49,36 @@ export function BookingsTable({
     }
   };
 
+  const handleNoShow = async (bookingId: string) => {
+    setMarkingNoShow(bookingId);
+
+    try {
+      const response = await fetch(`/api/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "no_show" }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to mark as no show");
+      }
+
+      setBookings(
+        bookings.map((b) =>
+          b.id === bookingId ? { ...b, status: "no_show" } : b,
+        ),
+      );
+
+      toast.success("Booking marked as no show");
+    } catch (_error) {
+      toast.error("Failed to mark as no show");
+    } finally {
+      setMarkingNoShow(null);
+    }
+  };
+
   if (bookings.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">
@@ -72,10 +103,12 @@ export function BookingsTable({
                     ? "default"
                     : booking.status === "cancelled"
                       ? "destructive"
-                      : "secondary"
+                      : booking.status === "no_show"
+                        ? "destructive"
+                        : "secondary"
                 }
               >
-                {booking.status}
+                {booking.status === "no_show" ? "No Show" : booking.status}
               </Badge>
             </div>
 
@@ -98,15 +131,26 @@ export function BookingsTable({
           </div>
 
           {booking.status === "confirmed" && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleCancel(booking.id)}
-              disabled={cancelling === booking.id}
-            >
-              <X className="w-4 h-4 mr-1" />
-              {cancelling === booking.id ? "Cancelling..." : "Cancel"}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleNoShow(booking.id)}
+                disabled={markingNoShow === booking.id}
+              >
+                <UserX className="w-4 h-4 mr-1" />
+                {markingNoShow === booking.id ? "Saving..." : "No Show"}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleCancel(booking.id)}
+                disabled={cancelling === booking.id}
+              >
+                <X className="w-4 h-4 mr-1" />
+                {cancelling === booking.id ? "Cancelling..." : "Cancel"}
+              </Button>
+            </div>
           )}
         </div>
       ))}

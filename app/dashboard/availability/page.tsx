@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,7 @@ async function handleSaveAvailability(formData: FormData) {
   const endTime = formData.get("endTime") as string;
 
   // Validate time format
-  const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+  const timeRegex = /^([01][0-9]|2[0-3]):[0-5][0-9]$/;
   if (!timeRegex.test(startTime) || !timeRegex.test(endTime)) {
     throw new Error("Invalid time format");
   }
@@ -177,12 +178,19 @@ export default async function AvailabilityPage() {
                         {slot.startTime} - {slot.endTime}
                       </p>
                     </div>
-                    <form action={handleDeleteAvailability}>
-                      <input type="hidden" name="id" value={slot.id} />
-                      <Button type="submit" variant="destructive" size="sm">
-                        Delete
-                      </Button>
-                    </form>
+                    <div className="flex gap-2">
+                      <Link href={`/dashboard/availability/${slot.id}/edit`}>
+                        <Button variant="outline" size="sm">
+                          Edit
+                        </Button>
+                      </Link>
+                      <form action={handleDeleteAvailability}>
+                        <input type="hidden" name="id" value={slot.id} />
+                        <Button type="submit" variant="destructive" size="sm">
+                          Delete
+                        </Button>
+                      </form>
+                    </div>
                   </div>
                 ))}
               </div>
