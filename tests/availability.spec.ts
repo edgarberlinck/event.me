@@ -114,6 +114,46 @@ test.describe("Availability Management", () => {
     await expect(page.locator("text=No availability set yet")).toBeVisible();
   });
 
+  test("should edit availability slot", async ({ page }) => {
+    await page.goto("/dashboard/availability");
+
+    // Add a slot
+    await page.selectOption('select[name="dayOfWeek"]', "4"); // Thursday
+    await page.fill('input[name="startTime"]', "20:00");
+    await page.fill('input[name="endTime"]', "22:00");
+    await page.click('button[type="submit"]:has-text("Add Availability")');
+    await page.waitForURL("/dashboard/availability");
+    await page.waitForLoadState("networkidle");
+
+    // Verify it was added
+    await expect(page.getByText("20:00 - 22:00")).toBeVisible();
+
+    // Click the Edit button
+    await page.click('a:has-text("Edit")');
+
+    // Verify we're on the edit page
+    await expect(page).toHaveURL(/\/dashboard\/availability\/.+\/edit/);
+    await expect(
+      page.locator("h2, h1, [data-slot='card-title']"),
+    ).toContainText("Edit Availability");
+
+    // Change start time
+    await page.fill('input[name="startTime"]', "20:30");
+
+    // Save changes
+    await page.click('button[type="submit"]:has-text("Save Changes")');
+
+    // Wait for redirect back to availability list
+    await page.waitForURL("/dashboard/availability");
+    await page.waitForLoadState("networkidle");
+
+    // Verify the updated time is shown
+    await expect(page.getByText("20:30 - 22:00")).toBeVisible();
+
+    // Verify old time is gone
+    await expect(page.getByText("20:00 - 22:00")).not.toBeVisible();
+  });
+
   test("should navigate back to dashboard", async ({ page }) => {
     await page.goto("/dashboard/availability");
 
