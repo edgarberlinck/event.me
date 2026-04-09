@@ -19,7 +19,10 @@ export async function PATCH(
     const body = await request.json();
     const { status } = body;
 
-    if (!status || !["confirmed", "cancelled", "completed"].includes(status)) {
+    if (
+      !status ||
+      !["confirmed", "cancelled", "completed", "no_show"].includes(status)
+    ) {
       return NextResponse.json({ error: "Invalid status" }, { status: 400 });
     }
 
