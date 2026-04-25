@@ -4,6 +4,10 @@
 
 Event.me is a lightweight alternative to Calendly. Share your availability, let others book directly. That's it.
 
+# Live app
+
+App is live and ready to use on [https://event-me-now.vercel.app](https://event-me-now.vercel.app)
+
 ---
 
 ## 🚀 Quick Start
