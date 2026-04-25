@@ -1,6 +1,7 @@
 import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -44,6 +45,9 @@ export default async function BookingPage({ params }: BookingPageProps) {
           <p className="text-gray-600">
             Select an event type below to schedule a meeting
           </p>
+          <div className="mt-4 flex justify-center">
+            <BuyMeACoffeeButton />
+          </div>
         </div>
 
         {user.eventTypes.length === 0 ? (

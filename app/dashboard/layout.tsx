@@ -1,6 +1,7 @@
 import { Calendar, LogOut } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth, signOut } from "@/auth";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { DashboardMobileNav } from "@/components/dashboard-mobile-nav";
 import { Button } from "@/components/ui/button";
 
@@ -55,6 +56,7 @@ export default async function DashboardLayout({
               </nav>
             </div>
             <div className="flex items-center gap-2">
+              <BuyMeACoffeeButton className="hidden md:inline-flex" />
               <div className="hidden md:block text-sm">
                 <p className="font-medium">{session.user.name}</p>
                 <p className="text-gray-500">{session.user.email}</p>

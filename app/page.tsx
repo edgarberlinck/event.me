@@ -1,6 +1,7 @@
 import { Clock, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
@@ -19,9 +20,12 @@ export default function Home() {
               />
               <span className="text-xl font-bold">Event.me</span>
             </Link>
-            <Link href="/login">
-              <Button>Sign In</Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <BuyMeACoffeeButton />
+              <Link href="/login">
+                <Button>Sign In</Button>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
