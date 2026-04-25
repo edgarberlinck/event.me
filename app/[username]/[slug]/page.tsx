@@ -1,6 +1,7 @@
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { BookingForm } from "@/components/booking-form";
 import { Button } from "@/components/ui/button";
 import {
@@ -138,6 +139,7 @@ export default async function PublicBookingPage({
               <Calendar className="h-8 w-8 text-indigo-600" />
               <span className="ml-2 text-xl font-bold">Event.me</span>
             </div>
+            <BuyMeACoffeeButton />
           </div>
         </div>
       </nav>

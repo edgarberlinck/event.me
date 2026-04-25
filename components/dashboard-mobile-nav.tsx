@@ -3,6 +3,7 @@
 import { LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
@@ -62,6 +63,9 @@ export function DashboardMobileNav({
               </Link>
             ))}
             <div className="border-t mt-2 pt-2 pb-1">
+              <div className="px-3 py-2">
+                <BuyMeACoffeeButton className="w-full justify-center" />
+              </div>
               <div className="px-3 py-2 text-sm">
                 <p className="font-medium">{userName}</p>
                 <p className="text-xs text-gray-500">{userEmail}</p>

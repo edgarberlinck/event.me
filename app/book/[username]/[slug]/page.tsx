@@ -1,5 +1,6 @@
 import { Clock } from "lucide-react";
 import { notFound } from "next/navigation";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { BookingForm } from "@/components/booking-form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -67,6 +68,9 @@ export default async function BookingPage({ params }: BookingPageProps) {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-4xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <BuyMeACoffeeButton />
+        </div>
         <Card>
           <CardHeader>
             <div className="flex items-start gap-4 mb-6">
