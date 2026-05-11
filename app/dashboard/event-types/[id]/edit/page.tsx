@@ -49,7 +49,7 @@ export default async function EditEventTypePage({
 
     if (!user) {
       console.warn(
-        `Failed to revalidate public booking paths: User ${userId} not found`,
+        `Cannot revalidate public booking paths: User ${userId} not found`,
       );
     }
 
@@ -83,7 +83,7 @@ export default async function EditEventTypePage({
     revalidatePublicBookingPaths(username, slugs);
   }
 
-  async function revalidateEventTypePaths(userId: string, slugs: string[]) {
+  async function revalidateAllEventTypePaths(userId: string, slugs: string[]) {
     revalidatePath("/dashboard/event-types");
     await revalidateUserPublicBookingPaths(userId, slugs);
   }
@@ -136,7 +136,7 @@ export default async function EditEventTypePage({
       eventType.slug === updatedEventType.slug
         ? [updatedEventType.slug]
         : [eventType.slug, updatedEventType.slug];
-    await revalidateEventTypePaths(session.user.id, slugs);
+    await revalidateAllEventTypePaths(session.user.id, slugs);
     redirect("/dashboard/event-types");
   }
 
@@ -155,7 +155,7 @@ export default async function EditEventTypePage({
       },
     });
 
-    await revalidateEventTypePaths(session.user.id, [eventType.slug]);
+    await revalidateAllEventTypePaths(session.user.id, [eventType.slug]);
 
     redirect("/dashboard/event-types");
   }
