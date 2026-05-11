@@ -41,6 +41,53 @@ export default async function EditEventTypePage({
     notFound();
   }
 
+  async function getUsername(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { username: true },
+    });
+
+    if (!user) {
+      console.warn(
+        `Cannot revalidate public booking paths: User ${userId} not found`,
+      );
+    }
+
+    return user?.username;
+  }
+
+  function revalidatePublicBookingPaths(username: string, slugs: string[]) {
+    try {
+      revalidatePath(`/book/${username}`);
+      for (const slug of slugs) {
+        revalidatePath(`/book/${username}/${slug}`);
+        revalidatePath(`/${username}/${slug}`);
+      }
+    } catch (error) {
+      console.warn(
+        `Failed to revalidate public booking paths for ${username} (${slugs.join(", ")})`,
+        error,
+      );
+    }
+  }
+
+  async function revalidateUserPublicBookingPaths(
+    userId: string,
+    slugs: string[],
+  ) {
+    const username = await getUsername(userId);
+    if (!username) {
+      return;
+    }
+
+    revalidatePublicBookingPaths(username, slugs);
+  }
+
+  async function revalidateAllEventTypePaths(userId: string, slugs: string[]) {
+    revalidatePath("/dashboard/event-types");
+    await revalidateUserPublicBookingPaths(userId, slugs);
+  }
+
   async function updateEventType(formData: FormData) {
     "use server";
 
@@ -68,7 +115,7 @@ export default async function EditEventTypePage({
       throw new Error("Missing required fields");
     }
 
-    await prisma.eventType.update({
+    const updatedEventType = await prisma.eventType.update({
       where: {
         id,
         userId: session.user.id,
@@ -85,7 +132,11 @@ export default async function EditEventTypePage({
       },
     });
 
-    revalidatePath("/dashboard/event-types");
+    const slugs =
+      eventType.slug === updatedEventType.slug
+        ? [updatedEventType.slug]
+        : [eventType.slug, updatedEventType.slug];
+    await revalidateAllEventTypePaths(session.user.id, slugs);
     redirect("/dashboard/event-types");
   }
 
@@ -103,6 +154,8 @@ export default async function EditEventTypePage({
         userId: session.user.id,
       },
     });
+
+    await revalidateAllEventTypePaths(session.user.id, [eventType.slug]);
 
     redirect("/dashboard/event-types");
   }

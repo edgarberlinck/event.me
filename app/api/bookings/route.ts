@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (!eventType) {
+    if (!eventType || !eventType.active) {
       return NextResponse.json(
         { error: "Event type not found" },
         { status: 404 },

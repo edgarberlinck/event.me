@@ -49,6 +49,7 @@ describe("Booking Creation API", () => {
         userId: "host-1",
         title: "Consultation",
         duration: 30,
+        active: true,
         minimumNoticeHours: 1,
         maximumNoticeDays: 30,
         maxBookingsPerWeek: null,
@@ -144,5 +145,46 @@ describe("Booking Creation API", () => {
 
     expect(response.status).toBe(409);
     expect(data.error).toBe("This time slot is no longer available");
+  });
+
+  it("rejects booking when event type is inactive", async () => {
+    (prisma.eventType.findUnique as ReturnType<typeof vi.fn>).mockResolvedValue(
+      {
+        id: "event-type-1",
+        userId: "host-1",
+        title: "Consultation",
+        duration: 30,
+        active: false,
+        minimumNoticeHours: 1,
+        maximumNoticeDays: 30,
+        maxBookingsPerWeek: null,
+        user: { timezone: "UTC", name: "Host Test" },
+      } as never,
+    );
+
+    const now = new Date();
+    const start = new Date(now.getTime() + 2 * 60 * 60 * 1000);
+    const end = new Date(start.getTime() + 30 * 60 * 1000);
+
+    const request = new NextRequest(
+      new Request("http://localhost:3000/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventTypeId: "event-type-1",
+          guestName: "Guest Test",
+          guestEmail: "guest@example.com",
+          startTime: start.toISOString(),
+          endTime: end.toISOString(),
+        }),
+      }),
+    );
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(404);
+    expect(data.error).toBe("Event type not found");
+    expect(prisma.booking.create).not.toHaveBeenCalled();
   });
 });
