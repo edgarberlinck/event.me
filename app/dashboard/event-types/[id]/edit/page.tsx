@@ -41,7 +41,7 @@ export default async function EditEventTypePage({
     notFound();
   }
 
-  const currentEventTypeSlug = eventType.slug;
+  const originalSlug = eventType.slug;
 
   async function getUsername(userId: string) {
     const user = await prisma.user.findUnique({
@@ -135,9 +135,9 @@ export default async function EditEventTypePage({
     });
 
     const slugs =
-      currentEventTypeSlug === updatedEventType.slug
+      originalSlug === updatedEventType.slug
         ? [updatedEventType.slug]
-        : [currentEventTypeSlug, updatedEventType.slug];
+        : [originalSlug, updatedEventType.slug];
     await revalidateAllEventTypePaths(session.user.id, slugs);
     redirect("/dashboard/event-types");
   }
@@ -157,7 +157,7 @@ export default async function EditEventTypePage({
       },
     });
 
-    await revalidateAllEventTypePaths(session.user.id, [currentEventTypeSlug]);
+    await revalidateAllEventTypePaths(session.user.id, [originalSlug]);
 
     redirect("/dashboard/event-types");
   }
