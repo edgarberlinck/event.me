@@ -68,7 +68,7 @@ export default async function EditEventTypePage({
       throw new Error("Missing required fields");
     }
 
-    await prisma.eventType.update({
+    const updatedEventType = await prisma.eventType.update({
       where: {
         id,
         userId: session.user.id,
@@ -86,6 +86,19 @@ export default async function EditEventTypePage({
     });
 
     revalidatePath("/dashboard/event-types");
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { username: true },
+    });
+    if (user?.username) {
+      revalidatePath(`/book/${user.username}`);
+
+      const slugs = new Set([eventType.slug, updatedEventType.slug]);
+      for (const publicSlug of slugs) {
+        revalidatePath(`/book/${user.username}/${publicSlug}`);
+        revalidatePath(`/${user.username}/${publicSlug}`);
+      }
+    }
     redirect("/dashboard/event-types");
   }
 
@@ -103,6 +116,17 @@ export default async function EditEventTypePage({
         userId: session.user.id,
       },
     });
+
+    revalidatePath("/dashboard/event-types");
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { username: true },
+    });
+    if (user?.username) {
+      revalidatePath(`/book/${user.username}`);
+      revalidatePath(`/book/${user.username}/${eventType.slug}`);
+      revalidatePath(`/${user.username}/${eventType.slug}`);
+    }
 
     redirect("/dashboard/event-types");
   }
