@@ -64,7 +64,10 @@ export default async function EditEventTypePage({
         revalidatePath(`/${username}/${slug}`);
       }
     } catch (error) {
-      console.warn("Failed to revalidate public booking paths", error);
+      console.warn(
+        `Failed to revalidate public booking paths for ${username} (${slugs.join(", ")})`,
+        error,
+      );
     }
   }
 
