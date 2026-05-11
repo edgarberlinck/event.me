@@ -41,6 +41,23 @@ export default async function EditEventTypePage({
     notFound();
   }
 
+  async function getUsername(userId: string) {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { username: true },
+    });
+
+    return user?.username;
+  }
+
+  function revalidatePublicBookingPaths(username: string, slugs: string[]) {
+    revalidatePath(`/book/${username}`);
+    for (const slug of slugs) {
+      revalidatePath(`/book/${username}/${slug}`);
+      revalidatePath(`/${username}/${slug}`);
+    }
+  }
+
   async function updateEventType(formData: FormData) {
     "use server";
 
@@ -86,18 +103,13 @@ export default async function EditEventTypePage({
     });
 
     revalidatePath("/dashboard/event-types");
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { username: true },
-    });
-    if (user?.username) {
-      revalidatePath(`/book/${user.username}`);
-
-      const slugs = new Set([eventType.slug, updatedEventType.slug]);
-      for (const publicSlug of slugs) {
-        revalidatePath(`/book/${user.username}/${publicSlug}`);
-        revalidatePath(`/${user.username}/${publicSlug}`);
-      }
+    const username = await getUsername(session.user.id);
+    if (username) {
+      const slugs =
+        eventType.slug === updatedEventType.slug
+          ? [updatedEventType.slug]
+          : [eventType.slug, updatedEventType.slug];
+      revalidatePublicBookingPaths(username, slugs);
     }
     redirect("/dashboard/event-types");
   }
@@ -118,14 +130,9 @@ export default async function EditEventTypePage({
     });
 
     revalidatePath("/dashboard/event-types");
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
-      select: { username: true },
-    });
-    if (user?.username) {
-      revalidatePath(`/book/${user.username}`);
-      revalidatePath(`/book/${user.username}/${eventType.slug}`);
-      revalidatePath(`/${user.username}/${eventType.slug}`);
+    const username = await getUsername(session.user.id);
+    if (username) {
+      revalidatePublicBookingPaths(username, [eventType.slug]);
     }
 
     redirect("/dashboard/event-types");
