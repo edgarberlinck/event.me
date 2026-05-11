@@ -48,17 +48,23 @@ export default async function EditEventTypePage({
     });
 
     if (!user) {
-      console.warn(`User not found for public path revalidation: ${userId}`);
+      console.warn(
+        `Failed to revalidate public booking paths: User ${userId} not found`,
+      );
     }
 
     return user?.username;
   }
 
   function revalidatePublicBookingPaths(username: string, slugs: string[]) {
-    revalidatePath(`/book/${username}`);
-    for (const slug of slugs) {
-      revalidatePath(`/book/${username}/${slug}`);
-      revalidatePath(`/${username}/${slug}`);
+    try {
+      revalidatePath(`/book/${username}`);
+      for (const slug of slugs) {
+        revalidatePath(`/book/${username}/${slug}`);
+        revalidatePath(`/${username}/${slug}`);
+      }
+    } catch (error) {
+      console.warn("Failed to revalidate public booking paths", error);
     }
   }
 
@@ -72,6 +78,11 @@ export default async function EditEventTypePage({
     }
 
     revalidatePublicBookingPaths(username, slugs);
+  }
+
+  async function revalidateEventTypePaths(userId: string, slugs: string[]) {
+    revalidatePath("/dashboard/event-types");
+    await revalidateUserPublicBookingPaths(userId, slugs);
   }
 
   async function updateEventType(formData: FormData) {
@@ -118,12 +129,11 @@ export default async function EditEventTypePage({
       },
     });
 
-    revalidatePath("/dashboard/event-types");
     const slugs =
       eventType.slug === updatedEventType.slug
         ? [updatedEventType.slug]
         : [eventType.slug, updatedEventType.slug];
-    await revalidateUserPublicBookingPaths(session.user.id, slugs);
+    await revalidateEventTypePaths(session.user.id, slugs);
     redirect("/dashboard/event-types");
   }
 
@@ -142,8 +152,7 @@ export default async function EditEventTypePage({
       },
     });
 
-    revalidatePath("/dashboard/event-types");
-    await revalidateUserPublicBookingPaths(session.user.id, [eventType.slug]);
+    await revalidateEventTypePaths(session.user.id, [eventType.slug]);
 
     redirect("/dashboard/event-types");
   }
