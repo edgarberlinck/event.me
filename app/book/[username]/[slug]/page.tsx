@@ -1,7 +1,7 @@
 import { Clock } from "lucide-react";
 import { notFound } from "next/navigation";
-import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { BookingForm } from "@/components/booking-form";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,

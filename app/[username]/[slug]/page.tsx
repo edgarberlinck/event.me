@@ -1,8 +1,8 @@
 import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { BookingForm } from "@/components/booking-form";
+import { BuyMeACoffeeButton } from "@/components/buy-me-a-coffee-button";
 import { Button } from "@/components/ui/button";
 import {
   Card,
