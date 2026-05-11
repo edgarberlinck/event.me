@@ -47,6 +47,10 @@ export default async function EditEventTypePage({
       select: { username: true },
     });
 
+    if (!user) {
+      console.warn(`User not found for public path revalidation: ${userId}`);
+    }
+
     return user?.username;
   }
 
@@ -56,6 +60,18 @@ export default async function EditEventTypePage({
       revalidatePath(`/book/${username}/${slug}`);
       revalidatePath(`/${username}/${slug}`);
     }
+  }
+
+  async function revalidateUserPublicBookingPaths(
+    userId: string,
+    slugs: string[],
+  ) {
+    const username = await getUsername(userId);
+    if (!username) {
+      return;
+    }
+
+    revalidatePublicBookingPaths(username, slugs);
   }
 
   async function updateEventType(formData: FormData) {
@@ -103,14 +119,11 @@ export default async function EditEventTypePage({
     });
 
     revalidatePath("/dashboard/event-types");
-    const username = await getUsername(session.user.id);
-    if (username) {
-      const slugs =
-        eventType.slug === updatedEventType.slug
-          ? [updatedEventType.slug]
-          : [eventType.slug, updatedEventType.slug];
-      revalidatePublicBookingPaths(username, slugs);
-    }
+    const slugs =
+      eventType.slug === updatedEventType.slug
+        ? [updatedEventType.slug]
+        : [eventType.slug, updatedEventType.slug];
+    await revalidateUserPublicBookingPaths(session.user.id, slugs);
     redirect("/dashboard/event-types");
   }
 
@@ -130,10 +143,7 @@ export default async function EditEventTypePage({
     });
 
     revalidatePath("/dashboard/event-types");
-    const username = await getUsername(session.user.id);
-    if (username) {
-      revalidatePublicBookingPaths(username, [eventType.slug]);
-    }
+    await revalidateUserPublicBookingPaths(session.user.id, [eventType.slug]);
 
     redirect("/dashboard/event-types");
   }
